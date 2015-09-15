@@ -6,21 +6,18 @@
   <title>linux搭建hexo博客并发布到github | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="之前用了wrodpress做博客，自动化做的挺好的，省时省力，一键安装，而且有各种主题各种插件，都挺好的，唯一的不爽在于内部实现挺复杂，发布博客和打开博客的速度比较慢，估计和操作数据库有很大关系吧。于是在网上大概搜了下其他发布博客的框架，发现很多人推荐hexo，所以尝试了下，记录下安装过程，不是那么省心。
-
-由于hexo是基于node.js的，所以要先安装node.js，在node.js官网下载。">
+由于hexo是基于node.js的，所以要先安装node.js，在node.js官网下载。刚">
 <meta property="og:type" content="article">
 <meta property="og:title" content="linux搭建hexo博客并发布到github">
 <meta property="og:url" content="http://yoursite.com/2015/09/15/hexocreate/index.html">
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="之前用了wrodpress做博客，自动化做的挺好的，省时省力，一键安装，而且有各种主题各种插件，都挺好的，唯一的不爽在于内部实现挺复杂，发布博客和打开博客的速度比较慢，估计和操作数据库有很大关系吧。于是在网上大概搜了下其他发布博客的框架，发现很多人推荐hexo，所以尝试了下，记录下安装过程，不是那么省心。
-
-由于hexo是基于node.js的，所以要先安装node.js，在node.js官网下载。">
-<meta property="og:updated_time" content="2015-09-15T09:26:33.578Z">
+由于hexo是基于node.js的，所以要先安装node.js，在node.js官网下载。刚">
+<meta property="og:updated_time" content="2015-09-15T09:34:01.898Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="linux搭建hexo博客并发布到github">
 <meta name="twitter:description" content="之前用了wrodpress做博客，自动化做的挺好的，省时省力，一键安装，而且有各种主题各种插件，都挺好的，唯一的不爽在于内部实现挺复杂，发布博客和打开博客的速度比较慢，估计和操作数据库有很大关系吧。于是在网上大概搜了下其他发布博客的框架，发现很多人推荐hexo，所以尝试了下，记录下安装过程，不是那么省心。
-
-由于hexo是基于node.js的，所以要先安装node.js，在node.js官网下载。">
+由于hexo是基于node.js的，所以要先安装node.js，在node.js官网下载。刚">
   
     <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -234,31 +231,24 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <pre><code>之前用了wrodpress做博客，自动化做的挺好的，省时省力，一键安装，而且有各种主题各种插件，都挺好的，唯一的不爽在于内部实现挺复杂，发布博客和打开博客的速度比较慢，估计和操作数据库有很大关系吧。于是在网上大概搜了下其他发布博客的框架，发现很多人推荐hexo，所以尝试了下，记录下安装过程，不是那么省心。
-
-由于hexo是基于node.js的，所以要先安装node.js，在node.js官网下载。刚开始我下载的最新源码，于是开始编译，发现源码很多基于C++<span class="number">11</span>的，但我的编译器不支持，还要升级gcc，折腾了下没有成功放弃。然后下载了node.js的<span class="number">0.10</span>版本，编译且安装成功，但在安装hexo的时候提示需要<span class="number">0.12</span>版本以上，于是又放弃。
-
-最终我选择了下载node.js最新release版本(非源码，直接是可执行程序)，node-v4<span class="number">.0</span><span class="number">.0</span>-linux-x64.tar.gz，解压，然后执行
-
-&gt; ln -s /home/hexo/node-v4<span class="number">.0</span><span class="number">.0</span>-linux-x64/bin/node /usr/local/bin/node 
-&gt; ln -s /home/hexo/node-v4<span class="number">.0</span><span class="number">.0</span>-linux-x64/bin/npm /usr/local/bin/npm  
+        <p>之前用了wrodpress做博客，自动化做的挺好的，省时省力，一键安装，而且有各种主题各种插件，都挺好的，唯一的不爽在于内部实现挺复杂，发布博客和打开博客的速度比较慢，估计和操作数据库有很大关系吧。于是在网上大概搜了下其他发布博客的框架，发现很多人推荐hexo，所以尝试了下，记录下安装过程，不是那么省心。</p>
+<p>由于hexo是基于node.js的，所以要先安装node.js，在node.js官网下载。刚开始我下载的最新源码，于是开始编译，发现源码很多基于C++11的，但我的编译器不支持，还要升级gcc，折腾了下没有成功放弃。然后下载了node.js的0.10版本，编译且安装成功，但在安装hexo的时候提示需要0.12版本以上，于是又放弃。</p>
+<p>最终我选择了下载node.js最新release版本(非源码，直接是可执行程序)，node-v4.0.0-linux-x64.tar.gz，解压，然后执行</p>
+<pre><code>&gt; ln -s <span class="regexp">/home/</span>hexo<span class="regexp">/node-v4.0.0-linux-x64/</span>bin<span class="regexp">/node /</span>usr<span class="regexp">/local/</span>bin/node 
+&gt; ln -s <span class="regexp">/home/</span>hexo<span class="regexp">/node-v4.0.0-linux-x64/</span>bin<span class="regexp">/npm /</span>usr<span class="regexp">/local/</span>bin/npm  
 </code></pre><p>（我创建的用户就是hexo，这个按你自己的来），这样node.js应该就能用了。</p>
 <p>然后安装git，yum install git，最后就可以按照hexo官方介绍安装了，</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo -g  </span><br><span class="line">ln -s /home/hexo/node-v4<span class="number">.0</span><span class="number">.0</span>-linux-x64/bin/hexo /usr/local/bin/hexo  </span><br><span class="line">hexo init blog   </span><br><span class="line">cd blog   </span><br><span class="line">npm install  </span><br><span class="line">hexo server</span><br></pre></td></tr></table></figure>
 <p>如果成功，就可以在本地连接中浏览到默认博客了。</p>
-<pre><code>这是博客也只能在本地浏览，如果你想在外网能浏览就需要自己申请域名和外网机器，或者直接发布到github，github为每位用户提供了一个独有域名，可以通过这个域名直接访问博客。
-
-首先申请github账户，比如用户名是xxx，然后创建一个代码仓库，命名为xxx<span class="class">.github</span><span class="class">.io</span>。
-
-在本地机器上运行git config --global user<span class="class">.email</span> <span class="string">"xxx@xxx.com"</span>  git config --global user<span class="class">.name</span> <span class="string">"xxx"</span> 配置git，然后执行ssh-keygen -t rsa -C <span class="string">"xxx@xxx.com"</span>（邮箱是申请github用的邮箱），复制~/.ssh/id_rsa.pub中的秘钥。
-
-点击github上的 Account settings -&gt; SSH Keys -&gt; Add SSH Key，把复制的秘钥填进key里，这样本地机访问github就不需要密码了。
-
-修改blog目录下的_config.yml文件，把发布选项改为下面的方式
-</code></pre><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="preprocessor"># Deployment  </span></span><br><span class="line"><span class="preprocessor">## Docs: http:<span class="comment">//hexo.io/docs/deployment.html  </span></span></span><br><span class="line">deploy:  </span><br><span class="line">  type: git  </span><br><span class="line">  repo: git@github.com:xxx/xxx.github.io.git  </span><br><span class="line">  branch: master</span><br></pre></td></tr></table></figure>
+<p>这是博客也只能在本地浏览，如果你想在外网能浏览就需要自己申请域名和外网机器，或者直接发布到github，github为每位用户提供了一个独有域名，可以通过这个域名直接访问博客。</p>
+<p>首先申请github账户，比如用户名是xxx，然后创建一个代码仓库，命名为xxx.github.io。</p>
+<p>在本地机器上运行git config –global user.email “xxx@xxx.com”  git config –global user.name “xxx” 配置git，然后执行ssh-keygen -t rsa -C “xxx@xxx.com”（邮箱是申请github用的邮箱），复制~/.ssh/id_rsa.pub中的秘钥。</p>
+<p>点击github上的 Account settings -&gt; SSH Keys -&gt; Add SSH Key，把复制的秘钥填进key里，这样本地机访问github就不需要密码了。</p>
+<p>修改blog目录下的_config.yml文件，把发布选项改为下面的方式</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="preprocessor"># Deployment  </span></span><br><span class="line"><span class="preprocessor">## Docs: http:<span class="comment">//hexo.io/docs/deployment.html  </span></span></span><br><span class="line">deploy:  </span><br><span class="line">  type: git  </span><br><span class="line">  repo: git@github.com:xxx/xxx.github.io.git  </span><br><span class="line">  branch: master</span><br></pre></td></tr></table></figure>
 <p>注意type:后面是有一个空格的，type前面也是有两个空格的，格式很重要，不然发布不成功。</p>
-<pre><code>最后执行hexo generate和hexo deploy，如果发布成功了就会在github上发现你的代码，而且通过xxx<span class="class">.github</span><span class="class">.io</span>能访问你的博客了。
-</code></pre>
+<p>最后执行hexo generate和hexo deploy，如果发布成功了就会在github上发现你的代码，而且通过xxx.github.io能访问你的博客了。</p>
+
       
     </div>
     
