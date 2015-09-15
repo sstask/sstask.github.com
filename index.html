@@ -112,7 +112,7 @@
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/hexo-github-博客搭建/" style="font-size: 10px;">hexo github 博客搭建</a>
+						<a href="/tags/github/" style="font-size: 10px;">github</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/博客搭建/" style="font-size: 10px;">博客搭建</a>
 					</div>
 				</section>
 				
@@ -218,12 +218,13 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>之前用了wrodpress做博客，自动化做的挺好的，省时省力，一键安装，而且有各种主题各种插件，都挺好的，唯一的不爽在于内部实现挺复杂，发布博客和打开博客的速度比较慢，估计和操作数据库有很大关系吧。于是在网上大概搜了下其他发布博客的框架，发现很多人推荐hexo，所以尝试了下，记录下安装过程，不是那么省心。</p>
+        <p>&#160;&#160;&#160;&#160;之前用了wrodpress做博客，自动化做的挺好的，省时省力，一键安装，而且有各种主题各种插件，都挺好的，唯一的不爽在于内部实现挺复杂，发布博客和打开博客的速度比较慢，估计和操作数据库有很大关系吧。于是在网上大概搜了下其他发布博客的框架，发现很多人推荐hexo，所以尝试了下，记录下安装过程，不是那么省心。</p>
 <p>由于hexo是基于node.js的，所以要先安装node.js，在node.js官网下载。刚开始我下载的最新源码，于是开始编译，发现源码很多基于C++11的，但我的编译器不支持，还要升级gcc，折腾了下没有成功放弃。然后下载了node.js的0.10版本，编译且安装成功，但在安装hexo的时候提示需要0.12版本以上，于是又放弃。</p>
 <p>最终我选择了下载node.js最新release版本(非源码，直接是可执行程序)，node-v4.0.0-linux-x64.tar.gz，解压，然后执行</p>
-<pre><code>&gt; ln -s <span class="regexp">/home/</span>hexo<span class="regexp">/node-v4.0.0-linux-x64/</span>bin<span class="regexp">/node /</span>usr<span class="regexp">/local/</span>bin/node 
-&gt; ln -s <span class="regexp">/home/</span>hexo<span class="regexp">/node-v4.0.0-linux-x64/</span>bin<span class="regexp">/npm /</span>usr<span class="regexp">/local/</span>bin/npm  
-</code></pre><p>（我创建的用户就是hexo，这个按你自己的来），这样node.js应该就能用了。</p>
+<blockquote>
+<p>ln -s /home/hexo/node-v4.0.0-linux-x64/bin/node /usr/local/bin/node<br>ln -s /home/hexo/node-v4.0.0-linux-x64/bin/npm /usr/local/bin/npm  </p>
+</blockquote>
+<p>（我创建的用户就是hexo，这个按你自己的来），这样node.js应该就能用了。</p>
 <p>然后安装git，yum install git，最后就可以按照hexo官方介绍安装了，</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo -g  </span><br><span class="line">ln -s /home/hexo/node-v4<span class="number">.0</span><span class="number">.0</span>-linux-x64/bin/hexo /usr/local/bin/hexo  </span><br><span class="line">hexo init blog   </span><br><span class="line">cd blog   </span><br><span class="line">npm install  </span><br><span class="line">hexo server</span><br></pre></td></tr></table></figure>
 <p>如果成功，就可以在本地连接中浏览到默认博客了。</p>
@@ -243,10 +244,14 @@
       
       
 	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hexo-github-博客搭建/">hexo github 博客搭建</a></li></ul>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/github/">github</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hexo/">hexo</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/博客搭建/">博客搭建</a></li></ul>
 	</div>
 
       
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/杂/">杂</a>
+	</div>
+
 
       
       <div class="clearfix"></div>
