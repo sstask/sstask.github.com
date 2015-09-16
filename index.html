@@ -217,7 +217,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2015/09/16/hexobackup/">hexobackup</a>
+      <a class="article-title" href="/2015/09/16/hexobackup/">把hexo博客备份到github</a>
     </h1>
   
 
@@ -226,10 +226,21 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>上个blog讲了搭建hexo blog的方法，并且可以把博客放在github上，很简单而且很有效，github是个好地方。<br>但是github上保存的只是hexo生成好的html文件和一些博客用到的图片之类的，而我想github能保存我博客的源文件，就是.md文件。<br>刚开始我想已附件的方式把源文件链接到网站里面，这样github就会把他们当成资源文件保存了，可是hexo好像不支持附件链接。<br>hexo或者说markdown支持图片的链接，于是我想到了把我的博客源文件制作成图片然后链接进博客html里，这样就能达到保存的效果了。<br>直接讲我怎么做的吧：<br>+首先下载二维码生成工具</p>
-<blockquote>
-<p>yum install qrencode<br>+对源文件生成二维码图片<br>qrencode -o my.md.png “my.md”<br>+在二维码图片的后面追加分隔符<br>+在二维码图片后面追加博客源文件的所以内容<br>+把二维码图片链接进博客<br>+生成并发布博客<br>这样我的博客源码就被写在了图片了，图片又被保存在了github上，再也不用担心博客的丢失了。<br>如果想还原博客的话就读取图片内存然后取出分隔符之后的全部内容就ok了。<br>整个流程还是有点小复杂的，所以我写了一个python脚本来完成，他可以完成整个发布博客和还原博客的过程。</p>
+        <p>上个blog讲了搭建hexo blog的方法，并且可以把博客放在github上，很简单而且很有效，github是个好地方。<br>但是github上保存的只是hexo生成好的html文件和一些博客用到的图片之类的，而我想github能保存我博客的源文件，就是.md文件。<br>刚开始我想已附件的方式把源文件链接到网站里面，这样github就会把他们当成资源文件保存了，可是hexo好像不支持附件链接。<br>hexo或者说markdown支持图片的链接，于是我想到了把我的博客源文件制作成图片然后链接进博客html里，这样就能达到保存的效果了。<br>直接讲我怎么做的吧：</p>
+<ul>
+<li>首先下载二维码生成工具<blockquote>
+<p>yum install qrencode</p>
 </blockquote>
+</li>
+<li>对源文件生成二维码图片<blockquote>
+<p>qrencode -o my.md.png “my.md”</p>
+</blockquote>
+</li>
+<li>在二维码图片的后面追加分隔符</li>
+<li>在二维码图片后面追加博客源文件的所以内容</li>
+<li>把二维码图片链接进博客</li>
+<li>生成并发布博客<br>这样我的博客源码就被写在了图片了，图片又被保存在了github上，再也不用担心博客的丢失了。<br>如果想还原博客的话就读取图片内存然后取出分隔符之后的全部内容就ok了。<br>整个流程还是有点小复杂的，所以我写了一个python脚本来完成，他可以完成整个发布博客和还原博客的过程。</li>
+</ul>
 
       
     </div>
