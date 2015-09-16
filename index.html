@@ -116,7 +116,7 @@
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/github/" style="font-size: 10px;">github</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/博客搭建/" style="font-size: 10px;">博客搭建</a>
+						<a href="/tags/blog/" style="font-size: 10px;">blog</a> <a href="/tags/github/" style="font-size: 10px;">github</a> <a href="/tags/hexo/" style="font-size: 20px;">hexo</a> <a href="/tags/博客搭建/" style="font-size: 10px;">博客搭建</a>
 					</div>
 				</section>
 				
@@ -199,6 +199,68 @@
 	</div>
 </nav>
       <div class="body-wrap">
+  
+    <article id="post-hexobackup" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/09/16/hexobackup/" class="article-date">
+  	<time datetime="2015-09-16T12:39:03.000Z" itemprop="datePublished">Sep 16</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/09/16/hexobackup/">hexobackup</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>上个blog讲了搭建hexo blog的方法，并且可以把博客放在github上，很简单而且很有效，github是个好地方。<br>但是github上保存的只是hexo生成好的html文件和一些博客用到的图片之类的，而我想github能保存我博客的源文件，就是.md文件。<br>刚开始我想已附件的方式把源文件链接到网站里面，这样github就会把他们当成资源文件保存了，可是hexo好像不支持附件链接。<br>hexo或者说markdown支持图片的链接，于是我想到了把我的博客源文件制作成图片然后链接进博客html里，这样就能达到保存的效果了。<br>直接讲我怎么做的吧：<br>+首先下载二维码生成工具</p>
+<blockquote>
+<p>yum install qrencode<br>+对源文件生成二维码图片<br>qrencode -o my.md.png “my.md”<br>+在二维码图片的后面追加分隔符<br>+在二维码图片后面追加博客源文件的所以内容<br>+把二维码图片链接进博客<br>+生成并发布博客<br>这样我的博客源码就被写在了图片了，图片又被保存在了github上，再也不用担心博客的丢失了。<br>如果想还原博客的话就读取图片内存然后取出分隔符之后的全部内容就ok了。<br>整个流程还是有点小复杂的，所以我写了一个python脚本来完成，他可以完成整个发布博客和还原博客的过程。</p>
+</blockquote>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/blog/">blog</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hexo/">hexo</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/杂/">杂</a>
+	</div>
+
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
   
     <article id="post-hexocreate" class="article article-type-post" itemscope itemprop="blogPost">
   
