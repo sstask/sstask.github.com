@@ -15,7 +15,7 @@ ls 列出当前目录下所以文件和目录 加参数-a可以列出隐藏文�
 <meta property="og:description" content="在linux下工作总是要用到不少命令，下面记录下常用的命令，以免忘了。
 文件相关
 ls 列出当前目录下所以文件和目录 加参数-a可以列出隐藏文件(.开头)        ll 详细列表        rm 删除文件 -r循环删除 -f强制删除        cat 输出文件到屏幕        less 查看文件        tail 查看文件末尾N行 tail -f xx持续打印文件新内容直至">
-<meta property="og:updated_time" content="2015-09-17T14:02:25.180Z">
+<meta property="og:updated_time" content="2015-09-17T14:11:48.231Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="linux常用命令">
 <meta name="twitter:description" content="在linux下工作总是要用到不少命令，下面记录下常用的命令，以免忘了。
@@ -223,28 +223,21 @@ ls 列出当前目录下所以文件和目录 加参数-a可以列出隐藏文�
       
         <p>在linux下工作总是要用到不少命令，下面记录下常用的命令，以免忘了。</p>
 <h3 id="文件相关">文件相关</h3><blockquote>
-<p><strong>ls</strong> 列出当前目录下所以文件和目录 加参数-a可以列出隐藏文件(.开头)<br>        <strong>ll</strong> 详细列表<br>        <strong>rm</strong> 删除文件 -r循环删除 -f强制删除<br>        <strong>cat</strong> 输出文件到屏幕<br>        <strong>less</strong> 查看文件<br>        <strong>tail</strong> 查看文件末尾N行 tail -f xx持续打印文件新内容直至ctrl+c<br><a id="more"></a>      </p>
-<p><strong>vim</strong> 编辑或新建文件<br>        <strong>mv</strong> 移动或重命名文件<br>        <strong>mkdir</strong> 创建目录<br>        <strong>cp</strong> 复制<br>        <strong>scp</strong> 远程复制 scp xx root@192.168.0.102:/home/root/<br>        <strong>chmod +x</strong> 赋予文件可执行权限<br>        <strong>tar -zcvf</strong> name.tar.gz dir 压缩<br>        <strong>tar -zxvf</strong> name.tar.gz dir 解压<br>        <strong>file</strong> 查看文件类型和编码信息等，也可看出core文件属于哪个程序<br>        <strong>wc</strong> 统计文件行数字数字节数等，wc -l file 行数 -c字节数 -w字数 -m字符数<br>        进程相关<br>        <strong>ps</strong> 列出当前运行的进程 ps x当前用户所有进程 ps ux带用户等信息 ps aux所有用户进程<br>        <strong>kill</strong> 杀死进程 kill -9 强制杀死 kill -USR1 给进程发信号<br>        <strong>pgrep</strong> 根据程序名查找进程 pgrep -l xx</p>
+<p><strong>ls</strong> 列出当前目录下所以文件和目录 加参数-a可以列出隐藏文件(.开头)<br>        <strong>ll</strong> 详细列表<br>        <strong>rm</strong> 删除文件 -r循环删除 -f强制删除<br>        <strong>cat</strong> 输出文件到屏幕<br>        <strong>less</strong> 查看文件<br>        <strong>tail</strong> 查看文件末尾N行 tail -f xx持续打印文件新内容直至ctrl+c<br><a id="more"></a></p>
+<p><strong>vim</strong> 编辑或新建文件<br>        <strong>mv</strong> 移动或重命名文件<br>        <strong>mkdir</strong> 创建目录<br>        <strong>cp</strong> 复制<br>        <strong>scp</strong> 远程复制 scp xx root@192.168.0.102:/home/root/<br>        <strong>chmod +x</strong> 赋予文件可执行权限<br>        <strong>tar -zcvf</strong> name.tar.gz dir 压缩<br>        <strong>tar -zxvf</strong> name.tar.gz dir 解压<br>        <strong>file</strong> 查看文件类型和编码信息等，也可看出core文件属于哪个程序<br>        <strong>wc</strong> 统计文件行数字数字节数等，wc -l file 行数 -c字节数 -w字数 -m字符数<br>        进程相关<br>        <strong>ps</strong> 列出当前运行的进程 ps x当前用户所有进程 ps ux带用户等信息 ps aux所有用户进程<br>        <strong>kill</strong> 杀死进程 kill -9 强制杀死 kill -USR1 给进程发信号<br>                <strong>pgrep</strong> 根据程序名查找进程 pgrep -l xx</p>
 </blockquote>
 <h3 id="查找相关">查找相关</h3><blockquote>
-<p><strong>find</strong> 查找文件 <em>find [path] [option] [action]       find / -name mysql*</em></p>
-</blockquote>
-<pre><code><span class="keyword">*</span><span class="keyword">*</span>grep<span class="keyword">*</span><span class="keyword">*</span> 在文本中查找字符串 <span class="keyword">*</span>grep [string] [files]       grep <span class="string">"xx"</span> log\<span class="keyword">*</span><span class="keyword">*</span>
-
- <span class="keyword">*</span><span class="keyword">*</span>awk<span class="keyword">*</span><span class="keyword">*</span> 文本分析处理
-</code></pre><ul>
-<li><p><em>awk ‘{pattern + print}’ {files}</em>    </p>
-<pre><code>+ *last -<span class="keyword">n</span> 5 | awk '{<span class="keyword">print</span> \<span class="label">$1}</span>'* 显示最近登录的5个账户的名字
-
- + *svn diff |grep Index|awk '\<span class="label">$2</span> \~/(cpp)|(<span class="keyword">h</span>)\$/{<span class="keyword">print</span> \<span class="label">$2}</span>'* 打印改动的cpp、<span class="keyword">h</span>文件名，~是匹配操作符，表示找第二列匹配后面模式的行
-
- + *svn diff|grep '<span class="keyword">h</span>\$\|cpp\$'|awk '{<span class="keyword">print</span> \<span class="label">$2}</span>'|<span class="keyword">sort</span>|uniq* 查找以cpp或<span class="keyword">h</span>结尾的行，打印第二列，排序去重复
-
-+ *ps -A -o stat,ppid,pid,cmd | grep -<span class="keyword">e</span> '^[Zz]' | awk '{<span class="keyword">print</span> \<span class="label">$2}</span>' | xargs kill -9* 杀死僵尸进程
-</code></pre></li>
+<p><strong>find</strong> 查找文件 <em>find [path] [option] [action]       find / -name mysql*<em><br> <em>*grep</em></em> 在文本中查找字符串 </em>grep [string] [files]       grep “xx” log*<em><br> <em>*awk</em></em> 文本分析处理 </p>
+<ul>
+<li><em>awk ‘{pattern + print}’ {files}</em></li>
+<li><em>last -n 5 | awk ‘{print \$1}’</em> 显示最近登录的5个账户的名字</li>
+<li><em>svn diff |grep Index|awk ‘\$2 ~/(cpp)|(h)\$/{print \$2}’</em> 打印改动的cpp、h文件名，~是匹配操作符，表示找第二列匹配后面模式的行</li>
+<li><em>svn diff|grep ‘h\$|cpp\$’|awk ‘{print \$2}’|sort|uniq</em> 查找以cpp或h结尾的行，打印第二<br>列，排序去重复</li>
+<li><em>ps -A -o stat,ppid,pid,cmd | grep -e ‘^[Zz]’ | awk ‘{print \$2}’ | xargs kill -9</em> 杀死&gt;僵尸进程</li>
 </ul>
+</blockquote>
 <h3 id="网络相关">网络相关</h3><blockquote>
-<p><strong>ifconfig</strong> 查看ip地址等信息<br>        <strong>netstat</strong> 查看网络连接 netstat -atp（a显示所有选项，默认不显示listen相关，t显示tcp，p显示连接关联的程序）</p>
+<p><strong>ifconfig</strong> 查看ip地址等信息<br>        <strong>netstat</strong> 查看网络连接 netstat -atp（a显示所有选项，默认不显示listen相关，t显示tcp，p显示连接关联的程序<br>）</p>
 </blockquote>
 <h3 id="内存相关">内存相关</h3><blockquote>
 <p><strong>free</strong> 查看内存使用情况 free -m 显示单位M free -g 显示单位G<br>        <em>ps aux | awk ‘{mem += $6} END {print mem/1024}’</em>  统计所以程序所占用内存M （rss程序占用内存）</p>
