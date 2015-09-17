@@ -109,7 +109,7 @@
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/blog/" style="font-size: 15px;">blog</a> <a href="/tags/buffer/" style="font-size: 10px;">buffer</a> <a href="/tags/cdkey/" style="font-size: 10px;">cdkey</a> <a href="/tags/db/" style="font-size: 10px;">db</a> <a href="/tags/encoding/" style="font-size: 10px;">encoding</a> <a href="/tags/gettimeofday/" style="font-size: 10px;">gettimeofday</a> <a href="/tags/github/" style="font-size: 15px;">github</a> <a href="/tags/hexo/" style="font-size: 15px;">hexo</a> <a href="/tags/innodb/" style="font-size: 10px;">innodb</a> <a href="/tags/insert/" style="font-size: 10px;">insert</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a> <a href="/tags/md5/" style="font-size: 10px;">md5</a> <a href="/tags/mysql/" style="font-size: 20px;">mysql</a> <a href="/tags/mysql优化/" style="font-size: 10px;">mysql优化</a> <a href="/tags/newday/" style="font-size: 10px;">newday</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/rank/" style="font-size: 15px;">rank</a> <a href="/tags/reward/" style="font-size: 10px;">reward</a> <a href="/tags/script/" style="font-size: 15px;">script</a> <a href="/tags/select/" style="font-size: 10px;">select</a> <a href="/tags/shell/" style="font-size: 10px;">shell</a> <a href="/tags/sql/" style="font-size: 10px;">sql</a> <a href="/tags/time/" style="font-size: 10px;">time</a> <a href="/tags/vim/" style="font-size: 10px;">vim</a> <a href="/tags/排行榜/" style="font-size: 15px;">排行榜</a> <a href="/tags/语法/" style="font-size: 10px;">语法</a>
+						<a href="/tags/blog/" style="font-size: 15px;">blog</a> <a href="/tags/buffer/" style="font-size: 10px;">buffer</a> <a href="/tags/cdkey/" style="font-size: 10px;">cdkey</a> <a href="/tags/db/" style="font-size: 10px;">db</a> <a href="/tags/encoding/" style="font-size: 10px;">encoding</a> <a href="/tags/gettimeofday/" style="font-size: 10px;">gettimeofday</a> <a href="/tags/github/" style="font-size: 15px;">github</a> <a href="/tags/hexo/" style="font-size: 15px;">hexo</a> <a href="/tags/innodb/" style="font-size: 10px;">innodb</a> <a href="/tags/insert/" style="font-size: 10px;">insert</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a> <a href="/tags/md5/" style="font-size: 10px;">md5</a> <a href="/tags/message/" style="font-size: 10px;">message</a> <a href="/tags/mysql/" style="font-size: 20px;">mysql</a> <a href="/tags/mysql优化/" style="font-size: 10px;">mysql优化</a> <a href="/tags/newday/" style="font-size: 10px;">newday</a> <a href="/tags/pb/" style="font-size: 10px;">pb</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/rank/" style="font-size: 15px;">rank</a> <a href="/tags/repeated/" style="font-size: 10px;">repeated</a> <a href="/tags/reward/" style="font-size: 10px;">reward</a> <a href="/tags/script/" style="font-size: 15px;">script</a> <a href="/tags/select/" style="font-size: 10px;">select</a> <a href="/tags/shell/" style="font-size: 10px;">shell</a> <a href="/tags/sql/" style="font-size: 10px;">sql</a> <a href="/tags/time/" style="font-size: 10px;">time</a> <a href="/tags/vim/" style="font-size: 10px;">vim</a> <a href="/tags/排行榜/" style="font-size: 15px;">排行榜</a> <a href="/tags/语法/" style="font-size: 10px;">语法</a>
 					</div>
 				</section>
 				
@@ -174,6 +174,71 @@
 	</div>
 </nav>
       <div class="body-wrap">
+  
+    <article id="post-rankdesign" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/06/21/rankdesign/" class="article-date">
+  	<time datetime="2015-06-21T07:17:19.000Z" itemprop="datePublished">Jun 21</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/06/21/rankdesign/">排行榜设计</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>最近在做排行榜功能，排行榜无非就是对用户一些数据的排序，在量级不是很大的情况下还是比较简单的，在数据结构上使用数组，set，map都可以，依具体情况而定，这里不做过多讨论。现在遇到的问题是在数据库方面的，也就是对排行榜数据该已什么方式进行存储。</p>
+<p>我们用的数据库是mysql，如果排行榜量级在百名之内的话可以把每个进榜用户的数据都当做是一条数据库记录插入表中，因为数据量级比较小，插入删除操作不是太多，对数据库的压力不是很大（定时存储还是要做的，减少对数据的操作频率）。数据库表设计大概是这样的：</p>
+<blockquote>
+<p>rank(ranktype,id,pkpara,…,data)<br>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/">mysql</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/rank/">rank</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/排行榜/">排行榜</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/game/">game</a>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a  href="/2015/06/21/rankdesign/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
   
     <article id="post-vimdisplaych" class="article article-type-post" itemscope itemprop="blogPost">
   
