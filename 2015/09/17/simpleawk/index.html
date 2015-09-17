@@ -3,17 +3,27 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Tag: shell | 叶子的博客</title>
+  <title>awk简记 | 叶子的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description">
-<meta property="og:type" content="website">
-<meta property="og:title" content="叶子的博客">
-<meta property="og:url" content="http://sstask.github.io/tags/shell/index.html">
+  <meta name="description" content="不论什么时候如果要做文本分析awk是必不可少的，它可以大大提高文本分析的效率，它强大且高效。
+awk基本格式
+
+awk -F ‘:’ ‘BEGIN{…} {…action} END{…}’ File">
+<meta property="og:type" content="article">
+<meta property="og:title" content="awk简记">
+<meta property="og:url" content="http://sstask.github.io/2015/09/17/simpleawk/index.html">
 <meta property="og:site_name" content="叶子的博客">
-<meta property="og:description">
+<meta property="og:description" content="不论什么时候如果要做文本分析awk是必不可少的，它可以大大提高文本分析的效率，它强大且高效。
+awk基本格式
+
+awk -F ‘:’ ‘BEGIN{…} {…action} END{…}’ File">
+<meta property="og:updated_time" content="2015-09-17T14:48:42.033Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="叶子的博客">
-<meta name="twitter:description">
+<meta name="twitter:title" content="awk简记">
+<meta name="twitter:description" content="不论什么时候如果要做文本分析awk是必不可少的，它可以大大提高文本分析的效率，它强大且高效。
+awk基本格式
+
+awk -F ‘:’ ‘BEGIN{…} {…action} END{…}’ File">
   
     <link rel="alternative" href="/atom.xml" title="叶子的博客" type="application/atom+xml">
   
@@ -173,92 +183,126 @@
 		</header>				
 	</div>
 </nav>
-      <div class="body-wrap">
+      <div class="body-wrap"><article id="post-simpleawk" class="article article-type-post" itemscope itemprop="blogPost">
   
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2015" class="archive-year">2015</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2015/09/17/simpleawk/" class="archive-article-date">
+    <div class="article-meta">
+      <a href="/2015/09/17/simpleawk/" class="article-date">
   	<time datetime="2015-09-17T14:41:16.000Z" itemprop="datePublished">Sep 17</time>
 </a>
-        </div>
-    	 
+    </div>
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2015/09/17/simpleawk/">awk简记</a>
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      awk简记
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+      </header>
+      
+      <div class="article-info article-info-post">
+        
 	<div class="article-tag tagcloud">
 		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/awk/">awk</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/script/">script</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/shell/">shell</a></li></ul>
 	</div>
 
-          
+        
 	<div class="article-category tagcloud">
 	<a class="article-category-link" href="/categories/linux/">linux</a>
 	</div>
 
 
-        </div>
         <div class="clearfix"></div>
-    </header>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p> 不论什么时候如果要做文本分析awk是必不可少的，它可以大大提高文本分析的效率，它强大且高效。</p>
+<p><strong>awk基本格式</strong></p>
+<blockquote>
+<p>awk -F ‘:’ ‘BEGIN{…} {…action} END{…}’ File<br><a id="more"></a><br><strong>awk的动作流程</strong></p>
+</blockquote>
+<ol>
+<li>执行BEGIN里的内容，一般是一些初始化操作。</li>
+<li>读入File文件的一行内容，以\n为分隔符，然后把这一行按-F后的分隔符分成N个域，$0表示整行内容，$1表示第1个域的内容，$2表示第2个域的内容，以此类推.</li>
+<li>执行{…action}中的代码，一般是针对当前行内容的操作，例如模式匹配打印等。</li>
+<li>执行END中的代码，一般是些结果打印</li>
+</ol>
+<p>看起来比较复杂，其实使用中-F BEGIN END这些字段都是不必须的，例如打印最近登录的5个账号：</p>
+<blockquote>
+<p>last -n 5 | awk  ‘{print $1}’</p>
+</blockquote>
+<p> 因为账号名称在第一个域，所以只需要 awk ‘{print $1}’ 就能打印出来了，-F不指定的话默认已空格和制表符分隔，BEGIN、END可省略。<br>        awk语法和c语言很像，继承了c语言的风格，如下面统计了文件里有多少匹配行：<br><figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">awk -F ':' 'BEGIN &#123;<span class="keyword">count</span>=0;<span class="keyword">print</span> <span class="string">"init="</span>,<span class="keyword">count</span>&#125; &#123;<span class="keyword">if</span>(<span class="label">$1</span>~/root/) &#123;<span class="keyword">count</span>=<span class="keyword">count</span>+1;<span class="keyword">print</span> <span class="label">$0&#125;</span>&#125; END&#123;<span class="keyword">print</span> <span class="string">"count="</span>,<span class="keyword">count</span>&#125;' /etc/passwd</span><br></pre></td></tr></table></figure></p>
+<p>其中匹配可以这样简写<br><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title">awk</span> <span class="string">'<span class="variable">$1</span>~/root/&#123;print <span class="variable">$0</span>&#125;'</span> /etc/passwd</span><br></pre></td></tr></table></figure></p>
+<p>/ /中间内容按照正则表达式匹配。</p>
+<p>简单匹配也可以这样，^表示开头，$表示结尾<br><figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">awk -F<span class="string">":"</span> '<span class="label">$1</span>~/^root$/&#123;<span class="keyword">print</span> <span class="label">$0&#125;</span>' /etc/passwd  </span><br><span class="line">awk -F<span class="string">":"</span> '<span class="label">$1</span>==<span class="string">"root"</span> &#123;<span class="keyword">print</span> <span class="label">$0&#125;</span>' /etc/passwd  </span><br><span class="line">awk -F<span class="string">":"</span> '&#123;<span class="keyword">if</span>(<span class="label">$1</span>==<span class="string">"root"</span>||<span class="label">$1</span>~/mysql/) &#123;<span class="keyword">print</span> <span class="label">$0&#125;</span>&#125;' /etc/passwd  </span><br><span class="line">awk -F<span class="string">":"</span> 'BEGIN&#123;OFS=<span class="string">":"</span>&#125;&#123;gsub(<span class="string">"root"</span>,<span class="string">"mysql"</span>,<span class="label">$1</span>);<span class="keyword">print</span> <span class="label">$0&#125;</span>' /etc/passwd</span><br></pre></td></tr></table></figure></p>
+<p>awk里内嵌了很多处理函数，例如length sub gsub substr match split tolower toupper    print printf    rand srand    sin cos int log     systime strftime等，使用方法基本和c语言一致。<br>awk里还有一些常用内部变量，例如 FILENAME awk处理的文件名 NR 已读取的记录数 NF 域的个数 FS 域分隔符设置，等价于-F OFS 设置输出域分隔符 RS 记录分隔符 ORS 输出记录分隔符。</p>
+
+      
+    </div>
+    
   </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2015/08/04/ctemplatetype/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">C++非类型模板参数</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
 </article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2015/07/20/linuxcmd/" class="archive-article-date">
-  	<time datetime="2015-07-20T12:34:32.000Z" itemprop="datePublished">Jul 20</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2015/07/20/linuxcmd/">linux常用命令</a>
-    </h1>
-  
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/script/">script</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/shell/">shell</a></li></ul>
+
+<div class="share">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">分享到：</span>
+		<a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+		<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
 	</div>
-
-          
-	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/linux/">linux</a>
-	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
 
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
 
-    
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="simpleawk" data-title="awk简记" data-url="http://sstask.github.io/2015/09/17/simpleawk/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"sstask"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
 
 </div>
       <footer id="footer">
@@ -284,9 +328,9 @@
 		mathjax: true,
 		animate: true,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
-		isTag: true,
+		isTag: false,
 		isCategory: false,
 		open_in_new: false
 	}
