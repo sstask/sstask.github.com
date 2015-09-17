@@ -13,7 +13,7 @@
 <meta property="og:site_name" content="叶子的博客">
 <meta property="og:description" content="在项目中很多时候需要判断两个时间是否是同一天，例如用户每天都能领某种福利一次且只能领取一次，这时候当用户领取福利的时就需要判断用户上次领取的时间与当前时间是不是同一天，不是同一天的话可以领取，否则不能领取。
 一般来讲我会用time(NULL)来获取用户当前领取时间，它返回的是一个整数，代表从CUT（Coordinated Universal Time 格林威治时间）时间1970年1月1日00:00">
-<meta property="og:updated_time" content="2015-09-17T13:14:48.401Z">
+<meta property="og:updated_time" content="2015-09-17T13:16:15.079Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="判断两个时间是不是同一天">
 <meta name="twitter:description" content="在项目中很多时候需要判断两个时间是否是同一天，例如用户每天都能领某种福利一次且只能领取一次，这时候当用户领取福利的时就需要判断用户上次领取的时间与当前时间是不是同一天，不是同一天的话可以领取，否则不能领取。
@@ -113,7 +113,7 @@
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/blog/" style="font-size: 15px;">blog</a> <a href="/tags/cdkey/" style="font-size: 10px;">cdkey</a> <a href="/tags/encoding/" style="font-size: 10px;">encoding</a> <a href="/tags/gettimeofday/" style="font-size: 10px;">gettimeofday</a> <a href="/tags/github/" style="font-size: 15px;">github</a> <a href="/tags/hexo/" style="font-size: 15px;">hexo</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a> <a href="/tags/md5/" style="font-size: 10px;">md5</a> <a href="/tags/mysql/" style="font-size: 20px;">mysql</a> <a href="/tags/newday/" style="font-size: 10px;">newday</a> <a href="/tags/rank/" style="font-size: 15px;">rank</a> <a href="/tags/reward/" style="font-size: 10px;">reward</a> <a href="/tags/script/" style="font-size: 10px;">script</a> <a href="/tags/time/" style="font-size: 10px;">time</a> <a href="/tags/vim/" style="font-size: 10px;">vim</a> <a href="/tags/排行榜/" style="font-size: 15px;">排行榜</a>
+						<a href="/tags/blog/" style="font-size: 15px;">blog</a> <a href="/tags/buffer/" style="font-size: 10px;">buffer</a> <a href="/tags/cdkey/" style="font-size: 10px;">cdkey</a> <a href="/tags/encoding/" style="font-size: 10px;">encoding</a> <a href="/tags/gettimeofday/" style="font-size: 10px;">gettimeofday</a> <a href="/tags/github/" style="font-size: 15px;">github</a> <a href="/tags/hexo/" style="font-size: 15px;">hexo</a> <a href="/tags/innodb/" style="font-size: 10px;">innodb</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a> <a href="/tags/md5/" style="font-size: 10px;">md5</a> <a href="/tags/mysql/" style="font-size: 20px;">mysql</a> <a href="/tags/mysql优化/" style="font-size: 10px;">mysql优化</a> <a href="/tags/newday/" style="font-size: 10px;">newday</a> <a href="/tags/rank/" style="font-size: 15px;">rank</a> <a href="/tags/reward/" style="font-size: 10px;">reward</a> <a href="/tags/script/" style="font-size: 10px;">script</a> <a href="/tags/time/" style="font-size: 10px;">time</a> <a href="/tags/vim/" style="font-size: 10px;">vim</a> <a href="/tags/排行榜/" style="font-size: 15px;">排行榜</a>
 					</div>
 				</section>
 				
@@ -222,6 +222,7 @@
 <p>一般来讲我会用time(NULL)来获取用户当前领取时间，它返回的是一个整数，代表从CUT（Coordinated Universal Time 格林威治时间）时间1970年1月1日00:00:00到当前时刻的秒数，正因为它是一个整数所以这样便于存储和比较。假如两个时间分别是oldtime和newtime，他们都是用time(NULL)得到的整数时间，我们想判断他们是否是同一天只需要分别求得他们的天数，然后判断是不是相等即可，即这样：</p>
 <blockquote>
 <p>IsANewDay<br><a id="more"></a></p>
+</blockquote>
 <pre><code class="c++"><span class="preprocessor">#<span class="keyword">define</span> SECONDSOFONEDAY (<span class="number">24</span>*<span class="number">60</span>*<span class="number">60</span>)  </span>
 <span class="function"><span class="keyword">bool</span> <span class="title">IsANewDay</span><span class="params">(time_t tOldTime,  time_t tNewTime)</span>  
 </span>{  
@@ -276,7 +277,6 @@
 }
 </code></pre>
 <p>例如，IsANewDay(oldtime, newtime, 5<em>60</em>60)即返回相对于凌晨五点来讲oldtime和newtime是不是新的一天，我们得到的时间本来是相对于格林威治时间1970年1月1日00:00:00的秒数(相对于零点)，如果想以凌晨5点为标准的话，我们只需要计算相对于格林威治时间1970年1月1日05:00:00的秒数即可，所以把时间减去offsettime(5<em>60</em>60)就好了。</p>
-</blockquote>
 
       
     </div>
@@ -285,6 +285,15 @@
   
     
 <nav id="article-nav">
+  
+    <a href="/2015/07/16/innodbbuffer/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          mysql Innodb缓存命中率
+        
+      </div>
+    </a>
   
   
     <a href="/2015/07/06/gencdkey/" id="article-nav-older" class="article-nav-link-wrap">

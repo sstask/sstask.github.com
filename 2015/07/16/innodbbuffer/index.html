@@ -3,26 +3,18 @@
 <head>
   <meta charset="utf-8">
   
-  <title>link | 叶子的博客</title>
+  <title>mysql Innodb缓存命中率 | 叶子的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description">
-<meta property="og:type" content="website">
-<meta property="og:title" content="link">
-<meta property="og:url" content="http://sstask.github.io/link/index.html">
+  <meta name="description" content="最近看服务器log发现有不少数据库操作超时的情况，有时候处理一个sql操作需要一两秒的时间，这显然是不可接受的。查了下原因，数据库操作太多太频繁压力大是一方面，数据库配置没有优化也有一定的原因。mysql中使用命令show status like  ‘Innodb_bufferpool%’;可以查看mysql innodb缓存的一些信息（mysql innodb缓存保存了数据库索引和一些表的数据）">
+<meta property="og:type" content="article">
+<meta property="og:title" content="mysql Innodb缓存命中率">
+<meta property="og:url" content="http://sstask.github.io/2015/07/16/innodbbuffer/index.html">
 <meta property="og:site_name" content="叶子的博客">
-<meta property="og:description">
-<meta property="og:image" content="http://sstask.github.io/assets/backup/isanewday.md.png">
-<meta property="og:image" content="http://sstask.github.io/assets/backup/hexocreate.md.png">
-<meta property="og:image" content="http://sstask.github.io/assets/backup/gencdkey.md.png">
-<meta property="og:image" content="http://sstask.github.io/assets/backup/rankdesign.md.png">
-<meta property="og:image" content="http://sstask.github.io/assets/backup/innodbbuffer.md.png">
-<meta property="og:image" content="http://sstask.github.io/assets/backup/vimdisplaych.md.png">
-<meta property="og:image" content="http://sstask.github.io/assets/backup/rankreward.md.png">
-<meta property="og:image" content="http://sstask.github.io/assets/backup/hexobackup.md.png">
-<meta property="og:updated_time" content="2015-09-17T13:24:26.681Z">
+<meta property="og:description" content="最近看服务器log发现有不少数据库操作超时的情况，有时候处理一个sql操作需要一两秒的时间，这显然是不可接受的。查了下原因，数据库操作太多太频繁压力大是一方面，数据库配置没有优化也有一定的原因。mysql中使用命令show status like  ‘Innodb_bufferpool%’;可以查看mysql innodb缓存的一些信息（mysql innodb缓存保存了数据库索引和一些表的数据）">
+<meta property="og:updated_time" content="2015-09-17T13:24:15.302Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="link">
-<meta name="twitter:description">
+<meta name="twitter:title" content="mysql Innodb缓存命中率">
+<meta name="twitter:description" content="最近看服务器log发现有不少数据库操作超时的情况，有时候处理一个sql操作需要一两秒的时间，这显然是不可接受的。查了下原因，数据库操作太多太频繁压力大是一方面，数据库配置没有优化也有一定的原因。mysql中使用命令show status like  ‘Innodb_bufferpool%’;可以查看mysql innodb缓存的一些信息（mysql innodb缓存保存了数据库索引和一些表的数据）">
   
     <link rel="alternative" href="/atom.xml" title="叶子的博客" type="application/atom+xml">
   
@@ -182,11 +174,11 @@
 		</header>				
 	</div>
 </nav>
-      <div class="body-wrap"><article id="page-undefined" class="article article-type-page" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-innodbbuffer" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/link/index.html" class="article-date">
-  	<time datetime="2015-09-17T13:24:26.000Z" itemprop="datePublished">Sep 17</time>
+      <a href="/2015/07/16/innodbbuffer/" class="article-date">
+  	<time datetime="2015-07-16T12:06:59.000Z" itemprop="datePublished">Jul 16</time>
 </a>
     </div>
   
@@ -199,7 +191,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      link
+      mysql Innodb缓存命中率
     </h1>
   
 
@@ -207,7 +199,15 @@
       
       <div class="article-info article-info-post">
         
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/buffer/">buffer</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/innodb/">innodb</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql优化/">mysql优化</a></li></ul>
+	</div>
+
         
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/mysql/">mysql</a>
+	</div>
+
 
         <div class="clearfix"></div>
       </div>
@@ -215,7 +215,35 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p><img src="/assets/backup/isanewday.md.png" alt="isanewday.md"><br><img src="/assets/backup/hexocreate.md.png" alt="hexocreate.md"><br><img src="/assets/backup/gencdkey.md.png" alt="gencdkey.md"><br><img src="/assets/backup/rankdesign.md.png" alt="rankdesign.md"><br><img src="/assets/backup/innodbbuffer.md.png" alt="innodbbuffer.md"><br><img src="/assets/backup/vimdisplaych.md.png" alt="vimdisplaych.md"><br><img src="/assets/backup/rankreward.md.png" alt="rankreward.md"><br><img src="/assets/backup/hexobackup.md.png" alt="hexobackup.md"></p>
+        <p>最近看服务器log发现有不少数据库操作超时的情况，有时候处理一个sql操作需要一两秒的时间，这显然是不可接受的。查了下原因，数据库操作太多太频繁压力大是一方面，数据库配置没有优化也有一定的原因。mysql中使用命令show status like  ‘Innodb_buffer<em>pool</em>%’;可以查看mysql innodb缓存的一些信息（mysql innodb缓存保存了数据库索引和一些表的数据），如下：</p>
+<blockquote>
+<p>show variables like ‘%innodb_buffer_pool_size%’;</p>
+</blockquote>
+<pre><code class="sql">+<span class="comment">-----------------------------------+-------+  </span>
+| Variable_name                     | Value |  
++<span class="comment">-----------------------------------+-------+  </span>
+| Innodb_buffer_pool_pages_data     | 56    |  
+| Innodb_buffer_pool_pages_dirty    | 0     |  
+| Innodb_buffer_pool_pages_flushed  | 197   |  
+| Innodb_buffer_pool_pages_free     | 455   |  
+| Innodb_buffer_pool_pages_misc     | 1     |  
+| Innodb_buffer_pool_pages_total    | 512   |  
+| Innodb_buffer_pool_read_ahead_rnd | 3     |  
+| Innodb_buffer_pool_read_ahead_seq | 0     |  
+| Innodb_buffer_pool_read_requests  | 7000  |  
+| Innodb_buffer_pool_reads          | 31    |  
+| Innodb_buffer_pool_wait_free      | 0     |  
+| Innodb_buffer_pool_write_requests | 419   |  
++<span class="comment">-----------------------------------+-------+</span>
+</code></pre>
+<p>（上面非项目数据）<br>其中，Innodb_buffer_pool_read_requests表示read请求的次数，Innodb_buffer_pool_reads表示从物理磁盘中读取数据的请求次数，所以innodb buffer的read命中率就可以这样得到：（Innodb_buffer_pool_read_requests - Innodb_buffer_pool_reads） / Innodb_buffer_pool_read_requests * 100%。一般来讲这个命中率不会低于99%，如果低于这个值的话就要考虑加大innodb buffer pool。<br>另外，Innodb_buffer_pool_pages_total参数表示缓存页面的总数量（一页16k，所以总共8M），Innodb_buffer_pool_pages_data代表有数据的缓存页数，Innodb_buffer_pool_pages_free代表没有使用的缓存页数。如果Innodb_buffer_pool_pages_free偏大的话，证明有很多缓存没有被利用到，这时可以考虑减小缓存，相反Innodb_buffer_pool_pages_data过大就考虑增大缓存。<br>可以通过show variables like ‘%innodb_buffer_pool_size%’;命令查看当前缓存的大小：</p>
+<pre><code class="sql">+<span class="comment">-------------------------+---------+  </span>
+| Variable_name           | Value   |  
++<span class="comment">-------------------------+---------+  </span>
+| innodb_buffer_pool_size | 8388608 |  
++<span class="comment">-------------------------+---------+</span>
+</code></pre>
+<p>默认是8M，一般来讲这个值肯定是不够的，大家通常建议设置为系统内存的50%-80%，但也不是越大越好，要根据具体项目具体分析（操作系统留1G左右，mysql连接数*4M，宿主程序缓存nM）。设置方法，修改/etc/my.cnf文件，并添加字段innodb_buffer_pool_size = 3G，然后重启mysql 服务就ok了。</p>
 
       
     </div>
@@ -223,6 +251,16 @@
   </div>
   
     
+<nav id="article-nav">
+  
+  
+    <a href="/2015/07/12/isanewday/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">判断两个时间是不是同一天</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
   
 </article>
 
@@ -246,7 +284,7 @@
 
 <div class="duoshuo">
 	<!-- 多说评论框 start -->
-	<div class="ds-thread" data-thread-key="undefined" data-title="link" data-url="http://sstask.github.io/link/index.html"></div>
+	<div class="ds-thread" data-thread-key="innodbbuffer" data-title="mysql Innodb缓存命中率" data-url="http://sstask.github.io/2015/07/16/innodbbuffer/"></div>
 	<!-- 多说评论框 end -->
 	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
 	<script type="text/javascript">
@@ -290,7 +328,7 @@
 		mathjax: true,
 		animate: true,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
 		isCategory: false,
