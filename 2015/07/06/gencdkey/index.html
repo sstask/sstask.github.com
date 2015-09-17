@@ -7,20 +7,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="在很多产品中都有cdkey或者激活码需求，这就牵扯到cdkey的生成。cdkey(或激活码，后面已cdkey代替)一般都是由固定长度的一串数字和字母组成，生成的方法有很多，好比最简单的一种就是在26个字母和10个数字中随机抽取一个，然后重复N次，这样就生成了一个长度为N的cdkey。下面介绍一种简单实现的方法，直接上代码：
 
-shell">
+cdkey=`date +%s%N | md5sum | head -c">
 <meta property="og:type" content="article">
 <meta property="og:title" content="cdkey和激活码的生成">
 <meta property="og:url" content="http://sstask.github.io/2015/07/06/gencdkey/index.html">
 <meta property="og:site_name" content="叶子的博客">
 <meta property="og:description" content="在很多产品中都有cdkey或者激活码需求，这就牵扯到cdkey的生成。cdkey(或激活码，后面已cdkey代替)一般都是由固定长度的一串数字和字母组成，生成的方法有很多，好比最简单的一种就是在26个字母和10个数字中随机抽取一个，然后重复N次，这样就生成了一个长度为N的cdkey。下面介绍一种简单实现的方法，直接上代码：
 
-shell">
-<meta property="og:updated_time" content="2015-09-17T10:45:54.670Z">
+cdkey=`date +%s%N | md5sum | head -c">
+<meta property="og:updated_time" content="2015-09-17T13:29:48.676Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="cdkey和激活码的生成">
 <meta name="twitter:description" content="在很多产品中都有cdkey或者激活码需求，这就牵扯到cdkey的生成。cdkey(或激活码，后面已cdkey代替)一般都是由固定长度的一串数字和字母组成，生成的方法有很多，好比最简单的一种就是在26个字母和10个数字中随机抽取一个，然后重复N次，这样就生成了一个长度为N的cdkey。下面介绍一种简单实现的方法，直接上代码：
 
-shell">
+cdkey=`date +%s%N | md5sum | head -c">
   
     <link rel="alternative" href="/atom.xml" title="叶子的博客" type="application/atom+xml">
   
@@ -223,7 +223,7 @@ shell">
       
         <p>在很多产品中都有cdkey或者激活码需求，这就牵扯到cdkey的生成。cdkey(或激活码，后面已cdkey代替)一般都是由固定长度的一串数字和字母组成，生成的方法有很多，好比最简单的一种就是在26个字母和10个数字中随机抽取一个，然后重复N次，这样就生成了一个长度为N的cdkey。下面介绍一种简单实现的方法，直接上代码：</p>
 <blockquote>
-<p>shell<br><a id="more"></a></p>
+<p>cdkey=`date +%s%N | md5sum | head -c ${CDKeyLen}`<br><a id="more"></a></p>
 <pre><code class="shell">#!/bin/sh  &#10;CDKeyLen=10  &#10;CDNum=10  &#10;MYSQLCmd=&#34;mysql -h127.0.0.1 -P3306 -uroot -p123456 -Dmydb --default-character-set=utf8 -N -s -e&#34;  &#10;i=0  &#10;while((i&#60;$CDNum))  &#10;do  &#10;    cdkey=`date +%s%N | md5sum | head -c ${CDKeyLen}`  &#10;    cnt=$($MYSQLCmd &#34;select count(*) from cdkey where key=&#39;$cdkey&#39;&#34;)  &#10;    if [[ $cnt == &#34;0&#34; ]]; then  &#10;        i=$(($i+1))  &#10;        cdkeyid=$($MYSQLCmd &#34;insert into cdkey(key,time) valuse(&#39;$cdkey&#39;, unix_timestamp(now()));select last_insert_id();&#34;)  &#10;        echo $cdkeyid  &#10;    fi  &#10;done
 </code></pre>
 </blockquote>

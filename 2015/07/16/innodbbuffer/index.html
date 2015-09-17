@@ -11,7 +11,7 @@
 <meta property="og:url" content="http://sstask.github.io/2015/07/16/innodbbuffer/index.html">
 <meta property="og:site_name" content="叶子的博客">
 <meta property="og:description" content="最近看服务器log发现有不少数据库操作超时的情况，有时候处理一个sql操作需要一两秒的时间，这显然是不可接受的。查了下原因，数据库操作太多太频繁压力大是一方面，数据库配置没有优化也有一定的原因。mysql中使用命令show status like  ‘Innodb_bufferpool%’;可以查看mysql innodb缓存的一些信息（mysql innodb缓存保存了数据库索引和一些表的数据）">
-<meta property="og:updated_time" content="2015-09-17T13:24:15.302Z">
+<meta property="og:updated_time" content="2015-09-17T13:26:46.064Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="mysql Innodb缓存命中率">
 <meta name="twitter:description" content="最近看服务器log发现有不少数据库操作超时的情况，有时候处理一个sql操作需要一两秒的时间，这显然是不可接受的。查了下原因，数据库操作太多太频繁压力大是一方面，数据库配置没有优化也有一定的原因。mysql中使用命令show status like  ‘Innodb_bufferpool%’;可以查看mysql innodb缓存的一些信息（mysql innodb缓存保存了数据库索引和一些表的数据）">
@@ -217,8 +217,7 @@
       
         <p>最近看服务器log发现有不少数据库操作超时的情况，有时候处理一个sql操作需要一两秒的时间，这显然是不可接受的。查了下原因，数据库操作太多太频繁压力大是一方面，数据库配置没有优化也有一定的原因。mysql中使用命令show status like  ‘Innodb_buffer<em>pool</em>%’;可以查看mysql innodb缓存的一些信息（mysql innodb缓存保存了数据库索引和一些表的数据），如下：</p>
 <blockquote>
-<p>show variables like ‘%innodb_buffer_pool_size%’;</p>
-</blockquote>
+<p>show variables like ‘%innodb_buffer_pool_size%’;<br><a id="more"></a> </p>
 <pre><code class="sql">+<span class="comment">-----------------------------------+-------+  </span>
 | Variable_name                     | Value |  
 +<span class="comment">-----------------------------------+-------+  </span>
@@ -244,6 +243,7 @@
 +<span class="comment">-------------------------+---------+</span>
 </code></pre>
 <p>默认是8M，一般来讲这个值肯定是不够的，大家通常建议设置为系统内存的50%-80%，但也不是越大越好，要根据具体项目具体分析（操作系统留1G左右，mysql连接数*4M，宿主程序缓存nM）。设置方法，修改/etc/my.cnf文件，并添加字段innodb_buffer_pool_size = 3G，然后重启mysql 服务就ok了。</p>
+</blockquote>
 
       
     </div>

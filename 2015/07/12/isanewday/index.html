@@ -13,7 +13,7 @@
 <meta property="og:site_name" content="叶子的博客">
 <meta property="og:description" content="在项目中很多时候需要判断两个时间是否是同一天，例如用户每天都能领某种福利一次且只能领取一次，这时候当用户领取福利的时就需要判断用户上次领取的时间与当前时间是不是同一天，不是同一天的话可以领取，否则不能领取。
 一般来讲我会用time(NULL)来获取用户当前领取时间，它返回的是一个整数，代表从CUT（Coordinated Universal Time 格林威治时间）时间1970年1月1日00:00">
-<meta property="og:updated_time" content="2015-09-17T13:16:15.079Z">
+<meta property="og:updated_time" content="2015-09-17T13:28:12.978Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="判断两个时间是不是同一天">
 <meta name="twitter:description" content="在项目中很多时候需要判断两个时间是否是同一天，例如用户每天都能领某种福利一次且只能领取一次，这时候当用户领取福利的时就需要判断用户上次领取的时间与当前时间是不是同一天，不是同一天的话可以领取，否则不能领取。
@@ -221,7 +221,7 @@
         <p>在项目中很多时候需要判断两个时间是否是同一天，例如用户每天都能领某种福利一次且只能领取一次，这时候当用户领取福利的时就需要判断用户上次领取的时间与当前时间是不是同一天，不是同一天的话可以领取，否则不能领取。</p>
 <p>一般来讲我会用time(NULL)来获取用户当前领取时间，它返回的是一个整数，代表从CUT（Coordinated Universal Time 格林威治时间）时间1970年1月1日00:00:00到当前时刻的秒数，正因为它是一个整数所以这样便于存储和比较。假如两个时间分别是oldtime和newtime，他们都是用time(NULL)得到的整数时间，我们想判断他们是否是同一天只需要分别求得他们的天数，然后判断是不是相等即可，即这样：</p>
 <blockquote>
-<p>IsANewDay<br><a id="more"></a></p>
+<p>IsANewDay gettimeofday<br><a id="more"></a></p>
 </blockquote>
 <pre><code class="c++"><span class="preprocessor">#<span class="keyword">define</span> SECONDSOFONEDAY (<span class="number">24</span>*<span class="number">60</span>*<span class="number">60</span>)  </span>
 <span class="function"><span class="keyword">bool</span> <span class="title">IsANewDay</span><span class="params">(time_t tOldTime,  time_t tNewTime)</span>  

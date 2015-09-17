@@ -203,34 +203,7 @@
       
         <p>最近看服务器log发现有不少数据库操作超时的情况，有时候处理一个sql操作需要一两秒的时间，这显然是不可接受的。查了下原因，数据库操作太多太频繁压力大是一方面，数据库配置没有优化也有一定的原因。mysql中使用命令show status like  ‘Innodb_buffer<em>pool</em>%’;可以查看mysql innodb缓存的一些信息（mysql innodb缓存保存了数据库索引和一些表的数据），如下：</p>
 <blockquote>
-<p>show variables like ‘%innodb_buffer_pool_size%’;</p>
-</blockquote>
-<pre><code class="sql">+<span class="comment">-----------------------------------+-------+  </span>
-| Variable_name                     | Value |  
-+<span class="comment">-----------------------------------+-------+  </span>
-| Innodb_buffer_pool_pages_data     | 56    |  
-| Innodb_buffer_pool_pages_dirty    | 0     |  
-| Innodb_buffer_pool_pages_flushed  | 197   |  
-| Innodb_buffer_pool_pages_free     | 455   |  
-| Innodb_buffer_pool_pages_misc     | 1     |  
-| Innodb_buffer_pool_pages_total    | 512   |  
-| Innodb_buffer_pool_read_ahead_rnd | 3     |  
-| Innodb_buffer_pool_read_ahead_seq | 0     |  
-| Innodb_buffer_pool_read_requests  | 7000  |  
-| Innodb_buffer_pool_reads          | 31    |  
-| Innodb_buffer_pool_wait_free      | 0     |  
-| Innodb_buffer_pool_write_requests | 419   |  
-+<span class="comment">-----------------------------------+-------+</span>
-</code></pre>
-<p>（上面非项目数据）<br>其中，Innodb_buffer_pool_read_requests表示read请求的次数，Innodb_buffer_pool_reads表示从物理磁盘中读取数据的请求次数，所以innodb buffer的read命中率就可以这样得到：（Innodb_buffer_pool_read_requests - Innodb_buffer_pool_reads） / Innodb_buffer_pool_read_requests * 100%。一般来讲这个命中率不会低于99%，如果低于这个值的话就要考虑加大innodb buffer pool。<br>另外，Innodb_buffer_pool_pages_total参数表示缓存页面的总数量（一页16k，所以总共8M），Innodb_buffer_pool_pages_data代表有数据的缓存页数，Innodb_buffer_pool_pages_free代表没有使用的缓存页数。如果Innodb_buffer_pool_pages_free偏大的话，证明有很多缓存没有被利用到，这时可以考虑减小缓存，相反Innodb_buffer_pool_pages_data过大就考虑增大缓存。<br>可以通过show variables like ‘%innodb_buffer_pool_size%’;命令查看当前缓存的大小：</p>
-<pre><code class="sql">+<span class="comment">-------------------------+---------+  </span>
-| Variable_name           | Value   |  
-+<span class="comment">-------------------------+---------+  </span>
-| innodb_buffer_pool_size | 8388608 |  
-+<span class="comment">-------------------------+---------+</span>
-</code></pre>
-<p>默认是8M，一般来讲这个值肯定是不够的，大家通常建议设置为系统内存的50%-80%，但也不是越大越好，要根据具体项目具体分析（操作系统留1G左右，mysql连接数*4M，宿主程序缓存nM）。设置方法，修改/etc/my.cnf文件，并添加字段innodb_buffer_pool_size = 3G，然后重启mysql 服务就ok了。</p>
-
+<p>show variables like ‘%innodb_buffer_pool_size%’;<br>
       
     </div>
     
@@ -247,6 +220,10 @@
 	</div>
 
 
+      
+        <p class="article-more-link">
+          <a  href="/2015/07/16/innodbbuffer/#more">more >></a>
+        </p>
       
       <div class="clearfix"></div>
     </div>
@@ -291,7 +268,7 @@
         <p>在项目中很多时候需要判断两个时间是否是同一天，例如用户每天都能领某种福利一次且只能领取一次，这时候当用户领取福利的时就需要判断用户上次领取的时间与当前时间是不是同一天，不是同一天的话可以领取，否则不能领取。</p>
 <p>一般来讲我会用time(NULL)来获取用户当前领取时间，它返回的是一个整数，代表从CUT（Coordinated Universal Time 格林威治时间）时间1970年1月1日00:00:00到当前时刻的秒数，正因为它是一个整数所以这样便于存储和比较。假如两个时间分别是oldtime和newtime，他们都是用time(NULL)得到的整数时间，我们想判断他们是否是同一天只需要分别求得他们的天数，然后判断是不是相等即可，即这样：</p>
 <blockquote>
-<p>IsANewDay<br>
+<p>IsANewDay gettimeofday<br>
       
     </div>
     
@@ -355,7 +332,7 @@
       
         <p>在很多产品中都有cdkey或者激活码需求，这就牵扯到cdkey的生成。cdkey(或激活码，后面已cdkey代替)一般都是由固定长度的一串数字和字母组成，生成的方法有很多，好比最简单的一种就是在26个字母和10个数字中随机抽取一个，然后重复N次，这样就生成了一个长度为N的cdkey。下面介绍一种简单实现的方法，直接上代码：</p>
 <blockquote>
-<p>shell<br>
+<p>cdkey=`date +%s%N | md5sum | head -c ${CDKeyLen}`<br>
       
     </div>
     
@@ -418,7 +395,9 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p>一般来说排行榜奖励都通过邮件来发放，要不就是对于在线用户直接发给用户自身，对于离线用户发到用户的离线邮箱，用户上线可以通过邮件取到。这样做简单直接，易于处理，也不容易出错，但是在用户很多的时候可能需要同一时间发送很多封邮件，给数据库造成很大压力。当然也可以通过分时发送来减轻同一时刻给数据库带来的压力，但这就要考虑到如果在没有全部分发完成的时候服务器出现问题的情况，总之难以从根本上解决问题。</p>
-<p>为了减轻数据库的压力，同时防止数据的意外丢失，就需要一次性的把奖励发给所有用户或者存档到数据库中，按照这种需求自然会想到另外一种方案，就是把排行榜中所有的用户标识和名次打包存入到数据的一条或数条记录中，然后等到用户上线时再把记录中的奖励发给用户。数据库设计大概是这样的：<br>
+<p>为了减轻数据库的压力，同时防止数据的意外丢失，就需要一次性的把奖励发给所有用户或者存档到数据库中，按照这种需求自然会想到另外一种方案，就是把排行榜中所有的用户标识和名次打包存入到数据的一条或数条记录中，然后等到用户上线时再把记录中的奖励发给用户。数据库设计大概是这样的：</p>
+<blockquote>
+<p>rankreward(ranktype,id,time,rewards)<br>
       
     </div>
     
@@ -482,15 +461,8 @@
       
         <p>最近在做排行榜功能，排行榜无非就是对用户一些数据的排序，在量级不是很大的情况下还是比较简单的，在数据结构上使用数组，set，map都可以，依具体情况而定，这里不做过多讨论。现在遇到的问题是在数据库方面的，也就是对排行榜数据该已什么方式进行存储。</p>
 <p>我们用的数据库是mysql，如果排行榜量级在百名之内的话可以把每个进榜用户的数据都当做是一条数据库记录插入表中，因为数据量级比较小，插入删除操作不是太多，对数据库的压力不是很大（定时存储还是要做的，减少对数据的操作频率）。数据库表设计大概是这样的：</p>
-<pre><code class="sql">+<span class="comment">-----------+---------------------+------+-----+---------+-------+  </span>
-| Field     | Type                | Null | Key | Default | Extra |  
-+<span class="comment">-----------+---------------------+------+-----+---------+-------+  </span>
-| ranktype  | int(10) unsigned    | NO   | PRI | NULL    |       |  
-| order     | int(10) unsigned    | NO   | PRI | NULL    |       |  
-| id        | int(10) unsigned    | NO   |     | NULL    |       |  
-| data      | blob                | YES  |     | NULL    |       |  
-+<span class="comment">-----------+---------------------+------+-----+---------+-------+</span>
-</code></pre>
+<blockquote>
+<p>rank(ranktype,id,pkpara,…,data)<br>
       
     </div>
     
