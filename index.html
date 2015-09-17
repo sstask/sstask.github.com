@@ -109,7 +109,7 @@
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/blog/" style="font-size: 10px;">blog</a> <a href="/tags/github/" style="font-size: 10px;">github</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a>
+						<a href="/tags/blog/" style="font-size: 20px;">blog</a> <a href="/tags/encoding/" style="font-size: 10px;">encoding</a> <a href="/tags/github/" style="font-size: 20px;">github</a> <a href="/tags/hexo/" style="font-size: 20px;">hexo</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a> <a href="/tags/vim/" style="font-size: 10px;">vim</a>
 					</div>
 				</section>
 				
@@ -174,6 +174,73 @@
 	</div>
 </nav>
       <div class="body-wrap">
+  
+    <article id="post-vimdisplaych" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/06/17/vimdisplaych/" class="article-date">
+  	<time datetime="2015-06-17T12:15:55.000Z" itemprop="datePublished">Jun 17</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/06/17/vimdisplaych/">设置vim显示中文</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>今天看服务器的log发现有些文件的中文都是乱码，找了一圈发现是vim设置的问题，因为用less或者cat命令查看log都是正常的，用vim查看才出现的乱码。</p>
+<p>编辑<em>~/.vimrc</em>文件，添加</p>
+<blockquote>
+<p>view plaincopy<br>set encoding=utf-8<br>set termencoding=utf-8  </p>
+<p>set fileencodings=ucs-bom,utf-8,cp936,gb18030,big5,euc-jp,euc-kr<br>set fileencoding=utf-8  </p>
+</blockquote>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/encoding/">encoding</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/vim/">vim</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/linux/">linux</a>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a  href="/2015/06/17/vimdisplaych/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
   
     <article id="post-hexobackup" class="article article-type-post" itemscope itemprop="blogPost">
   
