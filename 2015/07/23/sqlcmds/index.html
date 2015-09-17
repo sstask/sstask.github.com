@@ -3,17 +3,21 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Tag: gettimeofday | 叶子的博客</title>
+  <title>一些mysql语句 | 叶子的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description">
-<meta property="og:type" content="website">
-<meta property="og:title" content="叶子的博客">
-<meta property="og:url" content="http://sstask.github.io/tags/gettimeofday/index.html">
+  <meta name="description" content="创建新表
+[sql] view plaincopyCREATE TABLE IF NOT EXISTS TAB(    id INT(10) UNSIGNED NOT NULL,    name VARCHAR(255),    grade INT(10) UNSIGNED NOT NULL,    PRIMARY KEY id) ENGINE=InnoDB DEFAULT CHARSET=utf">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一些mysql语句">
+<meta property="og:url" content="http://sstask.github.io/2015/07/23/sqlcmds/index.html">
 <meta property="og:site_name" content="叶子的博客">
-<meta property="og:description">
+<meta property="og:description" content="创建新表
+[sql] view plaincopyCREATE TABLE IF NOT EXISTS TAB(    id INT(10) UNSIGNED NOT NULL,    name VARCHAR(255),    grade INT(10) UNSIGNED NOT NULL,    PRIMARY KEY id) ENGINE=InnoDB DEFAULT CHARSET=utf">
+<meta property="og:updated_time" content="2015-09-17T14:17:54.718Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="叶子的博客">
-<meta name="twitter:description">
+<meta name="twitter:title" content="一些mysql语句">
+<meta name="twitter:description" content="创建新表
+[sql] view plaincopyCREATE TABLE IF NOT EXISTS TAB(    id INT(10) UNSIGNED NOT NULL,    name VARCHAR(255),    grade INT(10) UNSIGNED NOT NULL,    PRIMARY KEY id) ENGINE=InnoDB DEFAULT CHARSET=utf">
   
     <link rel="alternative" href="/atom.xml" title="叶子的博客" type="application/atom+xml">
   
@@ -173,57 +177,117 @@
 		</header>				
 	</div>
 </nav>
-      <div class="body-wrap">
+      <div class="body-wrap"><article id="post-sqlcmds" class="article article-type-post" itemscope itemprop="blogPost">
   
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2015" class="archive-year">2015</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2015/07/12/isanewday/" class="archive-article-date">
-  	<time datetime="2015-07-12T02:35:38.000Z" itemprop="datePublished">Jul 12</time>
+    <div class="article-meta">
+      <a href="/2015/07/23/sqlcmds/" class="article-date">
+  	<time datetime="2015-07-23T12:13:01.000Z" itemprop="datePublished">Jul 23</time>
 </a>
-        </div>
-    	 
+    </div>
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2015/07/12/isanewday/">判断两个时间是不是同一天</a>
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      一些mysql语句
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+      </header>
+      
+      <div class="article-info article-info-post">
+        
 	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/gettimeofday/">gettimeofday</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/newday/">newday</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/time/">time</a></li></ul>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/db/">db</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/insert/">insert</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/select/">select</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sql/">sql</a></li></ul>
 	</div>
 
-          
+        
 	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/game/">game</a>
+	<a class="article-category-link" href="/categories/mysql/">mysql</a>
 	</div>
 
 
-        </div>
         <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
-
+      </div>
+      
     
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>创建新表</p>
+<p>[sql] view plaincopy<br>CREATE TABLE IF NOT EXISTS TAB(<br>    id INT(10) UNSIGNED NOT NULL,<br>    name VARCHAR(255),<br>    grade INT(10) UNSIGNED NOT NULL,<br>    PRIMARY KEY id<br>) ENGINE=InnoDB DEFAULT CHARSET=utf8;<br>清空表</p>
+<p>[sql] view plaincopy<br>delete from A;  </p>
+<p>从一张表中选择数据插入另一张表中（id重复的数据不插入）</p>
+<p>[sql] view plaincopy<br>insert into A(id,name) (SELECT bid,bname FROM B as b where not exists(select * from A as a where a.id=b.bid));  </p>
+<p>用一张表中的数据更新另一张表中的数据<br>[sql] view plaincopy<br>update A as a,B as b set a.name=b.bname where a.id=b.bid;  </p>
+<p>根据一张表的信息生成一张排名表<br>[sql] view plaincopy<br>set @x:=0;insert into Order(rank,id,grade) select @x:=@x+1 as rownum,id,grade from User order by grade desc;<br>复制一条数据</p>
+<p>[sql] view plaincopy<br>alter table A drop primary key;<br>insert into A select * from A where id=110;<br>update A set id=111 where id=110 limit 1;<br>alter table A add primary key(id);  </p>
+<p>导出数据</p>
+<p>[sql] view plaincopy<br>mysqldump -h$mysql_host -P$mysql_port -u$mysql_user -p$mysql_pwd $mysql_db $mysql_table -t -c –skip-lock-tables  &gt; $file_name<br>mysqldump -h$mysql_host -P$mysql_port -u$mysql_user -p$mysql_pwd $mysql_db &gt; $file_name  </p>
+<p>创建临时表更新原有表数据<br>[sql] view plaincopy<br>set @x:=0;create table charactertemp select @x:=@x+1 as rownum,charid,pkvalue from character order by pkvalue desc where charid<100; set="" @y:="(select" max(charid)="" from="" character);="" update="" character="" charid="charid+@y" and="" charid<100;="" as="" a,charactertemp="" b="" a.charid="b.rownum" where="">@y;<br>drop table charactertemp;  </100;></p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2015/07/20/linuxcmd/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">linux常用命令</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="share">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">分享到：</span>
+		<a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+		<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
+
+
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="sqlcmds" data-title="一些mysql语句" data-url="http://sstask.github.io/2015/07/23/sqlcmds/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"sstask"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
 
 </div>
       <footer id="footer">
@@ -249,9 +313,9 @@
 		mathjax: true,
 		animate: true,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
-		isTag: true,
+		isTag: false,
 		isCategory: false,
 		open_in_new: false
 	}
