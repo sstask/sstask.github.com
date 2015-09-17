@@ -109,7 +109,7 @@
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/blog/" style="font-size: 20px;">blog</a> <a href="/tags/encoding/" style="font-size: 10px;">encoding</a> <a href="/tags/github/" style="font-size: 20px;">github</a> <a href="/tags/hexo/" style="font-size: 20px;">hexo</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a> <a href="/tags/vim/" style="font-size: 10px;">vim</a>
+						<a href="/tags/blog/" style="font-size: 20px;">blog</a> <a href="/tags/encoding/" style="font-size: 10px;">encoding</a> <a href="/tags/github/" style="font-size: 20px;">github</a> <a href="/tags/hexo/" style="font-size: 20px;">hexo</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/rank/" style="font-size: 10px;">rank</a> <a href="/tags/vim/" style="font-size: 10px;">vim</a> <a href="/tags/排行榜/" style="font-size: 10px;">排行榜</a>
 					</div>
 				</section>
 				
@@ -175,6 +175,78 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-rankdesign" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/06/21/rankdesign/" class="article-date">
+  	<time datetime="2015-06-21T07:17:19.000Z" itemprop="datePublished">Jun 21</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/06/21/rankdesign/">排行榜设计</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>最近在做排行榜功能，排行榜无非就是对用户一些数据的排序，在量级不是很大的情况下还是比较简单的，在数据结构上使用数组，set，map都可以，依具体情况而定，这里不做过多讨论。现在遇到的问题是在数据库方面的，也就是对排行榜数据该已什么方式进行存储。</p>
+<p>我们用的数据库是mysql，如果排行榜量级在百名之内的话可以把每个进榜用户的数据都当做是一条数据库记录插入表中，因为数据量级比较小，插入删除操作不是太多，对数据库的压力不是很大（定时存储还是要做的，减少对数据的操作频率）。数据库表设计大概是这样的：</p>
+<pre><code class="sql">+<span class="comment">-----------+---------------------+------+-----+---------+-------+  </span>
+| Field     | Type                | Null | Key | Default | Extra |  
++<span class="comment">-----------+---------------------+------+-----+---------+-------+  </span>
+| ranktype  | int(10) unsigned    | NO   | PRI | NULL    |       |  
+| order     | int(10) unsigned    | NO   | PRI | NULL    |       |  
+| id        | int(10) unsigned    | NO   |     | NULL    |       |  
+| data      | blob                | YES  |     | NULL    |       |  
++<span class="comment">-----------+---------------------+------+-----+---------+-------+</span>
+</code></pre>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/">mysql</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/rank/">rank</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/排行榜/">排行榜</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/game/">game</a>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a  href="/2015/06/21/rankdesign/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-vimdisplaych" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -202,7 +274,7 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p>今天看服务器的log发现有些文件的中文都是乱码，找了一圈发现是vim设置的问题，因为用less或者cat命令查看log都是正常的，用vim查看才出现的乱码。</p>
-<p>编辑<em>~/.vimrc</em>文件，添加</p>
+<p>编辑<strong>~/.vimrc</strong>文件，添加</p>
 <blockquote>
 <p>view plaincopy<br>set encoding=utf-8<br>set termencoding=utf-8  </p>
 <p>set fileencodings=ucs-bom,utf-8,cp936,gb18030,big5,euc-jp,euc-kr<br>set fileencoding=utf-8  </p>

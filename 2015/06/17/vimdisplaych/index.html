@@ -19,7 +19,7 @@ set fileencodings=ucs-bom,utf-8,cp936,gb18030,b">
 
 view plaincopyset encoding=utf-8set termencoding=utf-8  
 set fileencodings=ucs-bom,utf-8,cp936,gb18030,b">
-<meta property="og:updated_time" content="2015-09-17T09:53:57.812Z">
+<meta property="og:updated_time" content="2015-09-17T09:56:02.333Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="设置vim显示中文">
 <meta name="twitter:description" content="今天看服务器的log发现有些文件的中文都是乱码，找了一圈发现是vim设置的问题，因为用less或者cat命令查看log都是正常的，用vim查看才出现的乱码。
@@ -122,7 +122,7 @@ set fileencodings=ucs-bom,utf-8,cp936,gb18030,b">
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/blog/" style="font-size: 20px;">blog</a> <a href="/tags/encoding/" style="font-size: 10px;">encoding</a> <a href="/tags/github/" style="font-size: 20px;">github</a> <a href="/tags/hexo/" style="font-size: 20px;">hexo</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a> <a href="/tags/vim/" style="font-size: 10px;">vim</a>
+						<a href="/tags/blog/" style="font-size: 20px;">blog</a> <a href="/tags/encoding/" style="font-size: 10px;">encoding</a> <a href="/tags/github/" style="font-size: 20px;">github</a> <a href="/tags/hexo/" style="font-size: 20px;">hexo</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/rank/" style="font-size: 10px;">rank</a> <a href="/tags/vim/" style="font-size: 10px;">vim</a> <a href="/tags/排行榜/" style="font-size: 10px;">排行榜</a>
 					</div>
 				</section>
 				
@@ -228,17 +228,17 @@ set fileencodings=ucs-bom,utf-8,cp936,gb18030,b">
     <div class="article-entry" itemprop="articleBody">
       
         <p>今天看服务器的log发现有些文件的中文都是乱码，找了一圈发现是vim设置的问题，因为用less或者cat命令查看log都是正常的，用vim查看才出现的乱码。</p>
-<p>编辑<em>~/.vimrc</em>文件，添加</p>
+<p>编辑<strong>~/.vimrc</strong>文件，添加</p>
 <blockquote>
 <p>view plaincopy<br>set encoding=utf-8<br>set termencoding=utf-8  </p>
 <p>set fileencodings=ucs-bom,utf-8,cp936,gb18030,big5,euc-jp,euc-kr<br>set fileencoding=utf-8  </p>
 </blockquote>
 <a id="more"></a>
-<p>保存，然后在用vim查看就正常了。<br><em>encoding</em>是设置vim内部的编码方式，大概就是vim内部的缓存 寄存器 脚本什么的，这个用户大可不必关系，除非你在意性能，最好把这三个都设成一致的。</p>
-<p><em>termencoding</em>是vim用于屏幕显示的编码，如果其值与encoding值不一致的话，vim会把encoding编码转换为termencoding编码再输出到屏幕。</p>
-<p><em>fileencodings</em>是vim读取文件时所需要用到的编码方式，vim读取文件时会按先后顺序依次按设置的编码方式来尝试解码文件中的内容，如果符合就用此编码来解码该文件，并会把fileencoding值设置为该编码。上面的编码顺序是从网上找来的，应该没满足大部分需求。（按编码要求的严格顺序来排序）</p>
+<p>保存，然后在用vim查看就正常了。<br><strong>encoding</strong>是设置vim内部的编码方式，大概就是vim内部的缓存 寄存器 脚本什么的，这个用户大可不必关系，除非你在意性能，最好把这三个都设成一致的。</p>
+<p><strong>termencoding</strong>是vim用于屏幕显示的编码，如果其值与encoding值不一致的话，vim会把encoding编码转换为termencoding编码再输出到屏幕。</p>
+<p><strong>fileencodings</strong>是vim读取文件时所需要用到的编码方式，vim读取文件时会按先后顺序依次按设置的编码方式来尝试解码文件中的内容，如果符合就用此编码来解码该文件，并会把fileencoding值设置为该编码。上面的编码顺序是从网上找来的，应该没满足大部分需求。（按编码要求的严格顺序来排序）</p>
 <p>如果vim从列表中找不到匹配编码的话它就会用系统默认的编码来读取。</p>
-<p><em>fileencoding</em>是保存文件时所用的编码，vim 会把文件内容转换为该格式保存。</p>
+<p><strong>fileencoding</strong>是保存文件时所用的编码，vim 会把文件内容转换为该格式保存。</p>
 <p>中文乱码的原因就是因为这几个编码设置的不同，所以会产生编码转换的错误，如果有条件的话最好把这几个编码统一用utf-8编码就ok了。</p>
 <p>后来找了一下我这边乱码的原因，其实还是有点绕的，总的来说是由于vim对编码的识别率太低了。</p>
 <p>我服务器上默认是utf-8编码，所用的SecureCRT显示格式也设置成了utf-8编码，log文件也是用utf-8编码保存的，按理说不应该产生乱码。我用vim打开文件，用:set fileencoding命令看了下当前文件编码格式为latin1，这是一种最宽泛的编码格式。由于我系统中fileencodings=ucs-bom,utf-8,latin1 ，vim尝试去解码，最终发现latin1匹配，所以就按照latin1来解码，但log文件并不是该编码，所以产生了乱码。（顺便说下，我看网上有说latin1是最宽泛的编码方式，几乎能匹配成功任何编码）</p>
@@ -252,6 +252,15 @@ set fileencodings=ucs-bom,utf-8,cp936,gb18030,b">
   
     
 <nav id="article-nav">
+  
+    <a href="/2015/06/21/rankdesign/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          排行榜设计
+        
+      </div>
+    </a>
   
   
     <a href="/2015/06/16/hexobackup/" id="article-nav-older" class="article-nav-link-wrap">
