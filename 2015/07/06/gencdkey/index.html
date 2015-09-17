@@ -3,24 +3,21 @@
 <head>
   <meta charset="utf-8">
   
-  <title>link | 叶子的博客</title>
+  <title>cdkey和激活码的生成 | 叶子的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description">
-<meta property="og:type" content="website">
-<meta property="og:title" content="link">
-<meta property="og:url" content="http://sstask.github.io/link/index.html">
+  <meta name="description" content="在很多产品中都有cdkey或者激活码需求，这就牵扯到cdkey的生成。cdkey(或激活码，后面已cdkey代替)一般都是由固定长度的一串数字和字母组成，生成的方法有很多，好比最简单的一种就是在26个字母和10个数字中随机抽取一个，然后重复N次，这样就生成了一个长度为N的cdkey。下面介绍一种简单实现的方法，直接上代码：
+#!/bin/sh  &amp;#10;CDKeyLen=10  &amp;#10;CDN">
+<meta property="og:type" content="article">
+<meta property="og:title" content="cdkey和激活码的生成">
+<meta property="og:url" content="http://sstask.github.io/2015/07/06/gencdkey/index.html">
 <meta property="og:site_name" content="叶子的博客">
-<meta property="og:description">
-<meta property="og:image" content="http://sstask.github.io/assets/backup/hexocreate.md.png">
-<meta property="og:image" content="http://sstask.github.io/assets/backup/gencdkey.md.png">
-<meta property="og:image" content="http://sstask.github.io/assets/backup/rankdesign.md.png">
-<meta property="og:image" content="http://sstask.github.io/assets/backup/vimdisplaych.md.png">
-<meta property="og:image" content="http://sstask.github.io/assets/backup/rankreward.md.png">
-<meta property="og:image" content="http://sstask.github.io/assets/backup/hexobackup.md.png">
-<meta property="og:updated_time" content="2015-09-17T10:43:53.005Z">
+<meta property="og:description" content="在很多产品中都有cdkey或者激活码需求，这就牵扯到cdkey的生成。cdkey(或激活码，后面已cdkey代替)一般都是由固定长度的一串数字和字母组成，生成的方法有很多，好比最简单的一种就是在26个字母和10个数字中随机抽取一个，然后重复N次，这样就生成了一个长度为N的cdkey。下面介绍一种简单实现的方法，直接上代码：
+#!/bin/sh  &amp;#10;CDKeyLen=10  &amp;#10;CDN">
+<meta property="og:updated_time" content="2015-09-17T10:43:48.545Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="link">
-<meta name="twitter:description">
+<meta name="twitter:title" content="cdkey和激活码的生成">
+<meta name="twitter:description" content="在很多产品中都有cdkey或者激活码需求，这就牵扯到cdkey的生成。cdkey(或激活码，后面已cdkey代替)一般都是由固定长度的一串数字和字母组成，生成的方法有很多，好比最简单的一种就是在26个字母和10个数字中随机抽取一个，然后重复N次，这样就生成了一个长度为N的cdkey。下面介绍一种简单实现的方法，直接上代码：
+#!/bin/sh  &amp;#10;CDKeyLen=10  &amp;#10;CDN">
   
     <link rel="alternative" href="/atom.xml" title="叶子的博客" type="application/atom+xml">
   
@@ -180,11 +177,11 @@
 		</header>				
 	</div>
 </nav>
-      <div class="body-wrap"><article id="page-undefined" class="article article-type-page" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-gencdkey" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/link/index.html" class="article-date">
-  	<time datetime="2015-09-17T10:43:52.000Z" itemprop="datePublished">Sep 17</time>
+      <a href="/2015/07/06/gencdkey/" class="article-date">
+  	<time datetime="2015-07-06T11:25:47.000Z" itemprop="datePublished">Jul 6</time>
 </a>
     </div>
   
@@ -197,7 +194,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      link
+      cdkey和激活码的生成
     </h1>
   
 
@@ -205,7 +202,15 @@
       
       <div class="article-info article-info-post">
         
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cdkey/">cdkey</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/md5/">md5</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/">mysql</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/script/">script</a></li></ul>
+	</div>
+
         
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/game/">game</a>
+	</div>
+
 
         <div class="clearfix"></div>
       </div>
@@ -213,7 +218,26 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p><img src="/assets/backup/hexocreate.md.png" alt="hexocreate.md"><br><img src="/assets/backup/gencdkey.md.png" alt="gencdkey.md"><br><img src="/assets/backup/rankdesign.md.png" alt="rankdesign.md"><br><img src="/assets/backup/vimdisplaych.md.png" alt="vimdisplaych.md"><br><img src="/assets/backup/rankreward.md.png" alt="rankreward.md"><br><img src="/assets/backup/hexobackup.md.png" alt="hexobackup.md"></p>
+        <p>在很多产品中都有cdkey或者激活码需求，这就牵扯到cdkey的生成。cdkey(或激活码，后面已cdkey代替)一般都是由固定长度的一串数字和字母组成，生成的方法有很多，好比最简单的一种就是在26个字母和10个数字中随机抽取一个，然后重复N次，这样就生成了一个长度为N的cdkey。下面介绍一种简单实现的方法，直接上代码：</p>
+<pre><code class="shell">#!/bin/sh  &#10;CDKeyLen=10  &#10;CDNum=10  &#10;MYSQLCmd=&#34;mysql -h127.0.0.1 -P3306 -uroot -p123456 -Dmydb --default-character-set=utf8 -N -s -e&#34;  &#10;i=0  &#10;&#60;!--more--&#62;&#10;while((i&#60;$CDNum))  &#10;do  &#10;    cdkey=`date +%s%N | md5sum | head -c ${CDKeyLen}`  &#10;    cnt=$($MYSQLCmd &#34;select count(*) from cdkey where key=&#39;$cdkey&#39;&#34;)  &#10;    if [[ $cnt == &#34;0&#34; ]]; then  &#10;        i=$(($i+1))  &#10;        cdkeyid=$($MYSQLCmd &#34;insert into cdkey(key,time) valuse(&#39;$cdkey&#39;, unix_timestamp(now()));select last_insert_id();&#34;)  &#10;        echo $cdkeyid  &#10;    fi  &#10;done
+</code></pre>
+<p>其实cdkey的生成就是这句<strong>cdkey=<code>date +%s%N | md5sum | head -c ${CDKeyLen}</code></strong>，date +%s%N取当前时间的总秒数和纳秒，md5sum 对前面的数值做md5运算，head -c ${CDKeyLen}会取出md5生成的一串符号的前CDKeyLen位。代码的总体逻辑就是先生成一个cdkey，然后在数据库中查询这个cdkey有木有已经存在，如果不存在则插入数据库。</p>
+<p>在这里想讨论的还有对mysql数据库的操作，代码第4行设置了访问数据库的各种参数，其中-h后跟数据库ip地址，-P后跟数据库端口，-u用户，-p密码，-D数据库名称，–default-character-set=utf8设置了字符集（如果不设置的话插入中文字符会乱码），-N表示返回的结果中取出了显示名称的那一行(就是第一行)，-s表示简单显示结果，-e代表执行后面的语句。例如执行代码<em>mysql -uroot -p123456 -Dmydb -e”select count(</em>) as count from cdkey”*，结果会如下：</p>
+<pre><code class="sql">+<span class="comment">-------+  </span>
+| count |  
++<span class="comment">-------+  </span>
+|     5 |  
++<span class="comment">-------+</span>
+</code></pre>
+<p>执行代码<em>mysql -uroot -p123456 -Dmydb -N -e”select count(</em>) as count from cdkey”*，结果则是：</p>
+<pre><code class="sql">+<span class="comment">---+  </span>
+| 5 |  
++<span class="comment">---+</span>
+</code></pre>
+<p>执行代码<em>mysql -uroot -p123456 -Dmydb -N -s -e”select count(</em>) as count from cdkey”*，结果则是：</p>
+<pre><code class="sql">5
+</code></pre>
+<p>从上面的结果中可以很容易的看出-N和-s的作用。</p>
 
       
     </div>
@@ -221,6 +245,16 @@
   </div>
   
     
+<nav id="article-nav">
+  
+  
+    <a href="/2015/06/22/rankreward/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">排行榜奖励发放</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
   
 </article>
 
@@ -244,7 +278,7 @@
 
 <div class="duoshuo">
 	<!-- 多说评论框 start -->
-	<div class="ds-thread" data-thread-key="undefined" data-title="link" data-url="http://sstask.github.io/link/index.html"></div>
+	<div class="ds-thread" data-thread-key="gencdkey" data-title="cdkey和激活码的生成" data-url="http://sstask.github.io/2015/07/06/gencdkey/"></div>
 	<!-- 多说评论框 end -->
 	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
 	<script type="text/javascript">
@@ -288,7 +322,7 @@
 		mathjax: true,
 		animate: true,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
 		isCategory: false,
