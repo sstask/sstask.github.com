@@ -6,18 +6,18 @@
   <title>C++程序里一些易犯错误 | 叶子的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="写程序时经常会遇见些莫名其妙的错误，往往花了大把时间找了很久的bug，最终发现这些都是很小很小的问题，所以把这些可能问题记下来备忘。
-1.指针的加减操作指针的加减操作都是其所指的内容相关的，好比char+1等于实际地址+1，但int+1等于实际地址+4，不能像当然的认为p+n就等于地址+n。">
+1.指针的加减操作指针的加减操作都是其所指的内容相关的，好比char*+1等于实际地址+1，但int*+1等于实际地址+4，不能像当然的认为p+n就等于地址+n。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="C++程序里一些易犯错误">
 <meta property="og:url" content="http://sstask.github.io/2015/08/18/ccommonerror/index.html">
 <meta property="og:site_name" content="叶子的博客">
 <meta property="og:description" content="写程序时经常会遇见些莫名其妙的错误，往往花了大把时间找了很久的bug，最终发现这些都是很小很小的问题，所以把这些可能问题记下来备忘。
-1.指针的加减操作指针的加减操作都是其所指的内容相关的，好比char+1等于实际地址+1，但int+1等于实际地址+4，不能像当然的认为p+n就等于地址+n。">
-<meta property="og:updated_time" content="2015-09-17T15:01:50.118Z">
+1.指针的加减操作指针的加减操作都是其所指的内容相关的，好比char*+1等于实际地址+1，但int*+1等于实际地址+4，不能像当然的认为p+n就等于地址+n。">
+<meta property="og:updated_time" content="2015-09-17T15:05:29.325Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="C++程序里一些易犯错误">
 <meta name="twitter:description" content="写程序时经常会遇见些莫名其妙的错误，往往花了大把时间找了很久的bug，最终发现这些都是很小很小的问题，所以把这些可能问题记下来备忘。
-1.指针的加减操作指针的加减操作都是其所指的内容相关的，好比char+1等于实际地址+1，但int+1等于实际地址+4，不能像当然的认为p+n就等于地址+n。">
+1.指针的加减操作指针的加减操作都是其所指的内容相关的，好比char*+1等于实际地址+1，但int*+1等于实际地址+4，不能像当然的认为p+n就等于地址+n。">
   
     <link rel="alternative" href="/atom.xml" title="叶子的博客" type="application/atom+xml">
   
@@ -113,7 +113,7 @@
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/awk/" style="font-size: 10px;">awk</a> <a href="/tags/blog/" style="font-size: 15px;">blog</a> <a href="/tags/buffer/" style="font-size: 10px;">buffer</a> <a href="/tags/cdkey/" style="font-size: 10px;">cdkey</a> <a href="/tags/db/" style="font-size: 10px;">db</a> <a href="/tags/encoding/" style="font-size: 10px;">encoding</a> <a href="/tags/error/" style="font-size: 10px;">error</a> <a href="/tags/gettimeofday/" style="font-size: 10px;">gettimeofday</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/github/" style="font-size: 15px;">github</a> <a href="/tags/hexo/" style="font-size: 15px;">hexo</a> <a href="/tags/innodb/" style="font-size: 10px;">innodb</a> <a href="/tags/insert/" style="font-size: 10px;">insert</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a> <a href="/tags/md5/" style="font-size: 10px;">md5</a> <a href="/tags/message/" style="font-size: 10px;">message</a> <a href="/tags/mysql/" style="font-size: 20px;">mysql</a> <a href="/tags/mysql优化/" style="font-size: 10px;">mysql优化</a> <a href="/tags/newday/" style="font-size: 10px;">newday</a> <a href="/tags/pb/" style="font-size: 10px;">pb</a> <a href="/tags/pointer/" style="font-size: 10px;">pointer</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/rank/" style="font-size: 15px;">rank</a> <a href="/tags/repeated/" style="font-size: 10px;">repeated</a> <a href="/tags/reward/" style="font-size: 10px;">reward</a> <a href="/tags/script/" style="font-size: 20px;">script</a> <a href="/tags/select/" style="font-size: 10px;">select</a> <a href="/tags/server/" style="font-size: 10px;">server</a> <a href="/tags/shell/" style="font-size: 15px;">shell</a> <a href="/tags/sql/" style="font-size: 10px;">sql</a> <a href="/tags/template/" style="font-size: 10px;">template</a> <a href="/tags/time/" style="font-size: 10px;">time</a> <a href="/tags/version/" style="font-size: 10px;">version</a> <a href="/tags/vim/" style="font-size: 10px;">vim</a> <a href="/tags/排行榜/" style="font-size: 15px;">排行榜</a> <a href="/tags/模板/" style="font-size: 10px;">模板</a> <a href="/tags/语法/" style="font-size: 10px;">语法</a> <a href="/tags/非类型参数/" style="font-size: 10px;">非类型参数</a>
+						<a href="/tags/awk/" style="font-size: 10px;">awk</a> <a href="/tags/blog/" style="font-size: 15px;">blog</a> <a href="/tags/buffer/" style="font-size: 10px;">buffer</a> <a href="/tags/cdkey/" style="font-size: 10px;">cdkey</a> <a href="/tags/db/" style="font-size: 10px;">db</a> <a href="/tags/encoding/" style="font-size: 10px;">encoding</a> <a href="/tags/error/" style="font-size: 10px;">error</a> <a href="/tags/gettimeofday/" style="font-size: 10px;">gettimeofday</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/github/" style="font-size: 15px;">github</a> <a href="/tags/hexo/" style="font-size: 15px;">hexo</a> <a href="/tags/innodb/" style="font-size: 10px;">innodb</a> <a href="/tags/insert/" style="font-size: 10px;">insert</a> <a href="/tags/key-buffer-size/" style="font-size: 10px;">key_buffer_size</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a> <a href="/tags/md5/" style="font-size: 10px;">md5</a> <a href="/tags/message/" style="font-size: 10px;">message</a> <a href="/tags/mysql/" style="font-size: 20px;">mysql</a> <a href="/tags/mysql优化/" style="font-size: 10px;">mysql优化</a> <a href="/tags/newday/" style="font-size: 10px;">newday</a> <a href="/tags/pb/" style="font-size: 10px;">pb</a> <a href="/tags/pointer/" style="font-size: 10px;">pointer</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/rank/" style="font-size: 15px;">rank</a> <a href="/tags/repeated/" style="font-size: 10px;">repeated</a> <a href="/tags/reward/" style="font-size: 10px;">reward</a> <a href="/tags/script/" style="font-size: 20px;">script</a> <a href="/tags/select/" style="font-size: 10px;">select</a> <a href="/tags/server/" style="font-size: 10px;">server</a> <a href="/tags/shell/" style="font-size: 15px;">shell</a> <a href="/tags/sql/" style="font-size: 10px;">sql</a> <a href="/tags/table-open-cache/" style="font-size: 10px;">table_open_cache</a> <a href="/tags/template/" style="font-size: 10px;">template</a> <a href="/tags/thread-cache-size/" style="font-size: 10px;">thread_cache_size</a> <a href="/tags/time/" style="font-size: 10px;">time</a> <a href="/tags/version/" style="font-size: 10px;">version</a> <a href="/tags/vim/" style="font-size: 10px;">vim</a> <a href="/tags/排行榜/" style="font-size: 15px;">排行榜</a> <a href="/tags/模板/" style="font-size: 10px;">模板</a> <a href="/tags/语法/" style="font-size: 10px;">语法</a> <a href="/tags/非类型参数/" style="font-size: 10px;">非类型参数</a>
 					</div>
 				</section>
 				
@@ -219,7 +219,7 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p> 写程序时经常会遇见些莫名其妙的错误，往往花了大把时间找了很久的bug，最终发现这些都是很小很小的问题，所以把这些可能问题记下来备忘。</p>
-<p><strong>1.指针的加减操作</strong><br>指针的加减操作都是其所指的内容相关的，好比char<em>+1等于实际地址+1，但int</em>+1等于实际地址+4，不能像当然的认为p+n就等于地址+n。<br><a id="more"></a></p>
+<p><strong>1.指针的加减操作</strong><br>指针的加减操作都是其所指的内容相关的，好比char*+1等于实际地址+1，但int*+1等于实际地址+4，不能像当然的认为p+n就等于地址+n。<br><a id="more"></a></p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> sdata  </span><br><span class="line">&#123;  </span><br><span class="line">    <span class="keyword">int</span> length;  </span><br><span class="line">    <span class="keyword">char</span>* pdata;  </span><br><span class="line">&#125;;  </span><br><span class="line">sdata* pmem = (sdata*)<span class="built_in">malloc</span>(<span class="number">1024</span>);  </span><br><span class="line">pmem-&gt;pdata = (<span class="keyword">char</span>*)(pmem + <span class="keyword">sizeof</span>(sdata));  </span><br><span class="line">pmem-&gt;length = <span class="number">0</span>;</span><br></pre></td></tr></table></figure>
 <p>程序中我本意是给申请的内存加个头，便于管理，pdata指向可用内存地址，length记录内存所用长度，但是没有达到预期的效果，而且在运用中造成了严重的宕机。究其原因就是因为pmem-&gt;pdata = (char<em>)(pmem + sizeof(sdata));这句pmem做加法的时候所增长的长度远远大于预期，它是根据pmem所指的类型的长度增长的，即增长了sizeof(sdata)</em>sizeof(sdata)。如果想要地址实际增加sizeof(sdata)，应该这样<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pmem-&gt;pdata = (<span class="keyword">char</span>*)((<span class="keyword">char</span>*)pmem + <span class="keyword">sizeof</span>(sdata));</span><br></pre></td></tr></table></figure></p>
 <blockquote>
@@ -239,6 +239,15 @@
   
     
 <nav id="article-nav">
+  
+    <a href="/2015/08/25/optimizemysql/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          mysql优化
+        
+      </div>
+    </a>
   
   
     <a href="/2015/08/13/creategitserver/" id="article-nav-older" class="article-nav-link-wrap">
