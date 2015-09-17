@@ -202,28 +202,8 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p>在linux下工作总是要用到不少命令，下面记录下常用的命令，以免忘了。</p>
-<p>###文件相关</p>
-<blockquote>
-<p>ls 列出当前目录下所以文件和目录 加参数-a可以列出隐藏文件(.开头)<br>        ll 详细列表<br>        rm 删除文件 -r循环删除 -f强制删除<br>        cat 输出文件到屏幕<br>        less 查看文件<br>        tail 查看文件末尾N行 tail -f xx持续打印文件新内容直至ctrl+c</p>
-<p>vim 编辑或新建文件<br>        mv 移动或重命名文件<br>        mkdir 创建目录<br>        cp 复制<br>        scp 远程复制 scp xx root@192.168.0.102:/home/root/<br>        chmod +x 赋予文件可执行权限<br>        tar -zcvf name.tar.gz dir 压缩<br>        tar -zxvf name.tar.gz dir 解压<br>        file 查看文件类型和编码信息等，也可看出core文件属于哪个程序<br>        wc 统计文件行数字数字节数等，wc -l file 行数 -c字节数 -w字数 -m字符数<br>        进程相关<br>        ps 列出当前运行的进程 ps x当前用户所有进程 ps ux带用户等信息 ps aux所有用户进程<br>        kill 杀死进程 kill -9 强制杀死 kill -USR1 给进程发信号<br>        pgrep 根据程序名查找进程 pgrep -l xx</p>
-</blockquote>
-<p>###查找相关</p>
-<blockquote>
-<p>find 查找文件 find [path] [option] [action]       find / -name mysql<em><br>        grep 在文本中查找字符串 grep [string] [files]       grep “xx” log</em><br>        awk 文本分析处理 <strong>awk ‘{pattern + print}’ {files}</strong><br>                       <strong>last -n 5 | awk ‘{print $1}’</strong> 显示最近登录的5个账户的名字<br>                       <strong>svn diff |grep Index|awk ‘$2 ~/(cpp)|(h)$/{print $2}’</strong> 打印改动的cpp、h文件名，~是匹配操作符，表示找第二列匹配后面模式的行<br>                       <strong>svn diff|grep ‘h$|cpp$’|awk ‘{print $2}’|sort|uniq</strong> 查找以cpp或h结尾的行，打印第二列，排序去重复<br>                       <strong>ps -A -o stat,ppid,pid,cmd | grep -e ‘^[Zz]’ | awk ‘{print $2}’ | xargs kill -9</strong> 杀死僵尸进程</p>
-</blockquote>
-<p>###网络相关</p>
-<blockquote>
-<p>ifconfig 查看ip地址等信息<br>        netstat 查看网络连接 netstat -atp（a显示所有选项，默认不显示listen相关，t显示tcp，p显示连接关联的程序）</p>
-</blockquote>
-<p>###内存相关</p>
-<blockquote>
-<p>free 查看内存使用情况 free -m 显示单位M free -g 显示单位G<br>        <strong>ps aux | awk ‘{mem += $6} END {print mem/1024}’</strong>  统计所以程序所占用内存M （rss程序占用内存）</p>
-</blockquote>
-<p>###杂</p>
-<blockquote>
-<p>rpm -qa | grep mysql 查看是否安装mysql<br>                      rpm -e mysql 卸载  rpm -e –nodeps mysql 强力卸载<br>        service iptables start 启动防火墙 service iptables stop 关闭service iptables restart 重启<br>lsb_release -a  查看操作系统版本<br>        chkconfig mysqld on 设置开机启动 chkconfig –list | grep mysqld 查看启动设置<br>        . 代表当前目录 ~当前用户根目录即/home/xx  /表示系统根目录 vim /etc/my.cnf<br>        vim ~/.vimrc 修改当前用户的vim配置<br>                              如加入 syntax on<br>                                           set ts=4<br>                                           set expandtab<br>                                           set number<br>        vim ~/.bash_profile 可设置环境变量，执行命令等，该文件只在登录的时候执行一次<br>                             如加入 ulimit -c  unlimited<br>                                          export SVN_RES=”<a href="http://192.168.0.101/repos/trunk" target="_blank" rel="external">http://192.168.0.101/repos/trunk</a>“</p>
-</blockquote>
-
+<h3 id="文件相关">文件相关</h3><blockquote>
+<p>ls 列出当前目录下所以文件和目录 加参数-a可以列出隐藏文件(.开头)<br>        ll 详细列表<br>        rm 删除文件 -r循环删除 -f强制删除<br>        cat 输出文件到屏幕<br>        less 查看文件<br>        tail 查看文件末尾N行 tail -f xx持续打印文件新内容直至ctrl+c<br>
       
     </div>
     
@@ -240,6 +220,10 @@
 	</div>
 
 
+      
+        <p class="article-more-link">
+          <a  href="/2015/07/20/linuxcmd/#more">more >></a>
+        </p>
       
       <div class="clearfix"></div>
     </div>
