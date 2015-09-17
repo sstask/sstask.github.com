@@ -202,17 +202,9 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p>创建新表</p>
-<p>[sql] view plaincopy<br>CREATE TABLE IF NOT EXISTS TAB(<br>    id INT(10) UNSIGNED NOT NULL,<br>    name VARCHAR(255),<br>    grade INT(10) UNSIGNED NOT NULL,<br>    PRIMARY KEY id<br>) ENGINE=InnoDB DEFAULT CHARSET=utf8;<br>清空表</p>
-<p>[sql] view plaincopy<br>delete from A;  </p>
-<p>从一张表中选择数据插入另一张表中（id重复的数据不插入）</p>
-<p>[sql] view plaincopy<br>insert into A(id,name) (SELECT bid,bname FROM B as b where not exists(select * from A as a where a.id=b.bid));  </p>
-<p>用一张表中的数据更新另一张表中的数据<br>[sql] view plaincopy<br>update A as a,B as b set a.name=b.bname where a.id=b.bid;  </p>
-<p>根据一张表的信息生成一张排名表<br>[sql] view plaincopy<br>set @x:=0;insert into Order(rank,id,grade) select @x:=@x+1 as rownum,id,grade from User order by grade desc;<br>复制一条数据</p>
-<p>[sql] view plaincopy<br>alter table A drop primary key;<br>insert into A select * from A where id=110;<br>update A set id=111 where id=110 limit 1;<br>alter table A add primary key(id);  </p>
-<p>导出数据</p>
-<p>[sql] view plaincopy<br>mysqldump -h$mysql_host -P$mysql_port -u$mysql_user -p$mysql_pwd $mysql_db $mysql_table -t -c –skip-lock-tables  &gt; $file_name<br>mysqldump -h$mysql_host -P$mysql_port -u$mysql_user -p$mysql_pwd $mysql_db &gt; $file_name  </p>
-<p>创建临时表更新原有表数据<br>[sql] view plaincopy<br>set @x:=0;create table charactertemp select @x:=@x+1 as rownum,charid,pkvalue from character order by pkvalue desc where charid<100; set="" @y:="(select" max(charid)="" from="" character);="" update="" character="" charid="charid+@y" and="" charid<100;="" as="" a,charactertemp="" b="" a.charid="b.rownum" where="">@y;<br>drop table charactertemp;  </100;></p>
-
+<blockquote>
+<p>CREATE TABLE IF NOT EXISTS TAB(<br>    id INT(10) UNSIGNED NOT NULL,<br>    name VARCHAR(255),<br>    grade INT(10) UNSIGNED NOT NULL,<br>    PRIMARY KEY id<br>) ENGINE=InnoDB DEFAULT CHARSET=utf8;  </p>
+</blockquote>
       
     </div>
     
@@ -229,6 +221,10 @@
 	</div>
 
 
+      
+        <p class="article-more-link">
+          <a  href="/2015/07/23/sqlcmds/#more">more >></a>
+        </p>
       
       <div class="clearfix"></div>
     </div>

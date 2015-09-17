@@ -6,18 +6,21 @@
   <title>一些mysql语句 | 叶子的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="创建新表
-[sql] view plaincopyCREATE TABLE IF NOT EXISTS TAB(    id INT(10) UNSIGNED NOT NULL,    name VARCHAR(255),    grade INT(10) UNSIGNED NOT NULL,    PRIMARY KEY id) ENGINE=InnoDB DEFAULT CHARSET=utf">
+
+CREATE TABLE IF NOT EXISTS TAB(    id INT(10) UNSIGNED NOT NULL,    name VARCHAR(255),    grade INT(10) UNSIGNED NOT NULL,    PRIMARY KEY id) ENGINE=InnoDB DEFAULT CHARSET=utf8;">
 <meta property="og:type" content="article">
 <meta property="og:title" content="一些mysql语句">
 <meta property="og:url" content="http://sstask.github.io/2015/07/23/sqlcmds/index.html">
 <meta property="og:site_name" content="叶子的博客">
 <meta property="og:description" content="创建新表
-[sql] view plaincopyCREATE TABLE IF NOT EXISTS TAB(    id INT(10) UNSIGNED NOT NULL,    name VARCHAR(255),    grade INT(10) UNSIGNED NOT NULL,    PRIMARY KEY id) ENGINE=InnoDB DEFAULT CHARSET=utf">
-<meta property="og:updated_time" content="2015-09-17T14:17:54.718Z">
+
+CREATE TABLE IF NOT EXISTS TAB(    id INT(10) UNSIGNED NOT NULL,    name VARCHAR(255),    grade INT(10) UNSIGNED NOT NULL,    PRIMARY KEY id) ENGINE=InnoDB DEFAULT CHARSET=utf8;">
+<meta property="og:updated_time" content="2015-09-17T14:19:12.279Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="一些mysql语句">
 <meta name="twitter:description" content="创建新表
-[sql] view plaincopyCREATE TABLE IF NOT EXISTS TAB(    id INT(10) UNSIGNED NOT NULL,    name VARCHAR(255),    grade INT(10) UNSIGNED NOT NULL,    PRIMARY KEY id) ENGINE=InnoDB DEFAULT CHARSET=utf">
+
+CREATE TABLE IF NOT EXISTS TAB(    id INT(10) UNSIGNED NOT NULL,    name VARCHAR(255),    grade INT(10) UNSIGNED NOT NULL,    PRIMARY KEY id) ENGINE=InnoDB DEFAULT CHARSET=utf8;">
   
     <link rel="alternative" href="/atom.xml" title="叶子的博客" type="application/atom+xml">
   
@@ -219,16 +222,32 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p>创建新表</p>
-<p>[sql] view plaincopy<br>CREATE TABLE IF NOT EXISTS TAB(<br>    id INT(10) UNSIGNED NOT NULL,<br>    name VARCHAR(255),<br>    grade INT(10) UNSIGNED NOT NULL,<br>    PRIMARY KEY id<br>) ENGINE=InnoDB DEFAULT CHARSET=utf8;<br>清空表</p>
-<p>[sql] view plaincopy<br>delete from A;  </p>
+<blockquote>
+<p>CREATE TABLE IF NOT EXISTS TAB(<br>    id INT(10) UNSIGNED NOT NULL,<br>    name VARCHAR(255),<br>    grade INT(10) UNSIGNED NOT NULL,<br>    PRIMARY KEY id<br>) ENGINE=InnoDB DEFAULT CHARSET=utf8;  </p>
+</blockquote>
+<a id="more"></a>
+<p>清空表</p>
+<blockquote>
+<p>delete from A;  </p>
+</blockquote>
 <p>从一张表中选择数据插入另一张表中（id重复的数据不插入）</p>
-<p>[sql] view plaincopy<br>insert into A(id,name) (SELECT bid,bname FROM B as b where not exists(select * from A as a where a.id=b.bid));  </p>
-<p>用一张表中的数据更新另一张表中的数据<br>[sql] view plaincopy<br>update A as a,B as b set a.name=b.bname where a.id=b.bid;  </p>
-<p>根据一张表的信息生成一张排名表<br>[sql] view plaincopy<br>set @x:=0;insert into Order(rank,id,grade) select @x:=@x+1 as rownum,id,grade from User order by grade desc;<br>复制一条数据</p>
-<p>[sql] view plaincopy<br>alter table A drop primary key;<br>insert into A select * from A where id=110;<br>update A set id=111 where id=110 limit 1;<br>alter table A add primary key(id);  </p>
-<p>导出数据</p>
-<p>[sql] view plaincopy<br>mysqldump -h$mysql_host -P$mysql_port -u$mysql_user -p$mysql_pwd $mysql_db $mysql_table -t -c –skip-lock-tables  &gt; $file_name<br>mysqldump -h$mysql_host -P$mysql_port -u$mysql_user -p$mysql_pwd $mysql_db &gt; $file_name  </p>
-<p>创建临时表更新原有表数据<br>[sql] view plaincopy<br>set @x:=0;create table charactertemp select @x:=@x+1 as rownum,charid,pkvalue from character order by pkvalue desc where charid<100; set="" @y:="(select" max(charid)="" from="" character);="" update="" character="" charid="charid+@y" and="" charid<100;="" as="" a,charactertemp="" b="" a.charid="b.rownum" where="">@y;<br>drop table charactertemp;  </100;></p>
+<blockquote>
+<p>insert into A(id,name) (SELECT bid,bname FROM B as b where not exists(select * from A as a where a.id=b.bid));  </p>
+</blockquote>
+<p>用一张表中的数据更新另一张表中的数据</p>
+<blockquote>
+<p>update A as a,B as b set a.name=b.bname where a.id=b.bid;  </p>
+</blockquote>
+<p>根据一张表的信息生成一张排名表</p>
+<blockquote>
+<p>set @x:=0;insert into Order(rank,id,grade) select @x:=@x+1 as rownum,id,grade from User order by grade desc;  </p>
+</blockquote>
+<p>复制一条数据</p>
+<blockquote>
+<p>alter table A drop primary key;<br>insert into A select * from A where id=110;<br>update A set id=111 where id=110 limit 1;<br>alter table A add primary key(id);  </p>
+</blockquote>
+<p>导出数据<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysqldump -h$mysql_host -P$mysql_port -u$mysql_user -p$mysql_pwd $mysql_db $mysql_table -t -c --skip-lock-tables  &gt; $file_name  </span><br><span class="line">mysqldump -h$mysql_host -P$mysql_port -u$mysql_user -p$mysql_pwd $mysql_db &gt; $file_name</span><br></pre></td></tr></table></figure></p>
+<p>创建临时表更新原有表数据<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator"><span class="keyword">set</span> @x:=<span class="number">0</span>;</span><span class="operator"><span class="keyword">create</span> <span class="keyword">table</span> charactertemp <span class="keyword">select</span> @x:=@x+<span class="number">1</span> <span class="keyword">as</span> <span class="keyword">rownum</span>,charid,pkvalue <span class="keyword">from</span> <span class="built_in">character</span> <span class="keyword">order</span> <span class="keyword">by</span> pkvalue <span class="keyword">desc</span> <span class="keyword">where</span> charid&lt;<span class="number">100</span>;</span>  </span><br><span class="line"><span class="operator"><span class="keyword">set</span> @y:=(<span class="keyword">select</span> <span class="keyword">max</span>(charid) <span class="keyword">from</span> <span class="built_in">character</span>);</span>  </span><br><span class="line"><span class="operator"><span class="keyword">update</span> <span class="built_in">character</span>  <span class="keyword">set</span> charid=charid+@y <span class="keyword">and</span> charid&lt;<span class="number">100</span>;</span>  </span><br><span class="line"><span class="operator"><span class="keyword">update</span> <span class="built_in">character</span> <span class="keyword">as</span> a,charactertemp  <span class="keyword">as</span> b <span class="keyword">set</span> a.charid=b.<span class="keyword">rownum</span> <span class="keyword">where</span> a.charid=b.charid+@y <span class="keyword">and</span> a.charid&gt;@y;</span>  </span><br><span class="line"><span class="operator"><span class="keyword">drop</span> <span class="keyword">table</span> charactertemp;</span></span><br></pre></td></tr></table></figure></p>
 
       
     </div>
