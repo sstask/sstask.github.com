@@ -15,7 +15,7 @@ ls 列出当前目录下所以文件和目录 加参数-a可以列出隐藏文�
 <meta property="og:description" content="在linux下工作总是要用到不少命令，下面记录下常用的命令，以免忘了。
 文件相关
 ls 列出当前目录下所以文件和目录 加参数-a可以列出隐藏文件(.开头)        ll 详细列表        rm 删除文件 -r循环删除 -f强制删除        cat 输出文件到屏幕        less 查看文件        tail 查看文件末尾N行 tail -f xx持续打印文件新内容直至">
-<meta property="og:updated_time" content="2015-09-18T02:22:50.505Z">
+<meta property="og:updated_time" content="2015-09-18T09:54:23.045Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="linux常用命令">
 <meta name="twitter:description" content="在linux下工作总是要用到不少命令，下面记录下常用的命令，以免忘了。
@@ -238,6 +238,9 @@ ls 列出当前目录下所以文件和目录 加参数-a可以列出隐藏文�
 </blockquote>
 <h3 id="网络相关">网络相关</h3><blockquote>
 <p><strong>ifconfig</strong> 查看ip地址等信息<br>        <strong>netstat</strong> 查看网络连接 netstat -atp（a显示所有选项，默认不显示listen相关，t显示tcp，p显示连接关联的程序<br>）</p>
+</blockquote>
+<h3 id="时间相关">时间相关</h3><blockquote>
+<p><strong>date</strong> 查看当前时间<br><strong>date -s “2008-08-08 08:08:08”</strong>设置时间 date -s 2008-08-08 date -s 08:08:08<br><strong>date +%s</strong>获取当前时间戳<br><strong>date -d 2008-08-08 +%s</strong>获取指定时间戳<br><strong>date -d @1442107727</strong>通过时间戳得到时间</p>
 </blockquote>
 <h3 id="内存相关">内存相关</h3><blockquote>
 <p><strong>free</strong> 查看内存使用情况 free -m 显示单位M free -g 显示单位G<br>        <em>ps aux | awk ‘{mem += $6} END {print mem/1024}’</em>  统计所以程序所占用内存M （rss程序占用内存）</p>
