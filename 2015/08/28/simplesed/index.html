@@ -15,7 +15,7 @@
 <meta property="og:description" content="sed是linux 下的一个文本编辑命令，它功能强大，经常被用来编辑或分析处理一个或多个文件，简化对文件的处理。它和awk的处理方式差不多，都是对输入一行一行的处理，然后输出。
 
 使用格式sed    - [nefri]    ‘action’">
-<meta property="og:updated_time" content="2015-09-18T01:32:22.961Z">
+<meta property="og:updated_time" content="2015-09-18T01:42:49.952Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="sed简记">
 <meta name="twitter:description" content="sed是linux 下的一个文本编辑命令，它功能强大，经常被用来编辑或分析处理一个或多个文件，简化对文件的处理。它和awk的处理方式差不多，都是对输入一行一行的处理，然后输出。
@@ -246,13 +246,17 @@
 <li><p>c 取代 sed ‘2,5c hello world’ test.txt 把2到5行内容替换为hello world</p>
 </li>
 <li><p>d 删除 sed ‘1d’ test.txt         删除第一行</p>
-<pre><code>&gt;sed <span class="string">'/root/d'</span> test<span class="class">.txt</span>  删除匹配root的行
-</code></pre></li>
+<blockquote>
+<p>sed ‘/root/d’ test.txt  删除匹配root的行</p>
+</blockquote>
+</li>
 <li><p>i  新增 sed ‘1a hello world’ test.txt 在第一行之前新加一行</p>
 </li>
 <li><p>p 打印 sed -n ‘1,10p’ test.txt 打印1到10行</p>
-<pre><code>&gt;sed -n <span class="string">'1,10!p'</span> test<span class="class">.txt</span> 打印<span class="number">1</span>到<span class="number">10</span>行之外的所有行
-</code></pre></li>
+<blockquote>
+<p>sed -n ‘1,10!p’ test.txt 打印1到10行之外的所有行</p>
+</blockquote>
+</li>
 <li><p>s 替换 sed ‘s/hello/world/g’ test.txt 把文件中的hello全部替换为world</p>
 </li>
 <li><p>q 退出 sed -n ‘10p’ test.txt  打印10行退出</p>
