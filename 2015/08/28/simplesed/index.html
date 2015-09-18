@@ -3,21 +3,24 @@
 <head>
   <meta charset="utf-8">
   
-  <title>排行榜设计 | 叶子的博客</title>
+  <title>sed简记 | 叶子的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="最近在做排行榜功能，排行榜无非就是对用户一些数据的排序，在量级不是很大的情况下还是比较简单的，在数据结构上使用数组，set，map都可以，依具体情况而定，这里不做过多讨论。现在遇到的问题是在数据库方面的，也就是对排行榜数据该已什么方式进行存储。
-我们用的数据库是mysql，如果排行榜量级在百名之内的话可以把每个进榜用户的数据都当做是一条数据库记录插入表中，因为数据量级比较小，插入删除操作不是太多，">
+  <meta name="description" content="sed是linux 下的一个文本编辑命令，它功能强大，经常被用来编辑或分析处理一个或多个文件，简化对文件的处理。它和awk的处理方式差不多，都是对输入一行一行的处理，然后输出。
+
+使用格式sed    - [nefri]    ‘action’">
 <meta property="og:type" content="article">
-<meta property="og:title" content="排行榜设计">
-<meta property="og:url" content="http://sstask.github.io/2015/06/21/rankdesign/index.html">
+<meta property="og:title" content="sed简记">
+<meta property="og:url" content="http://sstask.github.io/2015/08/28/simplesed/index.html">
 <meta property="og:site_name" content="叶子的博客">
-<meta property="og:description" content="最近在做排行榜功能，排行榜无非就是对用户一些数据的排序，在量级不是很大的情况下还是比较简单的，在数据结构上使用数组，set，map都可以，依具体情况而定，这里不做过多讨论。现在遇到的问题是在数据库方面的，也就是对排行榜数据该已什么方式进行存储。
-我们用的数据库是mysql，如果排行榜量级在百名之内的话可以把每个进榜用户的数据都当做是一条数据库记录插入表中，因为数据量级比较小，插入删除操作不是太多，">
-<meta property="og:updated_time" content="2015-09-17T13:34:29.435Z">
+<meta property="og:description" content="sed是linux 下的一个文本编辑命令，它功能强大，经常被用来编辑或分析处理一个或多个文件，简化对文件的处理。它和awk的处理方式差不多，都是对输入一行一行的处理，然后输出。
+
+使用格式sed    - [nefri]    ‘action’">
+<meta property="og:updated_time" content="2015-09-18T01:29:28.906Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="排行榜设计">
-<meta name="twitter:description" content="最近在做排行榜功能，排行榜无非就是对用户一些数据的排序，在量级不是很大的情况下还是比较简单的，在数据结构上使用数组，set，map都可以，依具体情况而定，这里不做过多讨论。现在遇到的问题是在数据库方面的，也就是对排行榜数据该已什么方式进行存储。
-我们用的数据库是mysql，如果排行榜量级在百名之内的话可以把每个进榜用户的数据都当做是一条数据库记录插入表中，因为数据量级比较小，插入删除操作不是太多，">
+<meta name="twitter:title" content="sed简记">
+<meta name="twitter:description" content="sed是linux 下的一个文本编辑命令，它功能强大，经常被用来编辑或分析处理一个或多个文件，简化对文件的处理。它和awk的处理方式差不多，都是对输入一行一行的处理，然后输出。
+
+使用格式sed    - [nefri]    ‘action’">
   
     <link rel="alternative" href="/atom.xml" title="叶子的博客" type="application/atom+xml">
   
@@ -177,11 +180,11 @@
 		</header>				
 	</div>
 </nav>
-      <div class="body-wrap"><article id="post-rankdesign" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-simplesed" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2015/06/21/rankdesign/" class="article-date">
-  	<time datetime="2015-06-21T07:17:19.000Z" itemprop="datePublished">Jun 21</time>
+      <a href="/2015/08/28/simplesed/" class="article-date">
+  	<time datetime="2015-08-28T12:52:29.000Z" itemprop="datePublished">Aug 28</time>
 </a>
     </div>
   
@@ -194,7 +197,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      排行榜设计
+      sed简记
     </h1>
   
 
@@ -203,12 +206,12 @@
       <div class="article-info article-info-post">
         
 	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/">mysql</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/rank/">rank</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/排行榜/">排行榜</a></li></ul>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/script/">script</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sed/">sed</a></li></ul>
 	</div>
 
         
 	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/game/">game</a>
+	<a class="article-category-link" href="/categories/linux/">linux</a>
 	</div>
 
 
@@ -218,44 +221,41 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>最近在做排行榜功能，排行榜无非就是对用户一些数据的排序，在量级不是很大的情况下还是比较简单的，在数据结构上使用数组，set，map都可以，依具体情况而定，这里不做过多讨论。现在遇到的问题是在数据库方面的，也就是对排行榜数据该已什么方式进行存储。</p>
-<p>我们用的数据库是mysql，如果排行榜量级在百名之内的话可以把每个进榜用户的数据都当做是一条数据库记录插入表中，因为数据量级比较小，插入删除操作不是太多，对数据库的压力不是很大（定时存储还是要做的，减少对数据的操作频率）。数据库表设计大概是这样的：</p>
+        <p><strong>sed</strong>是linux 下的一个文本编辑命令，它功能强大，经常被用来编辑或分析处理一个或多个文件，简化对文件的处理。它和awk的处理方式差不多，都是对输入一行一行的处理，然后输出。</p>
 <blockquote>
-<p>rank(ranktype,id,pkpara,…,data)<br><a id="more"></a></p>
-<pre><code class="sql">+<span class="comment">-----------+---------------------+------+-----+---------+-------+  </span>
-| Field     | Type                | Null | Key | Default | Extra |  
-+<span class="comment">-----------+---------------------+------+-----+---------+-------+  </span>
-| ranktype  | int(10) unsigned    | NO   | PRI | NULL    |       |  
-| order     | int(10) unsigned    | NO   | PRI | NULL    |       |  
-| id        | int(10) unsigned    | NO   |     | NULL    |       |  
-| data      | blob                | YES  |     | NULL    |       |  
-+<span class="comment">-----------+---------------------+------+-----+---------+-------+</span>
-</code></pre>
-<p>order记录用户名次，data保存用户数据，如果用户数据较少的话可以不用blob，而是单独拿出来存，这样会更直观。<br>  这样存储明显有个问题，就是当一个人的名次变了，可能会影响到其他很多人的名次，例如一个用户从300名上升到了100名，这时候相当于从300名到100名的所有用户都变了，也就是说这个时候需要更新200条数据库记录。排行榜名次很多的话这显然是不可接受的，因为如果排名有几万名，这种变动一次就有可能在几千名。</p>
+<p>使用格式sed    - [nefri]    ‘action’<br><a id="more"></a></p>
 </blockquote>
-<p>我们要做的排名正是有几万名的，所以要做其他方案。从上面可以发现对数据库造成压力的地方其实就是一次需要更新的数据记录太多，所以可以从减少更新记录来入手。在之前项目中我们的做法是把排行榜分成几段，每段存成数据库中的一条记录。表是这样的：</p>
-<pre><code class="sql">+<span class="comment">-----------+---------------------+------+-----+---------+-------+  </span>
-| Field     | Type                | Null | Key | Default | Extra |  
-+<span class="comment">-----------+---------------------+------+-----+---------+-------+  </span>
-| ranktype  | int(10) unsigned    | NO   | PRI | NULL    |       |  
-| id        | int(10) unsigned    | NO   | PRI | NULL    |       |  
-| data      | blob                | YES  |     | NULL    |       |  
-+<span class="comment">-----------+---------------------+------+-----+---------+-------+</span>
-</code></pre>
-<p>id表示这是排行榜的第几段，好比排行榜有1w名，分成10段，每段1000名，id为1的就存1到1000名，id为2的存储1001到2000名，以此类推。<br>这样的话如果排行榜有变化只需要一条或者有限的几条记录就好了，数据库几乎没有压力，但是这种方案不好的地方在于不直观，从数据库层面上你没法知道名次信息，而且以后如果有合并数据的需求的话单从数据库层面是没法做到的（必须通过程序读出数据解析然后合并最后再存到数据库）。</p>
-<p>为了解决上面的问题，有了第三种设计方案：</p>
-<pre><code class="sql">+<span class="comment">-----------+---------------------+------+-----+---------+-------+  </span>
-| Field     | Type                | Null | Key | Default | Extra |  
-+<span class="comment">-----------+---------------------+------+-----+---------+-------+  </span>
-| ranktype  | int(10) unsigned    | NO   | PRI | NULL    |       |  
-| id        | int(10) unsigned    | NO   | PRI | NULL    |       |  
-| pkpara1   | bigint(20) unsigned | NO   |     | NULL    |       |  
-| pkpara2   | bigint(20) unsigned | NO   |     | NULL    |       |  
-| pkpara3   | bigint(20) unsigned | NO   |     | NULL    |       |  
-| data      | blob                | YES  |     | NULL    |       |  
-+<span class="comment">-----------+---------------------+------+-----+---------+-------+</span>
-</code></pre>
-<p> ranktype（排行榜类型），id（用户id），pkpara1 2 3 4（竞争参数），data（用户数据）<br>这种方案的思想就是在数据库中不存在名次，只是存储排行榜中的用户数据。当程序启动的时候从数据库中一次把数据全部读出来，然后按照pkpara1 2 3 4进行排名，这样在内存中就能构造出一个排行榜了。如果有用户新进榜只需要简单的对其进行pkpara的赋值，然后可以直接插入数据库，并不需要担心数据库中其他用户的数据。如果有名次的变化也只是对造成变化的那个用户的pkpara进行更新，其他的互不影响。用户掉出排行榜也只是从数据库中删除一条记录。当然操作数据库数据之前要记得更新内存中的排行榜数据。<br>可见这种方案可以满足大多数需求，但是它需要常驻内存，不然无法更新排行榜，不过在排行参数不大的情况下维持一个几十万甚至几百万的排名还是可以的，有待改进……</p>
+<ul>
+<li><p>-n 只显示被处理的行，其他行不显示，常用</p>
+</li>
+<li><p>-e 用来执行多个指令，如 nl /etc/passwd | sed -e ‘2d’ -e ‘/root/{s/bash/python/}’ </p>
+</li>
+<li><p>-f  执行脚本命令，可以把复杂指令写到文件里，通过sed -f name执行</p>
+</li>
+<li><p>-r 执行扩展正则表达式</p>
+</li>
+<li><p>-i 直接修改文件，而不是输出到屏幕，慎用</p>
+<blockquote>
+<p>action’</p>
+</blockquote>
+</li>
+<li><p>a 新增 sed ‘1a hello world’ test.txt 在第一行之后新加一行</p>
+</li>
+<li><p>c 取代 sed ‘2,5c hello world’ test.txt 把2到5行内容替换为hello world</p>
+</li>
+<li><p>d 删除 sed ‘1d’ test.txt         删除第一行</p>
+<pre><code>&gt;sed <span class="string">'/root/d'</span> test<span class="class">.txt</span>  删除匹配root的行
+</code></pre></li>
+<li><p>i  新增 sed ‘1a hello world’ test.txt 在第一行之前新加一行</p>
+</li>
+<li><p>p 打印 sed -n ‘1,10p’ test.txt 打印1到10行</p>
+<pre><code>&gt;sed -n <span class="string">'1,10!p'</span> test<span class="class">.txt</span> 打印<span class="number">1</span>到<span class="number">10</span>行之外的所有行
+</code></pre></li>
+<li><p>s 替换 sed ‘s/hello/world/g’ test.txt 把文件中的hello全部替换为world</p>
+</li>
+<li><p>q 退出 sed -n ‘10p’ test.txt  打印10行退出</p>
+</li>
+</ul>
 
       
     </div>
@@ -265,18 +265,9 @@
     
 <nav id="article-nav">
   
-    <a href="/2015/06/22/rankreward/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption"><</strong>
-      <div class="article-nav-title">
-        
-          排行榜奖励发放
-        
-      </div>
-    </a>
   
-  
-    <a href="/2015/06/17/vimdisplaych/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">设置vim显示中文</div>
+    <a href="/2015/08/25/optimizemysql/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">mysql优化</div>
       <strong class="article-nav-caption">></strong>
     </a>
   
@@ -305,7 +296,7 @@
 
 <div class="duoshuo">
 	<!-- 多说评论框 start -->
-	<div class="ds-thread" data-thread-key="rankdesign" data-title="排行榜设计" data-url="http://sstask.github.io/2015/06/21/rankdesign/"></div>
+	<div class="ds-thread" data-thread-key="simplesed" data-title="sed简记" data-url="http://sstask.github.io/2015/08/28/simplesed/"></div>
 	<!-- 多说评论框 end -->
 	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
 	<script type="text/javascript">
