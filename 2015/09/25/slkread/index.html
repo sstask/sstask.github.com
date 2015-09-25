@@ -3,24 +3,18 @@
 <head>
   <meta charset="utf-8">
   
-  <title>protocol buffer相关 | 叶子的博客</title>
+  <title>slk文件读取 | 叶子的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="今天被protocol buffer中的一个小问题坑了一大把，所以来记录下protocol buffer中的一些东东。        这次被坑就是因为枚举的问题，消息里面有个成员是个枚举变量，在给它赋值的时候直接强转赋值，而没有判断具体的值是否在枚举的范围内，于是乎程序直接宕机了。其实这个错误也不是第一次犯了，只怪这种错误太容易触发了，一不小心就忘了……
-
-protocol buffer repe">
+  <meta name="description" content="在项目中数据配置一般用excel表格居多，excel格式又有很多，其中要数csv和slk最简单易解读。其实csv和slk也不算excel的版本格式，只是excel文件都可以保存为csv、slk格式。csv格式最简单，就是把excel单元格的内容用分号;隔开然后存与文本中，用txt打开这种文件就很容易看到其内容与格式。它不好的地方也在于太多简单，不能存储excel里面的很多信息，例如公式、注释、批注">
 <meta property="og:type" content="article">
-<meta property="og:title" content="protocol buffer相关">
-<meta property="og:url" content="http://sstask.github.io/2015/08/01/pbsome/index.html">
+<meta property="og:title" content="slk文件读取">
+<meta property="og:url" content="http://sstask.github.io/2015/09/25/slkread/index.html">
 <meta property="og:site_name" content="叶子的博客">
-<meta property="og:description" content="今天被protocol buffer中的一个小问题坑了一大把，所以来记录下protocol buffer中的一些东东。        这次被坑就是因为枚举的问题，消息里面有个成员是个枚举变量，在给它赋值的时候直接强转赋值，而没有判断具体的值是否在枚举的范围内，于是乎程序直接宕机了。其实这个错误也不是第一次犯了，只怪这种错误太容易触发了，一不小心就忘了……
-
-protocol buffer repe">
-<meta property="og:updated_time" content="2015-09-17T14:39:26.638Z">
+<meta property="og:description" content="在项目中数据配置一般用excel表格居多，excel格式又有很多，其中要数csv和slk最简单易解读。其实csv和slk也不算excel的版本格式，只是excel文件都可以保存为csv、slk格式。csv格式最简单，就是把excel单元格的内容用分号;隔开然后存与文本中，用txt打开这种文件就很容易看到其内容与格式。它不好的地方也在于太多简单，不能存储excel里面的很多信息，例如公式、注释、批注">
+<meta property="og:updated_time" content="2015-09-25T03:49:47.801Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="protocol buffer相关">
-<meta name="twitter:description" content="今天被protocol buffer中的一个小问题坑了一大把，所以来记录下protocol buffer中的一些东东。        这次被坑就是因为枚举的问题，消息里面有个成员是个枚举变量，在给它赋值的时候直接强转赋值，而没有判断具体的值是否在枚举的范围内，于是乎程序直接宕机了。其实这个错误也不是第一次犯了，只怪这种错误太容易触发了，一不小心就忘了……
-
-protocol buffer repe">
+<meta name="twitter:title" content="slk文件读取">
+<meta name="twitter:description" content="在项目中数据配置一般用excel表格居多，excel格式又有很多，其中要数csv和slk最简单易解读。其实csv和slk也不算excel的版本格式，只是excel文件都可以保存为csv、slk格式。csv格式最简单，就是把excel单元格的内容用分号;隔开然后存与文本中，用txt打开这种文件就很容易看到其内容与格式。它不好的地方也在于太多简单，不能存储excel里面的很多信息，例如公式、注释、批注">
   
     <link rel="alternative" href="/atom.xml" title="叶子的博客" type="application/atom+xml">
   
@@ -180,11 +174,11 @@ protocol buffer repe">
 		</header>				
 	</div>
 </nav>
-      <div class="body-wrap"><article id="post-pbsome" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-slkread" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2015/08/01/pbsome/" class="article-date">
-  	<time datetime="2015-08-01T10:14:57.000Z" itemprop="datePublished">Aug 1</time>
+      <a href="/2015/09/25/slkread/" class="article-date">
+  	<time datetime="2015-09-25T11:21:41.000Z" itemprop="datePublished">Sep 25</time>
 </a>
     </div>
   
@@ -197,7 +191,7 @@ protocol buffer repe">
         
   
     <h1 class="article-title" itemprop="name">
-      protocol buffer相关
+      slk文件读取
     </h1>
   
 
@@ -206,12 +200,12 @@ protocol buffer repe">
       <div class="article-info article-info-post">
         
 	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/message/">message</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/pb/">pb</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/repeated/">repeated</a></li></ul>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/slk/">slk</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sylk/">sylk</a></li></ul>
 	</div>
 
         
 	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/protocol-buffer/">protocol buffer</a>
+	<a class="article-category-link" href="/categories/game/">game</a>
 	</div>
 
 
@@ -221,14 +215,25 @@ protocol buffer repe">
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p> 今天被protocol buffer中的一个小问题坑了一大把，所以来记录下protocol buffer中的一些东东。<br>        这次被坑就是因为枚举的问题，消息里面有个成员是个枚举变量，在给它赋值的时候直接强转赋值，而没有判断具体的值是否在枚举的范围内，于是乎程序直接宕机了。其实这个错误也不是第一次犯了，只怪这种错误太容易触发了，一不小心就忘了……</p>
+        <p>在项目中数据配置一般用<strong>excel</strong>表格居多，excel格式又有很多，其中要数<strong>csv和slk</strong>最简单易解读。其实csv和slk也不算excel的版本格式，只是excel文件都可以保存为csv、slk格式。<br>csv格式最简单，就是把excel单元格的内容用分号;隔开然后存与文本中，用txt打开这种文件就很容易看到其内容与格式。它不好的地方也在于太多简单，不能存储excel里面的很多信息，例如公式、注释、批注等，当把excel保存为csv的时候这些信息就丢失了，但有时候这样信息是需要的。<br>slk又叫sylk(<strong>SYmbolic LinK </strong>),符号链接文件，它能够存储excel的大部分信息，当然也有一些信息的丢失，其简单格式如下<br><figure class="highlight tp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">ID;<span class="keyword">P</span></span><br><span class="line">C;<span class="keyword">Y</span><span class="number">1</span>;<span class="keyword">X</span><span class="number">1</span>;K<span class="string">"Row 1"</span></span><br><span class="line">C;<span class="keyword">Y</span><span class="number">2</span>;<span class="keyword">X</span><span class="number">1</span>;K<span class="string">"Row 2"</span></span><br><span class="line">C;<span class="keyword">Y</span><span class="number">3</span>;<span class="keyword">X</span><span class="number">1</span>;K<span class="string">"Total"</span></span><br><span class="line">C;<span class="keyword">Y</span><span class="number">1</span>;<span class="keyword">X</span><span class="number">2</span>;K<span class="number">11</span></span><br><span class="line">C;<span class="keyword">Y</span><span class="number">2</span>;<span class="keyword">X</span><span class="number">2</span>;K<span class="number">22</span></span><br><span class="line">C;<span class="keyword">Y</span><span class="number">3</span>;<span class="keyword">X</span><span class="number">2</span>;K<span class="number">0</span>;ER1C<span class="number">2</span>+R2C<span class="number">2</span></span><br><span class="line">E</span><br></pre></td></tr></table></figure></p>
+<a id="more"></a>
+<p>excel打开结果如下，<br>Row 1|11<br>— | –<br>Row 2|22<br>Total|33<br>基本格式即，</p>
 <blockquote>
-<p>protocol buffer repeated message<br><a id="more"></a></p>
+<p><em>以ID开头，以E结尾，C代表这行是单元格内容，XY是单元格坐标，x表示单元格在第几列，y表示单元格在第几行，k后面跟着单元格内容，如果是字符串就用””括起来</em>。</p>
 </blockquote>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">enum</span> MyEm  </span><br><span class="line">&#123;  </span><br><span class="line">    MyEm_One = <span class="number">1</span>;  </span><br><span class="line">    MyEm_Two = <span class="number">2</span>;  </span><br><span class="line">    MyEm_Three = <span class="number">3</span>;  </span><br><span class="line">&#125;  </span><br><span class="line">  </span><br><span class="line">message MyMsg  </span><br><span class="line">&#123;  </span><br><span class="line">    optional MyEm em= <span class="number">1</span>;  </span><br><span class="line">&#125;  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">int</span> val=<span class="number">8</span>;  </span><br><span class="line">MyMsg msg;  </span><br><span class="line">msg.set_em((MyEm)val);</span><br></pre></td></tr></table></figure>
-<p>在最后一句稳稳的宕机。对于这种情况我一般的做法就是<strong>把那个枚举变量改成int类型</strong>的，这样怎么赋值都不会有问题了，一劳永逸。<br>        还有一点就是当在消息中有repeated字段而且repeated的量很大的时候，要尽量让repeated的变量是简单类型，例如在下面的例子中就应该尽量使用con2：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">////con1  </span></span><br><span class="line">message MySubMsg  </span><br><span class="line">&#123;  </span><br><span class="line">    optional uint32 mem1= <span class="number">1</span>;  </span><br><span class="line">    optional uint32 mem2= <span class="number">2</span>;  </span><br><span class="line">&#125;  </span><br><span class="line">message MyMsg  </span><br><span class="line">&#123;  </span><br><span class="line">    repeated MySubMsg mem= <span class="number">1</span>;  </span><br><span class="line">&#125;  </span><br><span class="line"><span class="comment">////con2  </span></span><br><span class="line">message MyMsg  </span><br><span class="line">&#123;  </span><br><span class="line">    repeated uint32 mem1= <span class="number">1</span>;  </span><br><span class="line">    repeated uint32 mem2= <span class="number">2</span>;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>因为在<strong>protocol buffer底层对于repeated类型存储的是一个指针数组</strong>，对于简单类型就直接把值存入数组了，在数组size不足时就把size翻倍，也只是new了一次数组，但是如果存复杂类型的时候还需要new出来这个复杂类型对象，然后把指针存在数组中，这样要存多少对象就要new多少次，但是new的效率是很低的。</p>
+<p>在看看复杂点的格式，<br><figure class="highlight tp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">ID;<span class="keyword">P</span></span><br><span class="line"><span class="keyword">P</span>;PGeneral</span><br><span class="line"><span class="keyword">P</span>;P_(* #,##<span class="number">0</span>_);;_(* \-#,##<span class="number">0</span>_);;_(* <span class="string">"-"</span>_);;_(@_)</span><br><span class="line"><span class="keyword">P</span>;P_(* #,##<span class="number">0</span><span class="number">.00</span>_);;_(* \(#,##<span class="number">0</span><span class="number">.00</span>\);;_(* <span class="string">"-"</span>??_);;_(@_)</span><br><span class="line"><span class="keyword">P</span>;P_(<span class="string">"$"</span>* #,##<span class="number">0</span><span class="number">.00</span>_);;_(<span class="string">"$"</span>* \(#,##<span class="number">0</span><span class="number">.00</span>\);;_(<span class="string">"$"</span>* <span class="string">"-"</span>??_);;_(@_)</span><br><span class="line">C;<span class="keyword">Y</span><span class="number">1</span>;<span class="keyword">X</span><span class="number">1</span>;K<span class="string">"Row 1"</span></span><br><span class="line">C;<span class="keyword">Y</span><span class="number">2</span>;<span class="keyword">X</span><span class="number">1</span>;K<span class="string">"Row 2"</span></span><br><span class="line">C;<span class="keyword">Y</span><span class="number">3</span>;<span class="keyword">X</span><span class="number">1</span>;K<span class="string">"Total"</span></span><br><span class="line">C;<span class="keyword">Y</span><span class="number">1</span>;<span class="keyword">X</span><span class="number">2</span>;K<span class="number">11</span></span><br><span class="line">C;<span class="keyword">Y</span><span class="number">2</span>;<span class="keyword">X</span><span class="number">2</span>;K<span class="number">22</span></span><br><span class="line">C;<span class="keyword">Y</span><span class="number">3</span>;<span class="keyword">X</span><span class="number">2</span>;K<span class="number">0</span>;ER1C<span class="number">2</span>+R2C<span class="number">2</span></span><br><span class="line">F;<span class="keyword">P</span><span class="number">2</span>;C<span class="number">2</span></span><br><span class="line">E</span><br></pre></td></tr></table></figure></p>
+<p>excel打开结果如下，<br>Row 1|11.00<br>— | –<br>Row 2|22.00<br>Total|33.00</p>
+<blockquote>
+<p>F;P2;C2 表示对第2列使用第2种格式显示，即P定义格式，F使用格式</p>
+</blockquote>
+<p>如果你把一个excel文件保存为slk格式文件，然后用txt或者其他编辑器打开会发现它远比上面的格式复杂，但是他们共通的格式还是保持的，</p>
+<blockquote>
+<p><strong>第一行 ID;PWXL;N;E</strong><br><strong>最后一行 E</strong><br><strong>表示大小的行 B;Y4;X2;D0</strong> <em>即总共4行2列</em><br><strong>内容行 C;X2;N;K33</strong> <em>第2列内容33，行数向上找最近的Y;K后面的内容以\r\n结束或者遇“”之外的;结束</em></p>
+</blockquote>
+<p>根据上面的规则就可以把单元格的内容读取出来了，但是在解析字符串的时候需要注意几点</p>
+<blockquote>
+<p><strong>字符串内容在最大匹配的两个””之间</strong><br><strong>字符串中1b 20 3a三个连续字符表示换行，解析时需用\n替换</strong><br><strong>字符串中两个连续的;表示一个; 即;;要解析成;</strong></p>
+</blockquote>
 
       
     </div>
@@ -238,18 +243,9 @@ protocol buffer repe">
     
 <nav id="article-nav">
   
-    <a href="/2015/08/04/ctemplatetype/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption"><</strong>
-      <div class="article-nav-title">
-        
-          C++非类型模板参数
-        
-      </div>
-    </a>
   
-  
-    <a href="/2015/07/29/simplepython/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">python基本语法</div>
+    <a href="/2015/09/08/pbdynamicananlysis/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">protocol buffer动态解析</div>
       <strong class="article-nav-caption">></strong>
     </a>
   
@@ -278,7 +274,7 @@ protocol buffer repe">
 
 <div class="duoshuo">
 	<!-- 多说评论框 start -->
-	<div class="ds-thread" data-thread-key="pbsome" data-title="protocol buffer相关" data-url="http://sstask.github.io/2015/08/01/pbsome/"></div>
+	<div class="ds-thread" data-thread-key="slkread" data-title="slk文件读取" data-url="http://sstask.github.io/2015/09/25/slkread/"></div>
 	<!-- 多说评论框 end -->
 	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
 	<script type="text/javascript">
