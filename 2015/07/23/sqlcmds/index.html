@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS TAB(    id INT(10) UNSIGNED NOT NULL,    name VARCHAR
 <meta property="og:description" content="创建新表
 
 CREATE TABLE IF NOT EXISTS TAB(    id INT(10) UNSIGNED NOT NULL,    name VARCHAR(255),    grade INT(10) UNSIGNED NOT NULL,    PRIMARY KEY id) ENGINE=InnoDB DEFAULT CHARSET=utf8;">
-<meta property="og:updated_time" content="2015-09-17T14:19:12.279Z">
+<meta property="og:updated_time" content="2015-09-25T02:09:58.718Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="一些mysql语句">
 <meta name="twitter:description" content="创建新表
@@ -241,6 +241,10 @@ CREATE TABLE IF NOT EXISTS TAB(    id INT(10) UNSIGNED NOT NULL,    name VARCHAR
 <p>根据一张表的信息生成一张排名表</p>
 <blockquote>
 <p>set @x:=0;insert into Order(rank,id,grade) select @x:=@x+1 as rownum,id,grade from User order by grade desc;  </p>
+</blockquote>
+<p><em>exists not exists</em></p>
+<blockquote>
+<p>SELECT ID,NAME FROM A WHERE EXISTS (SELECT * FROM B WHERE A.ID=B.AID)</p>
 </blockquote>
 <p>复制一条数据</p>
 <blockquote>
