@@ -6,24 +6,21 @@
   <title>linux动态链接 | 叶子的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="在程序中总会用到各式各样的库，有两种使用方式：静态链接库和动态链接库，在windows下分别对应.lib文件和.dll文件，使用静态库时需要包含对应的头文件并引用lib文件，使用动态库则需要手动通过函数加载dll中的函数。linux下使用方法则有所不同，linux下.a文件.so文件分别对应静态和动态链接库。
-###静态链接库
-
-ar rcs libmylib.a mylib.o 生成.a静态库g">
+静态链接库
+ar rcs libmylib.a mylib.o 生成.a静态库gcc -">
 <meta property="og:type" content="article">
 <meta property="og:title" content="linux动态链接">
 <meta property="og:url" content="http://sstask.github.io/2015/09/29/linuxdynamiclink/index.html">
 <meta property="og:site_name" content="叶子的博客">
 <meta property="og:description" content="在程序中总会用到各式各样的库，有两种使用方式：静态链接库和动态链接库，在windows下分别对应.lib文件和.dll文件，使用静态库时需要包含对应的头文件并引用lib文件，使用动态库则需要手动通过函数加载dll中的函数。linux下使用方法则有所不同，linux下.a文件.so文件分别对应静态和动态链接库。
-###静态链接库
-
-ar rcs libmylib.a mylib.o 生成.a静态库g">
-<meta property="og:updated_time" content="2015-09-29T12:35:43.298Z">
+静态链接库
+ar rcs libmylib.a mylib.o 生成.a静态库gcc -">
+<meta property="og:updated_time" content="2015-09-29T12:37:56.690Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="linux动态链接">
 <meta name="twitter:description" content="在程序中总会用到各式各样的库，有两种使用方式：静态链接库和动态链接库，在windows下分别对应.lib文件和.dll文件，使用静态库时需要包含对应的头文件并引用lib文件，使用动态库则需要手动通过函数加载dll中的函数。linux下使用方法则有所不同，linux下.a文件.so文件分别对应静态和动态链接库。
-###静态链接库
-
-ar rcs libmylib.a mylib.o 生成.a静态库g">
+静态链接库
+ar rcs libmylib.a mylib.o 生成.a静态库gcc -">
   
     <link rel="alternative" href="/atom.xml" title="叶子的博客" type="application/atom+xml">
   
@@ -225,13 +222,11 @@ ar rcs libmylib.a mylib.o 生成.a静态库g">
     <div class="article-entry" itemprop="articleBody">
       
         <p>在程序中总会用到各式各样的库，有两种使用方式：<em>静态链接库和动态链接库</em>，在windows下分别对应.lib文件和.dll文件，使用静态库时需要包含对应的头文件并引用lib文件，使用动态库则需要手动通过函数加载dll中的函数。<br>linux下使用方法则有所不同，linux下.a文件.so文件分别对应静态和动态链接库。</p>
-<p>###静态链接库</p>
-<blockquote>
+<h3 id="静态链接库"><strong>静态链接库</strong></h3><blockquote>
 <p>ar rcs libmylib.a mylib.o <em>生成.a静态库</em><br>gcc -o hello main.c  -L. -lmylib <em>生成可执行文件hello；gcc会在mylib之前自动添加lib，即找文件libmylib.a</em><br>./hello <em>执行</em></p>
 </blockquote>
 <p>可以发现即使删除libmylib.a文件，hello也可以执行。<br><a id="more"></a></p>
-<p>###动态链接库</p>
-<blockquote>
+<h3 id="动态链接库"><strong>动态链接库</strong></h3><blockquote>
 <p>gcc -fPIC -shared -o libmylib.so mylib.c <em>生成.so动态库</em><br>gcc -o hello main.c  -L. -lmylib <em>生成可执行文件hello；gcc会在mylib之前自动添加lib，即找文件libmylib.so</em><br>./hello <em>执行</em><br><strong>./hello: error while loading shared libraries: libmylib.so: cannot open shared object file: No such file or directory</strong></p>
 </blockquote>
 <p>可以发现此时hello执行出错，<em>gcc编译时优先链接动态库文件，但程序执行时并没有找到动态链接库</em>。<br>在linux下程序搜索动态链接库是按照如下顺序的：</p>
