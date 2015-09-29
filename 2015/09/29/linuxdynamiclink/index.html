@@ -3,24 +3,27 @@
 <head>
   <meta charset="utf-8">
   
-  <title>一些mysql语句 | 叶子的博客</title>
+  <title>linux动态链接 | 叶子的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="创建新表
+  <meta name="description" content="在程序中总会用到各式各样的库，有两种使用方式：静态链接库和动态链接库，在windows下分别对应.lib文件和.dll文件，使用静态库时需要包含对应的头文件并引用lib文件，使用动态库则需要手动通过函数加载dll中的函数。linux下使用方法则有所不同，linux下.a文件.so文件分别对应静态和动态链接库。
+###静态链接库
 
-CREATE TABLE IF NOT EXISTS TAB(    id INT(10) UNSIGNED NOT NULL,    name VARCHAR(255),    grade INT(10) UNSIGNED NOT NULL,    PRIMARY KEY id) ENGINE=InnoDB DEFAULT CHARSET=utf8;">
+ar rcs libmylib.a mylib.o 生成.a静态库g">
 <meta property="og:type" content="article">
-<meta property="og:title" content="一些mysql语句">
-<meta property="og:url" content="http://sstask.github.io/2015/07/23/sqlcmds/index.html">
+<meta property="og:title" content="linux动态链接">
+<meta property="og:url" content="http://sstask.github.io/2015/09/29/linuxdynamiclink/index.html">
 <meta property="og:site_name" content="叶子的博客">
-<meta property="og:description" content="创建新表
+<meta property="og:description" content="在程序中总会用到各式各样的库，有两种使用方式：静态链接库和动态链接库，在windows下分别对应.lib文件和.dll文件，使用静态库时需要包含对应的头文件并引用lib文件，使用动态库则需要手动通过函数加载dll中的函数。linux下使用方法则有所不同，linux下.a文件.so文件分别对应静态和动态链接库。
+###静态链接库
 
-CREATE TABLE IF NOT EXISTS TAB(    id INT(10) UNSIGNED NOT NULL,    name VARCHAR(255),    grade INT(10) UNSIGNED NOT NULL,    PRIMARY KEY id) ENGINE=InnoDB DEFAULT CHARSET=utf8;">
-<meta property="og:updated_time" content="2015-09-25T02:09:58.718Z">
+ar rcs libmylib.a mylib.o 生成.a静态库g">
+<meta property="og:updated_time" content="2015-09-29T12:35:43.298Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="一些mysql语句">
-<meta name="twitter:description" content="创建新表
+<meta name="twitter:title" content="linux动态链接">
+<meta name="twitter:description" content="在程序中总会用到各式各样的库，有两种使用方式：静态链接库和动态链接库，在windows下分别对应.lib文件和.dll文件，使用静态库时需要包含对应的头文件并引用lib文件，使用动态库则需要手动通过函数加载dll中的函数。linux下使用方法则有所不同，linux下.a文件.so文件分别对应静态和动态链接库。
+###静态链接库
 
-CREATE TABLE IF NOT EXISTS TAB(    id INT(10) UNSIGNED NOT NULL,    name VARCHAR(255),    grade INT(10) UNSIGNED NOT NULL,    PRIMARY KEY id) ENGINE=InnoDB DEFAULT CHARSET=utf8;">
+ar rcs libmylib.a mylib.o 生成.a静态库g">
   
     <link rel="alternative" href="/atom.xml" title="叶子的博客" type="application/atom+xml">
   
@@ -180,11 +183,11 @@ CREATE TABLE IF NOT EXISTS TAB(    id INT(10) UNSIGNED NOT NULL,    name VARCHAR
 		</header>				
 	</div>
 </nav>
-      <div class="body-wrap"><article id="post-sqlcmds" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-linuxdynamiclink" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2015/07/23/sqlcmds/" class="article-date">
-  	<time datetime="2015-07-23T12:13:01.000Z" itemprop="datePublished">Jul 23</time>
+      <a href="/2015/09/29/linuxdynamiclink/" class="article-date">
+  	<time datetime="2015-09-29T12:34:08.000Z" itemprop="datePublished">Sep 29</time>
 </a>
     </div>
   
@@ -197,7 +200,7 @@ CREATE TABLE IF NOT EXISTS TAB(    id INT(10) UNSIGNED NOT NULL,    name VARCHAR
         
   
     <h1 class="article-title" itemprop="name">
-      一些mysql语句
+      linux动态链接
     </h1>
   
 
@@ -206,12 +209,12 @@ CREATE TABLE IF NOT EXISTS TAB(    id INT(10) UNSIGNED NOT NULL,    name VARCHAR
       <div class="article-info article-info-post">
         
 	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/db/">db</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/insert/">insert</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/select/">select</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sql/">sql</a></li></ul>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/dynamiclink/">dynamiclink</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/staticlink/">staticlink</a></li></ul>
 	</div>
 
         
 	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/mysql/">mysql</a>
+	<a class="article-category-link" href="/categories/linux/">linux</a>
 	</div>
 
 
@@ -221,37 +224,51 @@ CREATE TABLE IF NOT EXISTS TAB(    id INT(10) UNSIGNED NOT NULL,    name VARCHAR
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>创建新表</p>
+        <p>在程序中总会用到各式各样的库，有两种使用方式：<em>静态链接库和动态链接库</em>，在windows下分别对应.lib文件和.dll文件，使用静态库时需要包含对应的头文件并引用lib文件，使用动态库则需要手动通过函数加载dll中的函数。<br>linux下使用方法则有所不同，linux下.a文件.so文件分别对应静态和动态链接库。</p>
+<p>###静态链接库</p>
 <blockquote>
-<p>CREATE TABLE IF NOT EXISTS TAB(<br>    id INT(10) UNSIGNED NOT NULL,<br>    name VARCHAR(255),<br>    grade INT(10) UNSIGNED NOT NULL,<br>    PRIMARY KEY id<br>) ENGINE=InnoDB DEFAULT CHARSET=utf8;  </p>
+<p>ar rcs libmylib.a mylib.o <em>生成.a静态库</em><br>gcc -o hello main.c  -L. -lmylib <em>生成可执行文件hello；gcc会在mylib之前自动添加lib，即找文件libmylib.a</em><br>./hello <em>执行</em></p>
 </blockquote>
-<a id="more"></a>
-<p>清空表</p>
+<p>可以发现即使删除libmylib.a文件，hello也可以执行。<br><a id="more"></a></p>
+<p>###动态链接库</p>
 <blockquote>
-<p>delete from A;  </p>
+<p>gcc -fPIC -shared -o libmylib.so mylib.c <em>生成.so动态库</em><br>gcc -o hello main.c  -L. -lmylib <em>生成可执行文件hello；gcc会在mylib之前自动添加lib，即找文件libmylib.so</em><br>./hello <em>执行</em><br><strong>./hello: error while loading shared libraries: libmylib.so: cannot open shared object file: No such file or directory</strong></p>
 </blockquote>
-<p>从一张表中选择数据插入另一张表中（id重复的数据不插入）</p>
+<p>可以发现此时hello执行出错，<em>gcc编译时优先链接动态库文件，但程序执行时并没有找到动态链接库</em>。<br>在linux下程序搜索动态链接库是按照如下顺序的：</p>
+<ul>
+<li>ELF可执行文件中动态段中DT_RPATH所指定的路径，编译时gcc加入链接参数“-Wl,-rpath”指定该动态库搜索路径</li>
+<li>环境变量<strong>LD_LIBRARY_PATH</strong>指定的动态库搜索路径</li>
+<li>配置文档/etc/ld.so.conf中指定的动态库搜索路径</li>
+<li>默认的动态库搜索路径/lib</li>
+<li>默认的动态库搜索路径/usr/lib</li>
+</ul>
+<p>按照第一种方法解决，</p>
 <blockquote>
-<p>insert into A(id,name) (SELECT bid,bname FROM B as b where not exists(select * from A as a where a.id=b.bid));  </p>
+<p>gcc -o hello main.c  -L. -lmylib <strong>-Wl,-rpath=. </strong>   <em>参数-Wl,-rpath=. 指定当前路径为动态库搜索路径</em><br>./hello <em>可执行</em></p>
 </blockquote>
-<p>用一张表中的数据更新另一张表中的数据</p>
+<p>按照第二种方法解决，</p>
 <blockquote>
-<p>update A as a,B as b set a.name=b.bname where a.id=b.bid;  </p>
+<p>export LD_LIBRARY_PATH=.<br>./hello <em>可执行</em></p>
 </blockquote>
-<p>根据一张表的信息生成一张排名表</p>
+<p>使用命令 <strong>readelf -d hello</strong>可见其搜索路径 Library rpath: [.]<br><figure class="highlight dns"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Dynamic section at offset 0x7b0 contains 22 entries:</span><br><span class="line">  Tag        Type                         Name/Value</span><br><span class="line"> <span class="number">0x00000000</span><span class="number">00000001</span> (NEEDED)             Shared library: [libmyhello.so]</span><br><span class="line"> <span class="number">0x00000000</span><span class="number">00000001</span> (NEEDED)             Shared library: [libc.so.6]</span><br><span class="line"> <span class="number">0x00000000</span><span class="number">0000000</span>f (RPATH)              Library rpath: [.]</span><br><span class="line"> <span class="number">0x00000000</span><span class="number">0000000</span>c (INIT)               <span class="number">0x400490</span></span><br><span class="line"> <span class="number">0x00000000</span><span class="number">0000000</span>d (FINI)               <span class="number">0x4006b8</span></span><br><span class="line"> <span class="number">0x00000000</span>6ffffef5 (GNU_HASH)           <span class="number">0x400260</span></span><br></pre></td></tr></table></figure></p>
+<p>第三种方法，</p>
 <blockquote>
-<p>set @x:=0;insert into Order(rank,id,grade) select @x:=@x+1 as rownum,id,grade from User order by grade desc;  </p>
+<p>把当前路径写入/etc/ld.so.conf，并执行ldconfig重新加载</p>
 </blockquote>
-<p><em>exists not exists</em></p>
+<p>第四种方法，</p>
 <blockquote>
-<p>SELECT ID,NAME FROM A WHERE EXISTS (SELECT * FROM B WHERE A.ID=B.AID)</p>
+<p>把libmylib.so文件拷贝到/lib中</p>
 </blockquote>
-<p>复制一条数据</p>
+<p>第四种方法，</p>
 <blockquote>
-<p>alter table A drop primary key;<br>insert into A select * from A where id=110;<br>update A set id=111 where id=110 limit 1;<br>alter table A add primary key(id);  </p>
+<p>把libmylib.so文件拷贝到/lib中</p>
 </blockquote>
-<p>导出数据<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysqldump -h$mysql_host -P$mysql_port -u$mysql_user -p$mysql_pwd $mysql_db $mysql_table -t -c --skip-lock-tables  &gt; $file_name  </span><br><span class="line">mysqldump -h$mysql_host -P$mysql_port -u$mysql_user -p$mysql_pwd $mysql_db &gt; $file_name</span><br></pre></td></tr></table></figure></p>
-<p>创建临时表更新原有表数据<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator"><span class="keyword">set</span> @x:=<span class="number">0</span>;</span><span class="operator"><span class="keyword">create</span> <span class="keyword">table</span> charactertemp <span class="keyword">select</span> @x:=@x+<span class="number">1</span> <span class="keyword">as</span> <span class="keyword">rownum</span>,charid,pkvalue <span class="keyword">from</span> <span class="built_in">character</span> <span class="keyword">order</span> <span class="keyword">by</span> pkvalue <span class="keyword">desc</span> <span class="keyword">where</span> charid&lt;<span class="number">100</span>;</span>  </span><br><span class="line"><span class="operator"><span class="keyword">set</span> @y:=(<span class="keyword">select</span> <span class="keyword">max</span>(charid) <span class="keyword">from</span> <span class="built_in">character</span>);</span>  </span><br><span class="line"><span class="operator"><span class="keyword">update</span> <span class="built_in">character</span>  <span class="keyword">set</span> charid=charid+@y <span class="keyword">and</span> charid&lt;<span class="number">100</span>;</span>  </span><br><span class="line"><span class="operator"><span class="keyword">update</span> <span class="built_in">character</span> <span class="keyword">as</span> a,charactertemp  <span class="keyword">as</span> b <span class="keyword">set</span> a.charid=b.<span class="keyword">rownum</span> <span class="keyword">where</span> a.charid=b.charid+@y <span class="keyword">and</span> a.charid&gt;@y;</span>  </span><br><span class="line"><span class="operator"><span class="keyword">drop</span> <span class="keyword">table</span> charactertemp;</span></span><br></pre></td></tr></table></figure></p>
+<p>第五种方法，</p>
+<blockquote>
+<p>把libmylib.so文件拷贝到/usr/lib中</p>
+</blockquote>
+<p>在实际使用中第一和第二种方法最经常被采纳，但是使用变量LD_LIBRARY_PATH时要注意，一旦LD_LIBRARY_PATH变量被设置之后，该变量生效范围内的所有程序执行时都会先查找该变量所指定的搜索目录，这样势必会造成一些浪费。</p>
+<p>参考<a href="http://www.eefocus.com/book/09-04/716171276059628.html" target="_blank" rel="external">http://www.eefocus.com/book/09-04/716171276059628.html</a><br><a href="http://blog.chinaunix.net/uid-23592843-id-223539.html" target="_blank" rel="external">http://blog.chinaunix.net/uid-23592843-id-223539.html</a></p>
 
       
     </div>
@@ -261,18 +278,9 @@ CREATE TABLE IF NOT EXISTS TAB(    id INT(10) UNSIGNED NOT NULL,    name VARCHAR
     
 <nav id="article-nav">
   
-    <a href="/2015/07/29/simplepython/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption"><</strong>
-      <div class="article-nav-title">
-        
-          python基本语法
-        
-      </div>
-    </a>
   
-  
-    <a href="/2015/07/20/linuxcmd/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">linux常用命令</div>
+    <a href="/2015/09/28/cmakesimple/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">cmake简用</div>
       <strong class="article-nav-caption">></strong>
     </a>
   
@@ -301,7 +309,7 @@ CREATE TABLE IF NOT EXISTS TAB(    id INT(10) UNSIGNED NOT NULL,    name VARCHAR
 
 <div class="duoshuo">
 	<!-- 多说评论框 start -->
-	<div class="ds-thread" data-thread-key="sqlcmds" data-title="一些mysql语句" data-url="http://sstask.github.io/2015/07/23/sqlcmds/"></div>
+	<div class="ds-thread" data-thread-key="linuxdynamiclink" data-title="linux动态链接" data-url="http://sstask.github.io/2015/09/29/linuxdynamiclink/"></div>
 	<!-- 多说评论框 end -->
 	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
 	<script type="text/javascript">
