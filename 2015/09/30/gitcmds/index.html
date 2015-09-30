@@ -5,24 +5,18 @@
   
   <title>git命令 | 叶子的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="基本命令
-
-git config –global user.name “Your Name”git config –global user.email “email@example.com”git initgit add git commit -m “xxx”git statusgit diff">
+  <meta name="description">
 <meta property="og:type" content="article">
 <meta property="og:title" content="git命令">
 <meta property="og:url" content="http://sstask.github.io/2015/09/30/gitcmds/index.html">
 <meta property="og:site_name" content="叶子的博客">
-<meta property="og:description" content="基本命令
-
-git config –global user.name “Your Name”git config –global user.email “email@example.com”git initgit add git commit -m “xxx”git statusgit diff">
+<meta property="og:description">
 <meta property="og:image" content="http://sstask.github.io/assets/img/git1.png">
 <meta property="og:image" content="http://sstask.github.io/assets/img/git2.png">
-<meta property="og:updated_time" content="2015-09-30T09:50:30.560Z">
+<meta property="og:updated_time" content="2015-09-30T09:52:34.023Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="git命令">
-<meta name="twitter:description" content="基本命令
-
-git config –global user.name “Your Name”git config –global user.email “email@example.com”git initgit add git commit -m “xxx”git statusgit diff">
+<meta name="twitter:description">
   
     <link rel="alternative" href="/atom.xml" title="叶子的博客" type="application/atom+xml">
   
@@ -223,11 +217,11 @@ git config –global user.name “Your Name”git config –global user.email �
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>基本命令</p>
+        <p><img src="/assets/img/git1.png" alt="git1" title="checkout"><br> <a id="more"></a><br>基本命令</p>
 <blockquote>
 <p>git config –global user.name “Your Name”<br>git config –global user.email “email@example.com”<br>git init<br>git add <file><br>git commit -m “xxx”<br>git status<br>git diff</file></p>
 </blockquote>
-<p><img src="/assets/img/git1.png" alt="git1" title="checkout"><br><img src="/assets/img/git2.png" alt="git2" title="reset"><br><a id="more"></a><br>checkout命令通常用来从仓库中取出文件，或者在分支中切换。<br>checkout命令让git把文件复制到工作目录和暂存区域。比如git checkout HEAD~ foo.c把文件从foo.c提交节点HEAD~ (当前提交节点的父节点)复制到工作目录并且生成索引。注意当前分支没有变化。<br>reset命令把当前分支指向另一个位置，并且有选择的变动工作目录和索引。也用来在从历史仓库中复制文件到索引，而不动工作目录。<br>如果不给选项，那么当前分支指向到那个提交。如果用–hard选项，那么工作目录也更新，如果用–soft选项，那么都不变。 </p>
+<p><img src="/assets/img/git2.png" alt="git2" title="reset"><br>checkout命令通常用来从仓库中取出文件，或者在分支中切换。<br>checkout命令让git把文件复制到工作目录和暂存区域。比如git checkout HEAD~ foo.c把文件从foo.c提交节点HEAD~ (当前提交节点的父节点)复制到工作目录并且生成索引。注意当前分支没有变化。<br>reset命令把当前分支指向另一个位置，并且有选择的变动工作目录和索引。也用来在从历史仓库中复制文件到索引，而不动工作目录。<br>如果不给选项，那么当前分支指向到那个提交。如果用–hard选项，那么工作目录也更新，如果用–soft选项，那么都不变。 </p>
 <p>git reset –hard HEAD^ 回退到上个版本<br>git reset –hard commit_id 回退到某个版本<br>git log 查看提交历史<br>git reflog 查看命令历史</p>
 <p>Git跟踪并管理的是修改，而非文件，每次修改，如果不add到暂存区，那就不会加入到commit中。</p>
 <p>git rm 删除一个文件</p>
