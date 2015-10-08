@@ -203,7 +203,7 @@
       
         <p>今天早上登服务器测试，试了很多次就是连接不上，折腾了很久发现是因为今天服务器重启了，然后没有把防火墙关闭。因为是内网测试服务器，所以图省事每次服务器重启之后都会把防火墙关了，这样就能正常登陆了。于是今天忘了关了就查了很久……<br>还是为了图省事，决定更改防火墙设置，来个一劳永逸。<br>linux防火墙默认阻挡了大部分端口的外部连接，也就是说如果你不修改防火墙，你从外面主动连接不到linux内部，但是可以从linux内部向外部发起连接。<br>下面是我服务器上的默认防火墙配置</p>
 <blockquote>
-<p>vim /etc/sysconfig/iptables<br>
+<p>vim /etc/sysconfig/iptables<br>如果没有/etc/sysconfig/iptables文件，则可以直接运行命令：<br><strong>iptables -A INPUT -p tcp -m state –state NEW -m tcp –dport 3306 -j ACCEPT</strong><br><strong>service iptables save</strong><br><strong>service iptables restart</strong><br>
       
     </div>
     
