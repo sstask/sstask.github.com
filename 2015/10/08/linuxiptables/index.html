@@ -3,27 +3,18 @@
 <head>
   <meta charset="utf-8">
   
-  <title>awk简记 | 叶子的博客</title>
+  <title>linux防火墙 | 叶子的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="不论什么时候如果要做文本分析awk是必不可少的，它可以大大提高文本分析的效率，它强大且高效。
-awk基本格式
-
-awk -F ‘:’ ‘BEGIN{…} {…action} END{…}’ File">
+  <meta name="description" content="今天早上登服务器测试，试了很多次就是连接不上，折腾了很久发现是因为今天服务器重启了，然后没有把防火墙关闭。因为是内网测试服务器，所以图省事每次服务器重启之后都会把防火墙关了，这样就能正常登陆了。于是今天忘了关了就查了很久……还是为了图省事，决定更改防火墙设置，来个一劳永逸。linux防火墙默认阻挡了大部分端口的外部连接，也就是说如果你不修改防火墙，你从外面主动连接不到linux内部，但是可以从li">
 <meta property="og:type" content="article">
-<meta property="og:title" content="awk简记">
-<meta property="og:url" content="http://sstask.github.io/2015/08/11/simpleawk/index.html">
+<meta property="og:title" content="linux防火墙">
+<meta property="og:url" content="http://sstask.github.io/2015/10/08/linuxiptables/index.html">
 <meta property="og:site_name" content="叶子的博客">
-<meta property="og:description" content="不论什么时候如果要做文本分析awk是必不可少的，它可以大大提高文本分析的效率，它强大且高效。
-awk基本格式
-
-awk -F ‘:’ ‘BEGIN{…} {…action} END{…}’ File">
-<meta property="og:updated_time" content="2015-09-17T14:56:08.553Z">
+<meta property="og:description" content="今天早上登服务器测试，试了很多次就是连接不上，折腾了很久发现是因为今天服务器重启了，然后没有把防火墙关闭。因为是内网测试服务器，所以图省事每次服务器重启之后都会把防火墙关了，这样就能正常登陆了。于是今天忘了关了就查了很久……还是为了图省事，决定更改防火墙设置，来个一劳永逸。linux防火墙默认阻挡了大部分端口的外部连接，也就是说如果你不修改防火墙，你从外面主动连接不到linux内部，但是可以从li">
+<meta property="og:updated_time" content="2015-10-08T12:20:04.479Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="awk简记">
-<meta name="twitter:description" content="不论什么时候如果要做文本分析awk是必不可少的，它可以大大提高文本分析的效率，它强大且高效。
-awk基本格式
-
-awk -F ‘:’ ‘BEGIN{…} {…action} END{…}’ File">
+<meta name="twitter:title" content="linux防火墙">
+<meta name="twitter:description" content="今天早上登服务器测试，试了很多次就是连接不上，折腾了很久发现是因为今天服务器重启了，然后没有把防火墙关闭。因为是内网测试服务器，所以图省事每次服务器重启之后都会把防火墙关了，这样就能正常登陆了。于是今天忘了关了就查了很久……还是为了图省事，决定更改防火墙设置，来个一劳永逸。linux防火墙默认阻挡了大部分端口的外部连接，也就是说如果你不修改防火墙，你从外面主动连接不到linux内部，但是可以从li">
   
     <link rel="alternative" href="/atom.xml" title="叶子的博客" type="application/atom+xml">
   
@@ -183,11 +174,11 @@ awk -F ‘:’ ‘BEGIN{…} {…action} END{…}’ File">
 		</header>				
 	</div>
 </nav>
-      <div class="body-wrap"><article id="post-simpleawk" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-linuxiptables" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2015/08/11/simpleawk/" class="article-date">
-  	<time datetime="2015-08-11T13:06:16.000Z" itemprop="datePublished">Aug 11</time>
+      <a href="/2015/10/08/linuxiptables/" class="article-date">
+  	<time datetime="2015-10-08T12:19:17.000Z" itemprop="datePublished">Oct 8</time>
 </a>
     </div>
   
@@ -200,7 +191,7 @@ awk -F ‘:’ ‘BEGIN{…} {…action} END{…}’ File">
         
   
     <h1 class="article-title" itemprop="name">
-      awk简记
+      linux防火墙
     </h1>
   
 
@@ -209,7 +200,7 @@ awk -F ‘:’ ‘BEGIN{…} {…action} END{…}’ File">
       <div class="article-info article-info-post">
         
 	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/awk/">awk</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/script/">script</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/shell/">shell</a></li></ul>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iptables/">iptables</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
 	</div>
 
         
@@ -224,27 +215,18 @@ awk -F ‘:’ ‘BEGIN{…} {…action} END{…}’ File">
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p> 不论什么时候如果要做文本分析awk是必不可少的，它可以大大提高文本分析的效率，它强大且高效。</p>
-<p><strong>awk基本格式</strong></p>
+        <p>今天早上登服务器测试，试了很多次就是连接不上，折腾了很久发现是因为今天服务器重启了，然后没有把防火墙关闭。因为是内网测试服务器，所以图省事每次服务器重启之后都会把防火墙关了，这样就能正常登陆了。于是今天忘了关了就查了很久……<br>还是为了图省事，决定更改防火墙设置，来个一劳永逸。<br>linux防火墙默认阻挡了大部分端口的外部连接，也就是说如果你不修改防火墙，你从外面主动连接不到linux内部，但是可以从linux内部向外部发起连接。<br>下面是我服务器上的默认防火墙配置</p>
 <blockquote>
-<p>awk -F ‘:’ ‘BEGIN{…} {…action} END{…}’ File<br><a id="more"></a></p>
+<p>vim /etc/sysconfig/iptables<br><a id="more"></a><br><figure class="highlight haml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">*filter</span><br><span class="line">:INPUT ACCEPT [0:0]</span><br><span class="line">:FORWARD ACCEPT [0:0]</span><br><span class="line">:OUTPUT ACCEPT [55:3890]</span><br><span class="line">-<span class="ruby"><span class="constant">A</span> <span class="constant">INPUT</span> -m state --state <span class="constant">RELATED</span>,<span class="constant">ESTABLISHED</span> -j <span class="constant">ACCEPT</span></span><br><span class="line"></span>-<span class="ruby"><span class="constant">A</span> <span class="constant">INPUT</span> -p icmp -j <span class="constant">ACCEPT</span></span><br><span class="line"></span>-<span class="ruby"><span class="constant">A</span> <span class="constant">INPUT</span> -i lo -j <span class="constant">ACCEPT</span></span><br><span class="line"></span>-<span class="ruby"><span class="constant">A</span> <span class="constant">INPUT</span> -p tcp -m state --state <span class="constant">NEW</span> -m tcp --dport <span class="number">22</span> -j <span class="constant">ACCEPT</span></span><br><span class="line"></span>-<span class="ruby"><span class="constant">A</span> <span class="constant">INPUT</span> -j <span class="constant">REJECT</span> --reject-with icmp-host-prohibited</span><br><span class="line"></span>-<span class="ruby"><span class="constant">A</span> <span class="constant">FORWARD</span> -j <span class="constant">REJECT</span> --reject-with icmp-host-prohibited</span><br><span class="line"></span>COMMIT</span><br></pre></td></tr></table></figure></p>
 </blockquote>
-<p><strong>awk的动作流程</strong></p>
-<ol>
-<li>执行BEGIN里的内容，一般是一些初始化操作。</li>
-<li>读入File文件的一行内容，以\n为分隔符，然后把这一行按-F后的分隔符分成N个域，$0表示整行内容，$1表示第1个域的内容，$2表示第2个域的内容，以此类推.</li>
-<li>执行{…action}中的代码，一般是针对当前行内容的操作，例如模式匹配打印等。</li>
-<li>执行END中的代码，一般是些结果打印</li>
-</ol>
-<p>看起来比较复杂，其实使用中-F BEGIN END这些字段都是不必须的，例如打印最近登录的5个账号：</p>
+<p>可以看到它只默认打开了22端口，即ftp服务端口。<br>但是登录服务器的话要连接你自己的服务器端口，所以要把服务器监听端口添加到配置文件里面。<br>以mysql服务端口3306为例，</p>
 <blockquote>
-<p>last -n 5 | awk  ‘{print $1}’</p>
+<p>vim /etc/sysconfig/iptables<br><figure class="highlight pf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">*filter</span><br><span class="line">:INPUT ACCEPT [<span class="number">0</span>:<span class="number">0</span>]</span><br><span class="line">:FORWARD ACCEPT [<span class="number">0</span>:<span class="number">0</span>]</span><br><span class="line">:OUTPUT ACCEPT [<span class="number">55</span>:<span class="number">3890</span>]</span><br><span class="line">-A INPUT -m <span class="keyword">state</span> --state RELATED,ESTABLISHED -j ACCEPT</span><br><span class="line">-A INPUT -p tcp -m <span class="keyword">state</span> --state NEW -m tcp --dport <span class="number">3306</span> -j ACCEPT <span class="comment">#就是这里</span></span><br><span class="line">-A INPUT -p icmp -j ACCEPT</span><br><span class="line">-A INPUT -i lo -j ACCEPT</span><br><span class="line">-A INPUT -p tcp -m <span class="keyword">state</span> --state NEW -m tcp --dport <span class="number">22</span> -j ACCEPT</span><br><span class="line">-A INPUT -j REJECT --reject-with icmp-host-prohibited</span><br><span class="line">-A FORWARD -j REJECT --reject-with icmp-host-prohibited</span><br><span class="line">COMMIT</span><br></pre></td></tr></table></figure></p>
 </blockquote>
-<p> 因为账号名称在第一个域，所以只需要 awk ‘{print $1}’ 就能打印出来了，-F不指定的话默认已空格和制表符分隔，BEGIN、END可省略。<br>        awk语法和c语言很像，继承了c语言的风格，如下面统计了文件里有多少匹配行：<br><figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">awk -F ':' 'BEGIN &#123;<span class="keyword">count</span>=0;<span class="keyword">print</span> <span class="string">"init="</span>,<span class="keyword">count</span>&#125; &#123;<span class="keyword">if</span>(<span class="label">$1</span>~/root/) &#123;<span class="keyword">count</span>=<span class="keyword">count</span>+1;<span class="keyword">print</span> <span class="label">$0&#125;</span>&#125; END&#123;<span class="keyword">print</span> <span class="string">"count="</span>,<span class="keyword">count</span>&#125;' /etc/passwd</span><br></pre></td></tr></table></figure></p>
-<p>其中匹配可以这样简写<br><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title">awk</span> <span class="string">'<span class="variable">$1</span>~/root/&#123;print <span class="variable">$0</span>&#125;'</span> /etc/passwd</span><br></pre></td></tr></table></figure></p>
-<p>/ /中间内容按照正则表达式匹配。</p>
-<p>简单匹配也可以这样，^表示开头，$表示结尾<br><figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">awk -F<span class="string">":"</span> '<span class="label">$1</span>~/^root$/&#123;<span class="keyword">print</span> <span class="label">$0&#125;</span>' /etc/passwd  </span><br><span class="line">awk -F<span class="string">":"</span> '<span class="label">$1</span>==<span class="string">"root"</span> &#123;<span class="keyword">print</span> <span class="label">$0&#125;</span>' /etc/passwd  </span><br><span class="line">awk -F<span class="string">":"</span> '&#123;<span class="keyword">if</span>(<span class="label">$1</span>==<span class="string">"root"</span>||<span class="label">$1</span>~/mysql/) &#123;<span class="keyword">print</span> <span class="label">$0&#125;</span>&#125;' /etc/passwd  </span><br><span class="line">awk -F<span class="string">":"</span> 'BEGIN&#123;OFS=<span class="string">":"</span>&#125;&#123;gsub(<span class="string">"root"</span>,<span class="string">"mysql"</span>,<span class="label">$1</span>);<span class="keyword">print</span> <span class="label">$0&#125;</span>' /etc/passwd</span><br></pre></td></tr></table></figure></p>
-<p>awk里内嵌了很多处理函数，例如length sub gsub substr match split tolower toupper    print printf    rand srand    sin cos int log     systime strftime等，使用方法基本和c语言一致。<br>awk里还有一些常用内部变量，例如 FILENAME awk处理的文件名 NR 已读取的记录数 NF 域的个数 FS 域分隔符设置，等价于-F OFS 设置输出域分隔符 RS 记录分隔符 ORS 输出记录分隔符。</p>
+<p>然后重启防火墙服务<strong>service iptables restart</strong></p>
+<blockquote>
+<p>注意要把-A INPUT -p tcp -m state –state NEW -m tcp –dport 3306 -j ACCEPT这句添加到icmp那句的上面，不然配置不生效（关于这点网上也有人说放在22那句下面或者COMMIT上面之类的，都试了下不怎么管用，不知道是不是系统原因）</p>
+</blockquote>
 
       
     </div>
@@ -254,18 +236,9 @@ awk -F ‘:’ ‘BEGIN{…} {…action} END{…}’ File">
     
 <nav id="article-nav">
   
-    <a href="/2015/08/13/creategitserver/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption"><</strong>
-      <div class="article-nav-title">
-        
-          搭建git服务器
-        
-      </div>
-    </a>
   
-  
-    <a href="/2015/08/04/ctemplatetype/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">C++非类型模板参数</div>
+    <a href="/2015/09/30/gitcmds/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">git命令</div>
       <strong class="article-nav-caption">></strong>
     </a>
   
@@ -294,7 +267,7 @@ awk -F ‘:’ ‘BEGIN{…} {…action} END{…}’ File">
 
 <div class="duoshuo">
 	<!-- 多说评论框 start -->
-	<div class="ds-thread" data-thread-key="simpleawk" data-title="awk简记" data-url="http://sstask.github.io/2015/08/11/simpleawk/"></div>
+	<div class="ds-thread" data-thread-key="linuxiptables" data-title="linux防火墙" data-url="http://sstask.github.io/2015/10/08/linuxiptables/"></div>
 	<!-- 多说评论框 end -->
 	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
 	<script type="text/javascript">
