@@ -13,7 +13,7 @@
 <meta property="og:site_name" content="叶子的博客">
 <meta property="og:description" content="写程序时经常会遇见些莫名其妙的错误，往往花了大把时间找了很久的bug，最终发现这些都是很小很小的问题，所以把这些可能问题记下来备忘。
 1.指针的加减操作指针的加减操作都是其所指的内容相关的，好比char*+1等于实际地址+1，但int*+1等于实际地址+4，不能像当然的认为p+n就等于地址+n。">
-<meta property="og:updated_time" content="2015-09-17T15:05:29.325Z">
+<meta property="og:updated_time" content="2015-10-09T09:48:05.170Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="C++程序里一些易犯错误">
 <meta name="twitter:description" content="写程序时经常会遇见些莫名其妙的错误，往往花了大把时间找了很久的bug，最终发现这些都是很小很小的问题，所以把这些可能问题记下来备忘。
@@ -230,7 +230,13 @@
 <p>上面结果a=248,b=240,c=0,d=0,其中b的值不是所期望的，因为~a被整型提升到了int，然后右移4位，最后被转为unsigned char。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> i = -<span class="number">1</span>;<span class="keyword">if</span>(i &lt; <span class="keyword">sizeof</span>(i)) <span class="keyword">return</span> <span class="literal">true</span>;<span class="keyword">else</span> <span class="keyword">return</span> <span class="literal">false</span>;</span><br></pre></td></tr></table></figure></p>
 <p>比较时i会被转换为unsigned int即0xffffffff，所以结果返回false。</p>
 <p><strong>3.static</strong></p>
-<p>static存储在静态数据区，经常在函数中使用静态局部变量记录一些数据，好处就是函数外不可见，而且其值一直是保存着的以便下次进入函数再次访问。但是要注意在多线程环境中这些static变量也是共享的，即<strong>可能同时被多个线程访问并修改</strong>，切记切记，因为这个原因悲剧的调试程序调了2天……</p>
+<blockquote>
+<p>tatic存储在静态数据区，经常在函数中使用静态局部变量记录一些数据，好处就是函数外不可见，而且其值一直是保存着的以便下次进入函数再次访问。但是要注意在多线程环境中这些static变量也是共享的，即<strong>可能同时被多个线程访问并修改</strong>，切记切记，因为这个原因悲剧的调试程序调了2天……</p>
+</blockquote>
+<p><strong>4.set map</strong></p>
+<blockquote>
+<p>在set map中key如果是自定义结构体时，更改key中某项的值并不会引起set和map的重新排序，如果想达到排序效果则需要先删除该key，然后插入新key。</p>
+</blockquote>
 
       
     </div>
