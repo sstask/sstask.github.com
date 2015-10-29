@@ -109,7 +109,7 @@
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/C/" style="font-size: 12.5px;">C++</a> <a href="/tags/awk/" style="font-size: 10px;">awk</a> <a href="/tags/blog/" style="font-size: 12.5px;">blog</a> <a href="/tags/cdkey/" style="font-size: 10px;">cdkey</a> <a href="/tags/cmake/" style="font-size: 10px;">cmake</a> <a href="/tags/dynamiclink/" style="font-size: 10px;">dynamiclink</a> <a href="/tags/error/" style="font-size: 12.5px;">error</a> <a href="/tags/game/" style="font-size: 15px;">game</a> <a href="/tags/game-mysql/" style="font-size: 10px;">game,mysql</a> <a href="/tags/gettimeofday/" style="font-size: 10px;">gettimeofday</a> <a href="/tags/git/" style="font-size: 12.5px;">git</a> <a href="/tags/github/" style="font-size: 12.5px;">github</a> <a href="/tags/hexo/" style="font-size: 12.5px;">hexo</a> <a href="/tags/innodb-buffer/" style="font-size: 10px;">innodb buffer</a> <a href="/tags/iptables/" style="font-size: 10px;">iptables</a> <a href="/tags/key-buffer-size/" style="font-size: 10px;">key_buffer_size</a> <a href="/tags/linux/" style="font-size: 20px;">linux</a> <a href="/tags/md5/" style="font-size: 10px;">md5</a> <a href="/tags/mysql/" style="font-size: 17.5px;">mysql</a> <a href="/tags/newday/" style="font-size: 10px;">newday</a> <a href="/tags/protocol-buffer/" style="font-size: 12.5px;">protocol buffer</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/rank/" style="font-size: 12.5px;">rank</a> <a href="/tags/script/" style="font-size: 10px;">script</a> <a href="/tags/sed/" style="font-size: 10px;">sed</a> <a href="/tags/shell/" style="font-size: 12.5px;">shell</a> <a href="/tags/slk/" style="font-size: 10px;">slk</a> <a href="/tags/staticlink/" style="font-size: 10px;">staticlink</a> <a href="/tags/sylk/" style="font-size: 10px;">sylk</a> <a href="/tags/table-open-cache/" style="font-size: 10px;">table_open_cache</a> <a href="/tags/template/" style="font-size: 10px;">template</a> <a href="/tags/vim/" style="font-size: 10px;">vim</a> <a href="/tags/动态解析/" style="font-size: 10px;">动态解析</a>
+						<a href="/tags/C/" style="font-size: 12px;">C++</a> <a href="/tags/awk/" style="font-size: 10px;">awk</a> <a href="/tags/blog/" style="font-size: 14px;">blog</a> <a href="/tags/cdkey/" style="font-size: 10px;">cdkey</a> <a href="/tags/cmake/" style="font-size: 10px;">cmake</a> <a href="/tags/dynamiclink/" style="font-size: 10px;">dynamiclink</a> <a href="/tags/error/" style="font-size: 12px;">error</a> <a href="/tags/game/" style="font-size: 16px;">game</a> <a href="/tags/game-mysql/" style="font-size: 10px;">game,mysql</a> <a href="/tags/gettimeofday/" style="font-size: 10px;">gettimeofday</a> <a href="/tags/git/" style="font-size: 12px;">git</a> <a href="/tags/github/" style="font-size: 12px;">github</a> <a href="/tags/hexo/" style="font-size: 12px;">hexo</a> <a href="/tags/innodb-buffer/" style="font-size: 10px;">innodb buffer</a> <a href="/tags/iptables/" style="font-size: 10px;">iptables</a> <a href="/tags/key-buffer-size/" style="font-size: 10px;">key_buffer_size</a> <a href="/tags/linux/" style="font-size: 20px;">linux</a> <a href="/tags/md5/" style="font-size: 10px;">md5</a> <a href="/tags/mysql/" style="font-size: 18px;">mysql</a> <a href="/tags/newday/" style="font-size: 10px;">newday</a> <a href="/tags/php/" style="font-size: 10px;">php</a> <a href="/tags/protocol-buffer/" style="font-size: 12px;">protocol buffer</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/rank/" style="font-size: 12px;">rank</a> <a href="/tags/script/" style="font-size: 10px;">script</a> <a href="/tags/sed/" style="font-size: 10px;">sed</a> <a href="/tags/shell/" style="font-size: 12px;">shell</a> <a href="/tags/slk/" style="font-size: 10px;">slk</a> <a href="/tags/staticlink/" style="font-size: 10px;">staticlink</a> <a href="/tags/table-open-cache/" style="font-size: 10px;">table_open_cache</a> <a href="/tags/template/" style="font-size: 10px;">template</a> <a href="/tags/vim/" style="font-size: 10px;">vim</a> <a href="/tags/动态解析/" style="font-size: 10px;">动态解析</a>
 					</div>
 				</section>
 				
@@ -174,6 +174,71 @@
 	</div>
 </nav>
       <div class="body-wrap">
+  
+    <article id="post-sqlcmds" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/07/23/sqlcmds/" class="article-date">
+  	<time datetime="2015-07-23T12:13:01.000Z" itemprop="datePublished">Jul 23</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/07/23/sqlcmds/">一些mysql语句</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>创建新表</p>
+<blockquote>
+<p>CREATE TABLE IF NOT EXISTS TAB(<br>    id INT(10) UNSIGNED NOT NULL,<br>    name VARCHAR(255),<br>    grade INT(10) UNSIGNED NOT NULL,<br>    PRIMARY KEY id<br>) ENGINE=InnoDB DEFAULT CHARSET=utf8;  </p>
+</blockquote>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/">mysql</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/mysql/">mysql</a>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a  href="/2015/07/23/sqlcmds/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
   
     <article id="post-linuxcmd" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -613,75 +678,6 @@
       
         <p class="article-more-link">
           <a  href="/2015/06/17/vimdisplaych/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-hexobackup" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/06/16/hexobackup/" class="article-date">
-  	<time datetime="2015-06-16T12:39:03.000Z" itemprop="datePublished">Jun 16</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/06/16/hexobackup/">把hexo博客备份到github</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>上个blog讲了搭建hexo blog的方法，并且可以把博客放在github上，很简单而且很有效，github是个好地方。<br>但是github上保存的只是hexo生成好的html文件和一些博客用到的图片之类的，而我想github能保存我博客的源文件，就是.md文件。<br>刚开始我想已附件的方式把源文件链接到网站里面，这样github就会把他们当成资源文件保存了，可是hexo好像不支持附件链接。<br>hexo或者说markdown支持图片的链接，于是我想到了把我的博客源文件制作成图片然后链接进博客html里，这样就能达到保存的效果了。<br>直接讲我怎么做的吧：</p>
-<ul>
-<li>首先下载二维码生成工具<blockquote>
-<p>yum install qrencode</p>
-</blockquote>
-</li>
-<li>对源文件生成二维码图片<blockquote>
-<p>qrencode -o my.md.png “my.md”</p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/blog/">blog</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/github/">github</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hexo/">hexo</a></li></ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/杂/">杂</a>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a  href="/2015/06/16/hexobackup/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>
