@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>mysql主从备份 | 叶子的博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="在项目中为了保证数据不会因为意外丢失，一般都会对数据经行实时的备份，对于mysql数据库来讲通过主从复制机制来热备份。好比我们项目实际使用的db在机器192.169.0.101上，我们要把数据同步到192.169.0.102上进行备份。首先建立mysql同步账户
+
+101机器上1mysql&amp;gt;Grant replication slave on *.* to backup@&apos;192.169.0">
+<meta property="og:type" content="article">
+<meta property="og:title" content="mysql主从备份">
+<meta property="og:url" content="http://sstask.github.io/2015/11/03/mysqlbackup/index.html">
+<meta property="og:site_name" content="叶子的博客">
+<meta property="og:description" content="在项目中为了保证数据不会因为意外丢失，一般都会对数据经行实时的备份，对于mysql数据库来讲通过主从复制机制来热备份。好比我们项目实际使用的db在机器192.169.0.101上，我们要把数据同步到192.169.0.102上进行备份。首先建立mysql同步账户
+
+101机器上1mysql&amp;gt;Grant replication slave on *.* to backup@&apos;192.169.0">
+<meta property="og:updated_time" content="2015-11-04T08:07:53.188Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="mysql主从备份">
+<meta name="twitter:description" content="在项目中为了保证数据不会因为意外丢失，一般都会对数据经行实时的备份，对于mysql数据库来讲通过主从复制机制来热备份。好比我们项目实际使用的db在机器192.169.0.101上，我们要把数据同步到192.169.0.102上进行备份。首先建立mysql同步账户
+
+101机器上1mysql&amp;gt;Grant replication slave on *.* to backup@&apos;192.169.0">
+  
+    <link rel="alternative" href="/atom.xml" title="叶子的博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="/assets/img/blog.jpg" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">叶子与桔子</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">面朝大海，春暖花开</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						
+						<div class="icon-wrap icon-me hide" data-idx="3">
+							<div class="user"></div>
+							<div class="shoulder"></div>
+						</div>
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						
+						<li>关于我</li>
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+							<li><a href="/about">关于</a></li>
+				        
+							<li><a href="/link">Link</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="github" target="_blank" href="https://github.com/sstask" title="github">github</a>
+					        
+								<a class="google" target="_blank" href="http://blog.csdn.net/shujianhenu" title="google">google</a>
+					        
+								<a class="rss" target="_blank" href="/#" title="rss">rss</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/C/" style="font-size: 12px;">C++</a> <a href="/tags/awk/" style="font-size: 10px;">awk</a> <a href="/tags/backup/" style="font-size: 10px;">backup</a> <a href="/tags/blog/" style="font-size: 14px;">blog</a> <a href="/tags/cdkey/" style="font-size: 10px;">cdkey</a> <a href="/tags/cmake/" style="font-size: 10px;">cmake</a> <a href="/tags/dynamiclink/" style="font-size: 10px;">dynamiclink</a> <a href="/tags/error/" style="font-size: 12px;">error</a> <a href="/tags/file/" style="font-size: 10px;">file</a> <a href="/tags/game/" style="font-size: 16px;">game</a> <a href="/tags/game-mysql/" style="font-size: 10px;">game,mysql</a> <a href="/tags/gettimeofday/" style="font-size: 10px;">gettimeofday</a> <a href="/tags/git/" style="font-size: 12px;">git</a> <a href="/tags/github/" style="font-size: 12px;">github</a> <a href="/tags/hexo/" style="font-size: 12px;">hexo</a> <a href="/tags/innodb-buffer/" style="font-size: 10px;">innodb buffer</a> <a href="/tags/iptables/" style="font-size: 10px;">iptables</a> <a href="/tags/key-buffer-size/" style="font-size: 10px;">key_buffer_size</a> <a href="/tags/linux/" style="font-size: 20px;">linux</a> <a href="/tags/md5/" style="font-size: 10px;">md5</a> <a href="/tags/mysql/" style="font-size: 18px;">mysql</a> <a href="/tags/newday/" style="font-size: 10px;">newday</a> <a href="/tags/php/" style="font-size: 12px;">php</a> <a href="/tags/protocol-buffer/" style="font-size: 12px;">protocol buffer</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/rank/" style="font-size: 12px;">rank</a> <a href="/tags/script/" style="font-size: 10px;">script</a> <a href="/tags/sed/" style="font-size: 10px;">sed</a> <a href="/tags/shell/" style="font-size: 12px;">shell</a> <a href="/tags/slk/" style="font-size: 10px;">slk</a> <a href="/tags/staticlink/" style="font-size: 10px;">staticlink</a> <a href="/tags/table-open-cache/" style="font-size: 10px;">table_open_cache</a> <a href="/tags/template/" style="font-size: 10px;">template</a> <a href="/tags/vim/" style="font-size: 10px;">vim</a> <a href="/tags/动态解析/" style="font-size: 10px;">动态解析</a>
+					</div>
+				</section>
+				
+				
+				
+
+				
+				
+				<section class="switch-part switch-part3">
+				
+					<div id="js-aboutme">毕业于裤子大，工作在游戏里，擅长服务器开发，偶尔研究前端，爱好电影小说。</div>
+				</section>
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">叶子与桔子</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="/assets/img/blog.jpg" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">叶子与桔子</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">面朝大海，春暖花开</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+					<li><a href="/about">关于</a></li>
+		        
+					<li><a href="/link">Link</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/sstask" title="github">github</a>
+			        
+						<a class="google" target="_blank" href="http://blog.csdn.net/shujianhenu" title="google">google</a>
+			        
+						<a class="rss" target="_blank" href="/#" title="rss">rss</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-mysqlbackup" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/11/03/mysqlbackup/" class="article-date">
+  	<time datetime="2015-11-03T11:49:14.000Z" itemprop="datePublished">Nov 3</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      mysql主从备份
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/backup/">backup</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/">mysql</a></li></ul>
+	</div>
+
+        
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/mysql/">mysql</a>
+	</div>
+
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>在项目中为了保证数据不会因为意外丢失，一般都会对数据经行实时的备份，对于mysql数据库来讲通过主从复制机制来热备份。好比我们项目实际使用的db在机器192.169.0.101上，我们要把数据同步到192.169.0.102上进行备份。<br><strong>首先建立mysql同步账户</strong></p>
+<blockquote>
+<p>101机器上<br><figure class="highlight lasso"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt;Grant replication slave <span class="keyword">on</span> *<span class="built_in">.</span>* <span class="keyword">to</span> backup@<span class="string">'192.169.0.102'</span> identified <span class="keyword">by</span> <span class="string">'123456'</span>;</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<p><strong>主服务器开启mysql bin-log 日志</strong></p>
+<blockquote>
+<p>101机器上<br>vim /etc/my.cnf 添加<br><a id="more"></a><br><figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[mysqld]</span><br><span class="line">...</span><br><span class="line"><span class="comment"># master conf</span></span><br><span class="line">server-<span class="property">id</span> = <span class="number">1</span></span><br><span class="line">log_bin = /data/mysql/<span class="command">log</span>/mysql-bin.<span class="command">log</span></span><br><span class="line"><span class="command">read</span>-only = <span class="number">0</span></span><br><span class="line"><span class="comment">#binlog-do-db=game #要同步的数据库，这里注释掉了，表示同步所有数据库</span></span><br><span class="line">binlog-ignore-db = mysql <span class="comment">#忽略的数据库</span></span><br></pre></td></tr></table></figure></p>
+<p>然后重启mysql服务 service mysqld restart</p>
+</blockquote>
+<p><strong>从服务器多实例设置</strong></p>
+<blockquote>
+<p>这里介绍一台机器上运行多个mysql实例的方式，这样在同一台机器上就可以同时做多个不同mysql数据库的备份了。<br>102机器上<br>vim /etc/my.cnf 添加</p>
+</blockquote>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">[mysqld_multi]</span><br><span class="line">mysqld = /usr/bin/mysqld_safe</span><br><span class="line">mysqladmin = /usr/bin/mysqladmin</span><br><span class="line"></span><br><span class="line">[mysqld3306]</span><br><span class="line">port = <span class="number">3306</span></span><br><span class="line">datadir = /data/mysql/<span class="number">3306</span>/data</span><br><span class="line">socket = /data/mysql/<span class="number">3306</span>/mysql.sock</span><br><span class="line">pid-file = /data/mysql/<span class="number">3306</span>/mysqld.pid</span><br><span class="line"><span class="built_in">log</span>-error = /data/mysql/<span class="number">3306</span>/mysqld.<span class="built_in">log</span></span><br><span class="line">user = mysql</span><br><span class="line">server-id = <span class="number">3306</span></span><br><span class="line">read-only = <span class="number">1</span></span><br><span class="line">replicate-ignore-db = mysql</span><br><span class="line"></span><br><span class="line">[mysqld3307]</span><br><span class="line">port = <span class="number">3307</span></span><br><span class="line">datadir = /data/mysql/<span class="number">3307</span>/data</span><br><span class="line">socket = /data/mysql/<span class="number">3307</span>/mysql.sock</span><br><span class="line">pid-file = /data/mysql/<span class="number">3307</span>/mysqld.pid</span><br><span class="line"><span class="built_in">log</span>-error = /data/mysql/<span class="number">3307</span>/mysqld.<span class="built_in">log</span></span><br><span class="line">user = mysql</span><br><span class="line">server-id = <span class="number">3307</span></span><br><span class="line">read-only = <span class="number">1</span></span><br><span class="line">replicate-ignore-db = mysql</span><br><span class="line"></span><br><span class="line">[mysqldump]</span><br><span class="line">quick</span><br><span class="line">max_allowed_packet = <span class="number">512</span>M</span><br><span class="line"></span><br><span class="line">[mysql]</span><br><span class="line">no-<span class="keyword">auto</span>-rehash</span><br><span class="line"></span><br><span class="line">[isamchk]</span><br><span class="line">key_buffer = <span class="number">512</span>M</span><br><span class="line">sort_buffer_size = <span class="number">32</span>M</span><br><span class="line">read_buffer = <span class="number">2</span>M </span><br><span class="line">write_buffer = <span class="number">2</span>M</span><br><span class="line"></span><br><span class="line">[myisamchk]</span><br><span class="line">key_buffer = <span class="number">512</span>M</span><br><span class="line">sort_buffer_size = <span class="number">32</span>M</span><br><span class="line">read_buffer = <span class="number">2</span>M</span><br><span class="line">write_buffer = <span class="number">2</span>M</span><br><span class="line"></span><br><span class="line">[mysqlhotcopy]</span><br><span class="line">interactive-timeout</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>初始化数据库目录<br><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">mysql_install_db --datadir=/<span class="keyword">data</span>/mysql/<span class="number">3306</span>/<span class="keyword">data</span> --user=mysql</span><br><span class="line">mysql_install_db --datadir=/<span class="keyword">data</span>/mysql/<span class="number">3307</span>/<span class="keyword">data</span> --user=mysql</span><br><span class="line">chown -R mysql:root /<span class="keyword">data</span></span><br><span class="line">mysqladmin -uroot -S /<span class="keyword">data</span>/mysql/<span class="number">3306</span>/mysql.sock password <span class="number">123456</span> <span class="comment">#设置密码</span></span><br><span class="line">mysql -uroot -S /<span class="keyword">data</span>/mysql/<span class="number">3306</span>/mysql.sock -p123456 <span class="comment">#登录</span></span><br><span class="line"><span class="comment">#或者 mysql -h127.0.0.1 -P3306 -uroot -p123456</span></span><br><span class="line">select user,host from mysql.user; <span class="comment">#查看用户 添加用户</span></span><br><span class="line">mysql&gt; GRANT ALL PRIVILEGES ON *.* TO <span class="string">'game'</span>@<span class="string">'localhost'</span> IDENTIFIED BY <span class="string">'game'</span> WITH GRANT OPTION;</span><br><span class="line">mysql&gt; GRANT ALL PRIVILEGES ON *.* TO <span class="string">'game'</span>@<span class="string">'%'</span> IDENTIFIED BY <span class="string">'game'</span> WITH GRANT OPTION;</span><br><span class="line">mysql&gt; flush privileges;</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<p>启动mysql实例<br><em>mysqld_multi start</em><br>关闭mysql实例 关闭需要提供密码<br><em>mysqld_multi stop –password=123456</em><br>如果不起作用，则用下面语句<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysqladmin -h127<span class="number">.0</span><span class="number">.0</span><span class="number">.1</span> -P3307 -uroot -p123456 shutdown</span><br></pre></td></tr></table></figure></p>
+<p><strong>从服务器复制</strong></p>
+<blockquote>
+<p>101机器 查看日志状态<br>msyql&gt; show master status;<br>mysql-bin.000001 97</p>
+<p>102机器 手动开始同步<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">mysqladmin -uroot -S /data/mysql/<span class="number">3307</span>/mysql.sock password <span class="number">123456</span></span><br><span class="line">mysql -uroot -S /data/mysql/<span class="number">3307</span>/mysql.sock -p123456</span><br><span class="line">msyql&gt;change master to master_host=<span class="string">"192.168.0.101"</span>,master_user=<span class="string">"backup"</span>,master_password=<span class="string">"123456"</span>,master_port=<span class="number">3306</span>,master_log_file=<span class="string">"mysql-bin.000001"</span>,master_log_pos=<span class="number">0</span>;</span><br><span class="line">     </span><br><span class="line">msyql&gt; start slave;</span><br><span class="line">mysql&gt; SHOW SLAVE STATUS\G</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<p>如Slave_IO_Running=Yes Slave_SQL_Running=Yes则成功</p>
+<blockquote>
+<p>注意 从服务器只能同步主服务器bin log里面的内容，如果你想同步的数据库是很久之前创建的，并不在bin log里有记录那就没法同步。<br>所以在开始同步之前最好先收到把主服务器的所有内容复制到从服务器里，然后在开始同步：<br><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">mysqldump</span> <span class="tag">-h192</span><span class="class">.168</span><span class="class">.0</span><span class="class">.101</span> <span class="tag">-P3306</span> <span class="tag">-uroot</span> <span class="tag">-p123456</span> <span class="tag">mydb</span> &gt; <span class="tag">mydb</span><span class="class">.sql</span></span><br><span class="line"><span class="tag">mysql</span> <span class="tag">-h192</span><span class="class">.168</span><span class="class">.0</span><span class="class">.102</span> <span class="tag">-P3306</span> <span class="tag">-uroot</span> <span class="tag">-p123456</span> <span class="tag">mydb</span> &lt; <span class="tag">mydb</span><span class="class">.sql</span></span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<p>参考<br><a href="http://www.cnblogs.com/huangzhen/archive/2012/10/11/2720261.html" target="_blank" rel="external">http://www.cnblogs.com/huangzhen/archive/2012/10/11/2720261.html</a><br><a href="http://www.cnblogs.com/lben/archive/2012/11/19/2777632.html" target="_blank" rel="external">http://www.cnblogs.com/lben/archive/2012/11/19/2777632.html</a><br><a href="http://www.cnblogs.com/jirglt/p/3549047.html" target="_blank" rel="external">http://www.cnblogs.com/jirglt/p/3549047.html</a></p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2015/10/31/phpfile/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">php之文件操作</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="share">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">分享到：</span>
+		<a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+		<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
+
+
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="mysqlbackup" data-title="mysql主从备份" data-url="http://sstask.github.io/2015/11/03/mysqlbackup/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"sstask"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2015 叶子与桔子
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
+<script src="/js/main.js" type="text/javascript"></script>
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  </div>
+</body>
+</html>
