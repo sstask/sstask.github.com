@@ -3,24 +3,17 @@
 <head>
   <meta charset="utf-8">
   
-  <title>sed简记 | 叶子的博客</title>
+  <title>Tag: repeated | 叶子的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="sed是linux 下的一个文本编辑命令，它功能强大，经常被用来编辑或分析处理一个或多个文件，简化对文件的处理。它和awk的处理方式差不多，都是对输入一行一行的处理，然后输出。
-
-使用格式sed    - [nefri]    ‘action’">
-<meta property="og:type" content="article">
-<meta property="og:title" content="sed简记">
-<meta property="og:url" content="http://sstask.github.io/2015/08/28/simplesed/index.html">
+  <meta name="description">
+<meta property="og:type" content="website">
+<meta property="og:title" content="叶子的博客">
+<meta property="og:url" content="http://sstask.github.io/tags/repeated/index.html">
 <meta property="og:site_name" content="叶子的博客">
-<meta property="og:description" content="sed是linux 下的一个文本编辑命令，它功能强大，经常被用来编辑或分析处理一个或多个文件，简化对文件的处理。它和awk的处理方式差不多，都是对输入一行一行的处理，然后输出。
-
-使用格式sed    - [nefri]    ‘action’">
-<meta property="og:updated_time" content="2015-10-29T02:14:18.673Z">
+<meta property="og:description">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="sed简记">
-<meta name="twitter:description" content="sed是linux 下的一个文本编辑命令，它功能强大，经常被用来编辑或分析处理一个或多个文件，简化对文件的处理。它和awk的处理方式差不多，都是对输入一行一行的处理，然后输出。
-
-使用格式sed    - [nefri]    ‘action’">
+<meta name="twitter:title" content="叶子的博客">
+<meta name="twitter:description">
   
     <link rel="alternative" href="/atom.xml" title="叶子的博客" type="application/atom+xml">
   
@@ -180,156 +173,57 @@
 		</header>				
 	</div>
 </nav>
-      <div class="body-wrap"><article id="post-simplesed" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap">
   
-    <div class="article-meta">
-      <a href="/2015/08/28/simplesed/" class="article-date">
-  	<time datetime="2015-08-28T12:52:29.000Z" itemprop="datePublished">Aug 28</time>
+  
+    
+    
+      
+      
+      <section class="archives-wrap">
+        <div class="archive-year-wrap">
+          <a href="/archives/2015" class="archive-year">2015</a>
+        </div>
+        <div class="archives">
+    
+    <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      	<div class="article-meta">
+	      	<a href="/2015/12/11/gpbrepeatedmap/" class="archive-article-date">
+  	<time datetime="2015-12-11T05:04:44.000Z" itemprop="datePublished">Dec 11</time>
 </a>
-    </div>
+        </div>
+    	 
   
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="article-title" itemprop="name">
-      sed简记
+    <h1 itemprop="name">
+      <a class="archive-article-title" href="/2015/12/11/gpbrepeatedmap/">protocol buffer中repeated和map类型的动态解析</a>
     </h1>
   
 
-      </header>
-      
-      <div class="article-info article-info-post">
-        
+        <div class="article-info info-on-right">
+          
 	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sed/">sed</a></li></ul>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/protocol-buffer/">protocol buffer</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/repeated/">repeated</a></li></ul>
 	</div>
 
-        
+          
 	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/linux/">linux</a>
+	<a class="article-category-link" href="/categories/protocol-buffer/">protocol buffer</a>
 	</div>
 
 
+        </div>
         <div class="clearfix"></div>
-      </div>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong>sed</strong>是linux 下的一个文本编辑命令，它功能强大，经常被用来编辑或分析处理一个或多个文件，简化对文件的处理。它和awk的处理方式差不多，都是对输入一行一行的处理，然后输出。</p>
-<blockquote>
-<p>使用格式sed    - [nefri]    ‘action’<br><a id="more"></a></p>
-</blockquote>
-<ul>
-<li><p>-n 只显示被处理的行，其他行不显示，常用</p>
-</li>
-<li><p>-e 用来执行多个指令，如 nl /etc/passwd | sed -e ‘2d’ -e ‘/root/{s/bash/python/}’ </p>
-</li>
-<li><p>-f  执行脚本命令，可以把复杂指令写到文件里，通过sed -f name执行</p>
-</li>
-<li><p>-r 执行扩展正则表达式</p>
-</li>
-<li><p>-i 直接修改文件，而不是输出到屏幕，慎用</p>
-</li>
-</ul>
-<blockquote>
-<p>action’</p>
-</blockquote>
-<ul>
-<li><p>a 新增 sed ‘1a hello world’ test.txt 在第一行之后新加一行</p>
-</li>
-<li><p>c 取代 sed ‘2,5c hello world’ test.txt 把2到5行内容替换为hello world</p>
-</li>
-<li><p>d 删除 sed ‘1d’ test.txt         删除第一行</p>
-<blockquote>
-<p>sed ‘/root/d’ test.txt  删除匹配root的行</p>
-</blockquote>
-</li>
-<li><p>i  新增 sed ‘1a hello world’ test.txt 在第一行之前新加一行</p>
-</li>
-<li><p>p 打印 sed -n ‘1,10p’ test.txt 打印1到10行</p>
-<blockquote>
-<p>sed -n ‘1,10!p’ test.txt 打印1到10行之外的所有行</p>
-</blockquote>
-</li>
-<li><p>s 替换 sed ‘s/hello/world/g’ test.txt 把文件中的hello全部替换为world</p>
-</li>
-<li><p>q 退出 sed -n ‘10p’ test.txt  打印10行退出</p>
-</li>
-</ul>
-
-      
-    </div>
-    
+    </header>
   </div>
-  
-    
-<nav id="article-nav">
-  
-    <a href="/2015/09/08/pbdynamicananlysis/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption"><</strong>
-      <div class="article-nav-title">
-        
-          protocol buffer动态解析
-        
-      </div>
-    </a>
-  
-  
-    <a href="/2015/08/25/optimizemysql/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">mysql优化</div>
-      <strong class="article-nav-caption">></strong>
-    </a>
-  
-</nav>
-
-  
 </article>
+  
+  
+    </div></section>
+  
 
-
-<div class="share">
-	<!-- JiaThis Button BEGIN -->
-	<div class="jiathis_style">
-		<span class="jiathis_txt">分享到：</span>
-		<a class="jiathis_button_tsina"></a>
-		<a class="jiathis_button_cqq"></a>
-		<a class="jiathis_button_douban"></a>
-		<a class="jiathis_button_weixin"></a>
-		<a class="jiathis_button_tumblr"></a>
-		<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
-	</div>
-	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
-	<!-- JiaThis Button END -->
-</div>
-
-
-
-<div class="duoshuo">
-	<!-- 多说评论框 start -->
-	<div class="ds-thread" data-thread-key="simplesed" data-title="sed简记" data-url="http://sstask.github.io/2015/08/28/simplesed/"></div>
-	<!-- 多说评论框 end -->
-	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
-	<script type="text/javascript">
-	var duoshuoQuery = {short_name:"sstask"};
-	(function() {
-		var ds = document.createElement('script');
-		ds.type = 'text/javascript';ds.async = true;
-		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-		ds.charset = 'UTF-8';
-		(document.getElementsByTagName('head')[0] 
-		 || document.getElementsByTagName('body')[0]).appendChild(ds);
-	})();
-	</script>
-	<!-- 多说公共JS代码 end -->
-</div>
-
-
-
+    
 
 </div>
       <footer id="footer">
@@ -355,9 +249,9 @@
 		mathjax: true,
 		animate: true,
 		isHome: false,
-		isPost: true,
+		isPost: false,
 		isArchive: false,
-		isTag: false,
+		isTag: true,
 		isCategory: false,
 		open_in_new: false
 	}
