@@ -1,375 +1,46 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  
-  <title>cmake简用 | 叶子的博客</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="如果你厌烦了编写复杂的makefile，那你可以使用cmake。只需要简单的几行代码，cmake就可以帮你自动生成makefile，进而完成复杂的编译工作，而且cmake是夸平台的，不仅可以在linux下使用也可以在windows下使用，最简单的cmake
+extends base
 
-CMakeLists.txt
+block title
+  title= page.title + " | " + config.title
 
-1234project(main)cmake_minimum_required(VERSION 2.8)au">
-<meta property="og:type" content="article">
-<meta property="og:title" content="cmake简用">
-<meta property="og:url" content="http://sstask.github.io/2015/09/28/cmakesimple/index.html">
-<meta property="og:site_name" content="叶子的博客">
-<meta property="og:description" content="如果你厌烦了编写复杂的makefile，那你可以使用cmake。只需要简单的几行代码，cmake就可以帮你自动生成makefile，进而完成复杂的编译工作，而且cmake是夸平台的，不仅可以在linux下使用也可以在windows下使用，最简单的cmake
+block content
+  .post.post-page
+    h1.post-title= page.title
+    .post-meta= page.date.format(config.date_format) + " | "
+      if page.categories.length > 0
+        span.categories= __('belongsto')
+          for category in page.categories.toArray()
+            a(href=url_for(category.path))= " " + category.name
+    if theme.duoshuo
+      span.ds-thread-count(data-thread-key=page.path)
+    if theme.disqus
+      span.disqus-comment-count(data-disqus-identifier=page.path)
+    if page.toc
+      div(class="clear")
+        div(id="toc" class="toc-article")
+          div(class="toc-title")= __('contents')
+          != toc(page.content)
+    .post-content
+      != page.content
+    if page.tags
+      .tags
+        for tag in page.tags.toArray()
+          a(href=url_for(tag.path))= tag.name
+    include _partial/post-nav
+    if theme.duoshuo
+      div(class='ds-share flat' data-thread-key=page.path, data-title=page.title, data-url=page.permalink)
+         .ds-share-inline
+            ul.ds-share-icons-16
+              li(data-toggle='ds-share-icons-more')
+                a(class='ds-more' href='javascript:void(0);') 分享到：
+              li
+                a(class='ds-weibo' href='javascript:void(0);' data-service='weibo') 微博
+              li
+                a(class='ds-qzone' href='javascript:void(0);' data-service='qzone') QQ空间
+              li
+                a(class='ds-qqt' href='javascript:void(0);' data-service='qqt') 腾讯微博
+              li
+                a(class='ds-wechat' href='javascript:void(0);' data-service='wechat') 微信
+            .ds-share-icons-more
 
-CMakeLists.txt
-
-1234project(main)cmake_minimum_required(VERSION 2.8)au">
-<meta property="og:updated_time" content="2015-10-29T02:07:28.886Z">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="cmake简用">
-<meta name="twitter:description" content="如果你厌烦了编写复杂的makefile，那你可以使用cmake。只需要简单的几行代码，cmake就可以帮你自动生成makefile，进而完成复杂的编译工作，而且cmake是夸平台的，不仅可以在linux下使用也可以在windows下使用，最简单的cmake
-
-CMakeLists.txt
-
-1234project(main)cmake_minimum_required(VERSION 2.8)au">
-  
-    <link rel="alternative" href="/atom.xml" title="叶子的博客" type="application/atom+xml">
-  
-  
-    <link rel="icon" href="/favicon.png">
-  
-  <link rel="stylesheet" href="/css/style.css" type="text/css">
-</head>
-<body>
-  <div id="container">
-    <div class="left-col">
-    <div class="overlay"></div>
-<div class="intrude-less">
-	<header id="header" class="inner">
-		<a href="/" class="profilepic">
-			
-			<img lazy-src="/assets/img/blog.jpg" class="js-avatar">
-			
-		</a>
-
-		<hgroup>
-		  <h1 class="header-author"><a href="/">叶子与桔子</a></h1>
-		</hgroup>
-
-		
-		<p class="header-subtitle">面朝大海，春暖花开</p>
-		
-
-		
-			<div class="switch-btn">
-				<div class="icon">
-					<div class="icon-ctn">
-						<div class="icon-wrap icon-house" data-idx="0">
-							<div class="birdhouse"></div>
-							<div class="birdhouse_holes"></div>
-						</div>
-						<div class="icon-wrap icon-ribbon hide" data-idx="1">
-							<div class="ribbon"></div>
-						</div>
-						
-						
-						<div class="icon-wrap icon-me hide" data-idx="3">
-							<div class="user"></div>
-							<div class="shoulder"></div>
-						</div>
-						
-					</div>
-					
-				</div>
-				<div class="tips-box hide">
-					<div class="tips-arrow"></div>
-					<ul class="tips-inner">
-						<li>菜单</li>
-						<li>标签</li>
-						
-						
-						<li>关于我</li>
-						
-					</ul>
-				</div>
-			</div>
-		
-
-		<div class="switch-area">
-			<div class="switch-wrap">
-				<section class="switch-part switch-part1">
-					<nav class="header-menu">
-						<ul>
-						
-							<li><a href="/">主页</a></li>
-				        
-							<li><a href="/archives">所有文章</a></li>
-				        
-							<li><a href="/about">关于</a></li>
-				        
-							<li><a href="/link">Link</a></li>
-				        
-						</ul>
-					</nav>
-					<nav class="header-nav">
-						<div class="social">
-							
-								<a class="github" target="_blank" href="https://github.com/sstask" title="github">github</a>
-					        
-								<a class="google" target="_blank" href="http://blog.csdn.net/shujianhenu" title="google">google</a>
-					        
-								<a class="rss" target="_blank" href="/#" title="rss">rss</a>
-					        
-						</div>
-					</nav>
-				</section>
-				
-				
-				<section class="switch-part switch-part2">
-					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/C/" style="font-size: 12px;">C++</a> <a href="/tags/awk/" style="font-size: 10px;">awk</a> <a href="/tags/backup/" style="font-size: 10px;">backup</a> <a href="/tags/blog/" style="font-size: 14px;">blog</a> <a href="/tags/cdkey/" style="font-size: 10px;">cdkey</a> <a href="/tags/cmake/" style="font-size: 10px;">cmake</a> <a href="/tags/dynamiclink/" style="font-size: 10px;">dynamiclink</a> <a href="/tags/error/" style="font-size: 12px;">error</a> <a href="/tags/file/" style="font-size: 10px;">file</a> <a href="/tags/game/" style="font-size: 16px;">game</a> <a href="/tags/game-mysql/" style="font-size: 10px;">game,mysql</a> <a href="/tags/gettimeofday/" style="font-size: 10px;">gettimeofday</a> <a href="/tags/git/" style="font-size: 12px;">git</a> <a href="/tags/github/" style="font-size: 12px;">github</a> <a href="/tags/hexo/" style="font-size: 12px;">hexo</a> <a href="/tags/innodb-buffer/" style="font-size: 10px;">innodb buffer</a> <a href="/tags/iptables/" style="font-size: 10px;">iptables</a> <a href="/tags/key-buffer-size/" style="font-size: 10px;">key_buffer_size</a> <a href="/tags/linux/" style="font-size: 20px;">linux</a> <a href="/tags/md5/" style="font-size: 10px;">md5</a> <a href="/tags/mysql/" style="font-size: 18px;">mysql</a> <a href="/tags/mysqld-multi/" style="font-size: 10px;">mysqld_multi</a> <a href="/tags/newday/" style="font-size: 10px;">newday</a> <a href="/tags/php/" style="font-size: 12px;">php</a> <a href="/tags/protocol-buffer/" style="font-size: 16px;">protocol buffer</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/rank/" style="font-size: 12px;">rank</a> <a href="/tags/repeated/" style="font-size: 10px;">repeated</a> <a href="/tags/script/" style="font-size: 10px;">script</a> <a href="/tags/sed/" style="font-size: 10px;">sed</a> <a href="/tags/shell/" style="font-size: 12px;">shell</a> <a href="/tags/slk/" style="font-size: 10px;">slk</a> <a href="/tags/staticlink/" style="font-size: 10px;">staticlink</a> <a href="/tags/table-open-cache/" style="font-size: 10px;">table_open_cache</a> <a href="/tags/template/" style="font-size: 10px;">template</a> <a href="/tags/vim/" style="font-size: 10px;">vim</a> <a href="/tags/动态解析/" style="font-size: 12px;">动态解析</a>
-					</div>
-				</section>
-				
-				
-				
-
-				
-				
-				<section class="switch-part switch-part3">
-				
-					<div id="js-aboutme">毕业于裤子大，工作在游戏里，擅长服务器开发，偶尔研究前端，爱好电影小说。</div>
-				</section>
-				
-			</div>
-		</div>
-	</header>				
-</div>
-    </div>
-    <div class="mid-col">
-      <nav id="mobile-nav">
-  	<div class="overlay">
-  		<div class="slider-trigger"></div>
-  		<h1 class="header-author js-mobile-header hide">叶子与桔子</h1>
-  	</div>
-	<div class="intrude-less">
-		<header id="header" class="inner">
-			<div class="profilepic">
-				<img lazy-src="/assets/img/blog.jpg" class="js-avatar">
-			</div>
-			<hgroup>
-			  <h1 class="header-author">叶子与桔子</h1>
-			</hgroup>
-			
-			<p class="header-subtitle">面朝大海，春暖花开</p>
-			
-			<nav class="header-menu">
-				<ul>
-				
-					<li><a href="/">主页</a></li>
-		        
-					<li><a href="/archives">所有文章</a></li>
-		        
-					<li><a href="/about">关于</a></li>
-		        
-					<li><a href="/link">Link</a></li>
-		        
-		        <div class="clearfix"></div>
-				</ul>
-			</nav>
-			<nav class="header-nav">
-				<div class="social">
-					
-						<a class="github" target="_blank" href="https://github.com/sstask" title="github">github</a>
-			        
-						<a class="google" target="_blank" href="http://blog.csdn.net/shujianhenu" title="google">google</a>
-			        
-						<a class="rss" target="_blank" href="/#" title="rss">rss</a>
-			        
-				</div>
-			</nav>
-		</header>				
-	</div>
-</nav>
-      <div class="body-wrap"><article id="post-cmakesimple" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/09/28/cmakesimple/" class="article-date">
-  	<time datetime="2015-09-28T13:19:40.000Z" itemprop="datePublished">Sep 28</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="article-title" itemprop="name">
-      cmake简用
-    </h1>
-  
-
-      </header>
-      
-      <div class="article-info article-info-post">
-        
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cmake/">cmake</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
-	</div>
-
-        
-	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/linux/">linux</a>
-	</div>
-
-
-        <div class="clearfix"></div>
-      </div>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>如果你厌烦了编写复杂的makefile，那你可以使用cmake。只需要简单的几行代码，cmake就可以帮你自动生成makefile，进而完成复杂的编译工作，而且cmake是夸平台的，不仅可以在linux下使用也可以在windows下使用，最简单的cmake</p>
-<blockquote>
-<p>CMakeLists.txt</p>
-</blockquote>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">project</span><span class="params">(main)</span></span></span><br><span class="line"><span class="function"><span class="title">cmake_minimum_required</span><span class="params">(VERSION <span class="number">2.8</span>)</span></span></span><br><span class="line"><span class="function"><span class="title">aux_source_directory</span><span class="params">(. DIR_SRCS)</span></span></span><br><span class="line"><span class="function"><span class="title">add_executable</span><span class="params">(main $&#123;DIR_SRCS&#125;)</span></span></span><br></pre></td></tr></table></figure>
-<a id="more"></a>
-<p>aux_source_directory(. DIR_SRCS)把当前目录的所以源文件加入DIR_SRCS变量，add_executable(main ${DIR_SRCS})把源文件编译生成可执行文件main。<br>cmake的语法有很多，你几乎可以把他看成一个脚本语言，下面仅记录一下常用的方法：<br><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">project</span>(myexe)</span><br><span class="line"><span class="keyword">cmake_minimum_required</span>(VERSION <span class="number">2.8</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(<span class="string">"$&#123;CMAKE_BUILD_TYPE&#125;"</span> <span class="operator">STREQUAL</span> <span class="string">""</span>)</span><br><span class="line">    <span class="comment">#设置编译模式</span></span><br><span class="line">    <span class="keyword">set</span>(CMAKE_BUILD_TYPE Debug)</span><br><span class="line"><span class="keyword">endif</span>()</span><br><span class="line"></span><br><span class="line"><span class="comment">#设置输出目录</span></span><br><span class="line"><span class="keyword">set</span>(EXECUTABLE_OUTPUT_PATH <span class="envvar">$&#123;PROJECT_BINARY_DIR&#125;</span>/bin)</span><br><span class="line"><span class="keyword">set</span>(LIBRARY_OUTPUT_PATH <span class="envvar">$&#123;PROJECT_BINARY_DIR&#125;</span>/lib)</span><br><span class="line"></span><br><span class="line"><span class="keyword">set</span>(CXX_FLAGS_COMMON <span class="string">"$ENV&#123;CXXFLAGS&#125; $ENV&#123;EAGLE_OPTIONS&#125; -Wall -Wno-deprecated -Werror -pipe"</span>)</span><br><span class="line"><span class="keyword">message</span>(STATUS <span class="string">"编译类型:$&#123;CMAKE_BUILD_TYPE&#125;"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#设置编译选项</span></span><br><span class="line"><span class="keyword">set</span>(CXX_FLAGS_OPTIMIZE <span class="string">"-O2"</span>)</span><br><span class="line"><span class="keyword">set</span>(CMAKE_CXX_FLAGS_DEBUG <span class="string">"$&#123;CXX_FLAGS_COMMON&#125; -g -D_GM"</span>)</span><br><span class="line"><span class="keyword">set</span>(CMAKE_CXX_FLAGS_RELEASE <span class="string">"$&#123;CXX_FLAGS_COMMON&#125; -g "</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#包含文件目录</span></span><br><span class="line"><span class="keyword">include_directories</span>(</span><br><span class="line">    <span class="envvar">$&#123;CMAKE_SOURCE_DIR&#125;</span></span><br><span class="line">    <span class="envvar">$&#123;CMAKE_SOURCE_DIR&#125;</span>/base</span><br><span class="line">)</span><br><span class="line"><span class="comment">#库文件目录</span></span><br><span class="line"><span class="keyword">link_directories</span>(</span><br><span class="line">    <span class="envvar">$&#123;CMAKE_BINARY_DIR&#125;</span>/lib</span><br><span class="line">    <span class="envvar">$&#123;CMAKE_BINARY_DIR&#125;</span>/lib/zlib</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment">#设置优先链接</span></span><br><span class="line"><span class="comment">#set(CMAKE_FIND_LIBRARY_SUFFIXES .a$&#123;CMAKE_FIND_LIBRARY_SUFFIXES&#125;)</span></span><br><span class="line"><span class="comment">#设置公共链接库</span></span><br><span class="line"><span class="keyword">set</span>(COMMON_LINK_LIBS pthread z)</span><br><span class="line"></span><br><span class="line"><span class="comment">#执行脚本命令</span></span><br><span class="line"><span class="keyword">execute_process</span>(COMMAND chmod u+x <span class="envvar">$&#123;CMAKE_SOURCE_DIR&#125;</span>/protoc)</span><br><span class="line"><span class="comment">#构建额外目标</span></span><br><span class="line"><span class="keyword">set</span>(PROTO_IN  msg.proto)</span><br><span class="line"><span class="keyword">set</span>(PROTO_SRC msg.pb.cc)</span><br><span class="line"><span class="keyword">set</span>(PROTO_OUT msg.pb.h msg.pb.cc)</span><br><span class="line"><span class="keyword">add_custom_command</span>(</span><br><span class="line">    OUTPUT <span class="envvar">$&#123;PROTO_OUT&#125;</span></span><br><span class="line">    COMMAND protoc --cpp_out=. <span class="envvar">$&#123;PROTO_IN&#125;</span></span><br><span class="line">    DEPENDS <span class="envvar">$&#123;PROTO_IN&#125;</span></span><br><span class="line">)</span><br><span class="line"><span class="keyword">add_custom_target</span>(proto DEPENDS <span class="envvar">$&#123;PROTO_OUT&#125;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#构建子目录</span></span><br><span class="line"><span class="keyword">add_subdirectory</span>(base)</span><br><span class="line"></span><br><span class="line"><span class="keyword">aux_source_directory</span>(. SRC_LIST)</span><br><span class="line">list(APPEND SRC_LIST</span><br><span class="line">    <span class="envvar">$&#123;PROTO_SRC&#125;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment">#add_library(myexe STATIC $&#123;SRC_LIST&#125;)</span></span><br><span class="line"><span class="keyword">add_executable</span>(myexe <span class="envvar">$&#123;SRC_LIST&#125;</span>)</span><br><span class="line"><span class="comment">#设置依赖项</span></span><br><span class="line"><span class="keyword">add_dependencies</span>(myexe proto)</span><br><span class="line"><span class="keyword">target_link_libraries</span>(myexe <span class="envvar">$&#123;COMMON_LINK_LIBS&#125;</span>)</span><br></pre></td></tr></table></figure></p>
-<p>cmake的基础应用应该都在上面了，参考文章：<br><a href="http://name5566.com/1795.html" target="_blank" rel="external">http://name5566.com/1795.html</a><br><a href="http://blog.atime.me/note/cmake.html#b27395" target="_blank" rel="external">http://blog.atime.me/note/cmake.html#b27395</a><br><a href="http://blog.csdn.net/wzzfeitian/article/details/40963457/" target="_blank" rel="external">http://blog.csdn.net/wzzfeitian/article/details/40963457/</a><br><a href="http://blog.atime.me/note/cmake.html" target="_blank" rel="external">http://blog.atime.me/note/cmake.html</a></p>
-
-      
-    </div>
-    
-  </div>
-  
-    
-<nav id="article-nav">
-  
-    <a href="/2015/09/29/linuxdynamiclink/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption"><</strong>
-      <div class="article-nav-title">
-        
-          linux动态链接
-        
-      </div>
-    </a>
-  
-  
-    <a href="/2015/09/25/slkread/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">slk文件读取</div>
-      <strong class="article-nav-caption">></strong>
-    </a>
-  
-</nav>
-
-  
-</article>
-
-
-<div class="share">
-	<!-- JiaThis Button BEGIN -->
-	<div class="jiathis_style">
-		<span class="jiathis_txt">分享到：</span>
-		<a class="jiathis_button_tsina"></a>
-		<a class="jiathis_button_cqq"></a>
-		<a class="jiathis_button_douban"></a>
-		<a class="jiathis_button_weixin"></a>
-		<a class="jiathis_button_tumblr"></a>
-		<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
-	</div>
-	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
-	<!-- JiaThis Button END -->
-</div>
-
-
-
-<div class="duoshuo">
-	<!-- 多说评论框 start -->
-	<div class="ds-thread" data-thread-key="cmakesimple" data-title="cmake简用" data-url="http://sstask.github.io/2015/09/28/cmakesimple/"></div>
-	<!-- 多说评论框 end -->
-	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
-	<script type="text/javascript">
-	var duoshuoQuery = {short_name:"sstask"};
-	(function() {
-		var ds = document.createElement('script');
-		ds.type = 'text/javascript';ds.async = true;
-		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-		ds.charset = 'UTF-8';
-		(document.getElementsByTagName('head')[0] 
-		 || document.getElementsByTagName('body')[0]).appendChild(ds);
-	})();
-	</script>
-	<!-- 多说公共JS代码 end -->
-</div>
-
-
-
-
-</div>
-      <footer id="footer">
-  <div class="outer">
-    <div id="footer-info">
-    	<div class="footer-left">
-    		&copy; 2015 叶子与桔子
-    	</div>
-      	<div class="footer-right">
-      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
-        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
-</script>
-        <span id="busuanzi_container_site_pv">
-    总访问量<span id="busuanzi_value_site_pv"></span>次
-</span>
-      	</div>
-    </div>
-  </div>
-</footer>
-
-    </div>
-    
-  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
-
-
-<script>
-	var yiliaConfig = {
-		fancybox: true,
-		mathjax: true,
-		animate: true,
-		isHome: false,
-		isPost: true,
-		isArchive: false,
-		isTag: false,
-		isCategory: false,
-		open_in_new: false
-	}
-</script>
-<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
-<script src="/js/main.js" type="text/javascript"></script>
-
-
-
-
-
-
-<script type="text/x-mathjax-config">
-MathJax.Hub.Config({
-    tex2jax: {
-        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-        processEscapes: true,
-        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-    }
-});
-
-MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-        all[i].SourceElement().parentNode.className += ' has-jax';                 
-    }       
-});
-</script>
-
-<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-</script>
-
-
-  </div>
-</body>
-</html>
+    include _partial/comments

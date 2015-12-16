@@ -1,374 +1,46 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  
-  <title>mysql优化 | 叶子的博客</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="key_buffer_size 索引缓冲区大小
-1234567SHOW STATUS LIKE &apos;key_read%&apos;;  +-------------------+-------+  | Variable_name     | Value |  +-------------------+-------+  | Key_read_requests |9335458|  | Key_reads">
-<meta property="og:type" content="article">
-<meta property="og:title" content="mysql优化">
-<meta property="og:url" content="http://sstask.github.io/2015/08/25/optimizemysql/index.html">
-<meta property="og:site_name" content="叶子的博客">
-<meta property="og:description" content="key_buffer_size 索引缓冲区大小
-1234567SHOW STATUS LIKE &apos;key_read%&apos;;  +-------------------+-------+  | Variable_name     | Value |  +-------------------+-------+  | Key_read_requests |9335458|  | Key_reads">
-<meta property="og:updated_time" content="2015-10-29T02:11:56.347Z">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="mysql优化">
-<meta name="twitter:description" content="key_buffer_size 索引缓冲区大小
-1234567SHOW STATUS LIKE &apos;key_read%&apos;;  +-------------------+-------+  | Variable_name     | Value |  +-------------------+-------+  | Key_read_requests |9335458|  | Key_reads">
-  
-    <link rel="alternative" href="/atom.xml" title="叶子的博客" type="application/atom+xml">
-  
-  
-    <link rel="icon" href="/favicon.png">
-  
-  <link rel="stylesheet" href="/css/style.css" type="text/css">
-</head>
-<body>
-  <div id="container">
-    <div class="left-col">
-    <div class="overlay"></div>
-<div class="intrude-less">
-	<header id="header" class="inner">
-		<a href="/" class="profilepic">
-			
-			<img lazy-src="/assets/img/blog.jpg" class="js-avatar">
-			
-		</a>
+extends base
 
-		<hgroup>
-		  <h1 class="header-author"><a href="/">叶子与桔子</a></h1>
-		</hgroup>
+block title
+  title= page.title + " | " + config.title
 
-		
-		<p class="header-subtitle">面朝大海，春暖花开</p>
-		
+block content
+  .post.post-page
+    h1.post-title= page.title
+    .post-meta= page.date.format(config.date_format) + " | "
+      if page.categories.length > 0
+        span.categories= __('belongsto')
+          for category in page.categories.toArray()
+            a(href=url_for(category.path))= " " + category.name
+    if theme.duoshuo
+      span.ds-thread-count(data-thread-key=page.path)
+    if theme.disqus
+      span.disqus-comment-count(data-disqus-identifier=page.path)
+    if page.toc
+      div(class="clear")
+        div(id="toc" class="toc-article")
+          div(class="toc-title")= __('contents')
+          != toc(page.content)
+    .post-content
+      != page.content
+    if page.tags
+      .tags
+        for tag in page.tags.toArray()
+          a(href=url_for(tag.path))= tag.name
+    include _partial/post-nav
+    if theme.duoshuo
+      div(class='ds-share flat' data-thread-key=page.path, data-title=page.title, data-url=page.permalink)
+         .ds-share-inline
+            ul.ds-share-icons-16
+              li(data-toggle='ds-share-icons-more')
+                a(class='ds-more' href='javascript:void(0);') 分享到：
+              li
+                a(class='ds-weibo' href='javascript:void(0);' data-service='weibo') 微博
+              li
+                a(class='ds-qzone' href='javascript:void(0);' data-service='qzone') QQ空间
+              li
+                a(class='ds-qqt' href='javascript:void(0);' data-service='qqt') 腾讯微博
+              li
+                a(class='ds-wechat' href='javascript:void(0);' data-service='wechat') 微信
+            .ds-share-icons-more
 
-		
-			<div class="switch-btn">
-				<div class="icon">
-					<div class="icon-ctn">
-						<div class="icon-wrap icon-house" data-idx="0">
-							<div class="birdhouse"></div>
-							<div class="birdhouse_holes"></div>
-						</div>
-						<div class="icon-wrap icon-ribbon hide" data-idx="1">
-							<div class="ribbon"></div>
-						</div>
-						
-						
-						<div class="icon-wrap icon-me hide" data-idx="3">
-							<div class="user"></div>
-							<div class="shoulder"></div>
-						</div>
-						
-					</div>
-					
-				</div>
-				<div class="tips-box hide">
-					<div class="tips-arrow"></div>
-					<ul class="tips-inner">
-						<li>菜单</li>
-						<li>标签</li>
-						
-						
-						<li>关于我</li>
-						
-					</ul>
-				</div>
-			</div>
-		
-
-		<div class="switch-area">
-			<div class="switch-wrap">
-				<section class="switch-part switch-part1">
-					<nav class="header-menu">
-						<ul>
-						
-							<li><a href="/">主页</a></li>
-				        
-							<li><a href="/archives">所有文章</a></li>
-				        
-							<li><a href="/about">关于</a></li>
-				        
-							<li><a href="/link">Link</a></li>
-				        
-						</ul>
-					</nav>
-					<nav class="header-nav">
-						<div class="social">
-							
-								<a class="github" target="_blank" href="https://github.com/sstask" title="github">github</a>
-					        
-								<a class="google" target="_blank" href="http://blog.csdn.net/shujianhenu" title="google">google</a>
-					        
-								<a class="rss" target="_blank" href="/#" title="rss">rss</a>
-					        
-						</div>
-					</nav>
-				</section>
-				
-				
-				<section class="switch-part switch-part2">
-					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/C/" style="font-size: 12px;">C++</a> <a href="/tags/awk/" style="font-size: 10px;">awk</a> <a href="/tags/backup/" style="font-size: 10px;">backup</a> <a href="/tags/blog/" style="font-size: 14px;">blog</a> <a href="/tags/cdkey/" style="font-size: 10px;">cdkey</a> <a href="/tags/cmake/" style="font-size: 10px;">cmake</a> <a href="/tags/dynamiclink/" style="font-size: 10px;">dynamiclink</a> <a href="/tags/error/" style="font-size: 12px;">error</a> <a href="/tags/file/" style="font-size: 10px;">file</a> <a href="/tags/game/" style="font-size: 16px;">game</a> <a href="/tags/game-mysql/" style="font-size: 10px;">game,mysql</a> <a href="/tags/gettimeofday/" style="font-size: 10px;">gettimeofday</a> <a href="/tags/git/" style="font-size: 12px;">git</a> <a href="/tags/github/" style="font-size: 12px;">github</a> <a href="/tags/hexo/" style="font-size: 12px;">hexo</a> <a href="/tags/innodb-buffer/" style="font-size: 10px;">innodb buffer</a> <a href="/tags/iptables/" style="font-size: 10px;">iptables</a> <a href="/tags/key-buffer-size/" style="font-size: 10px;">key_buffer_size</a> <a href="/tags/linux/" style="font-size: 20px;">linux</a> <a href="/tags/md5/" style="font-size: 10px;">md5</a> <a href="/tags/mysql/" style="font-size: 18px;">mysql</a> <a href="/tags/mysqld-multi/" style="font-size: 10px;">mysqld_multi</a> <a href="/tags/newday/" style="font-size: 10px;">newday</a> <a href="/tags/php/" style="font-size: 12px;">php</a> <a href="/tags/protocol-buffer/" style="font-size: 16px;">protocol buffer</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/rank/" style="font-size: 12px;">rank</a> <a href="/tags/repeated/" style="font-size: 10px;">repeated</a> <a href="/tags/script/" style="font-size: 10px;">script</a> <a href="/tags/sed/" style="font-size: 10px;">sed</a> <a href="/tags/shell/" style="font-size: 12px;">shell</a> <a href="/tags/slk/" style="font-size: 10px;">slk</a> <a href="/tags/staticlink/" style="font-size: 10px;">staticlink</a> <a href="/tags/table-open-cache/" style="font-size: 10px;">table_open_cache</a> <a href="/tags/template/" style="font-size: 10px;">template</a> <a href="/tags/vim/" style="font-size: 10px;">vim</a> <a href="/tags/动态解析/" style="font-size: 12px;">动态解析</a>
-					</div>
-				</section>
-				
-				
-				
-
-				
-				
-				<section class="switch-part switch-part3">
-				
-					<div id="js-aboutme">毕业于裤子大，工作在游戏里，擅长服务器开发，偶尔研究前端，爱好电影小说。</div>
-				</section>
-				
-			</div>
-		</div>
-	</header>				
-</div>
-    </div>
-    <div class="mid-col">
-      <nav id="mobile-nav">
-  	<div class="overlay">
-  		<div class="slider-trigger"></div>
-  		<h1 class="header-author js-mobile-header hide">叶子与桔子</h1>
-  	</div>
-	<div class="intrude-less">
-		<header id="header" class="inner">
-			<div class="profilepic">
-				<img lazy-src="/assets/img/blog.jpg" class="js-avatar">
-			</div>
-			<hgroup>
-			  <h1 class="header-author">叶子与桔子</h1>
-			</hgroup>
-			
-			<p class="header-subtitle">面朝大海，春暖花开</p>
-			
-			<nav class="header-menu">
-				<ul>
-				
-					<li><a href="/">主页</a></li>
-		        
-					<li><a href="/archives">所有文章</a></li>
-		        
-					<li><a href="/about">关于</a></li>
-		        
-					<li><a href="/link">Link</a></li>
-		        
-		        <div class="clearfix"></div>
-				</ul>
-			</nav>
-			<nav class="header-nav">
-				<div class="social">
-					
-						<a class="github" target="_blank" href="https://github.com/sstask" title="github">github</a>
-			        
-						<a class="google" target="_blank" href="http://blog.csdn.net/shujianhenu" title="google">google</a>
-			        
-						<a class="rss" target="_blank" href="/#" title="rss">rss</a>
-			        
-				</div>
-			</nav>
-		</header>				
-	</div>
-</nav>
-      <div class="body-wrap"><article id="post-optimizemysql" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/08/25/optimizemysql/" class="article-date">
-  	<time datetime="2015-08-25T04:13:35.000Z" itemprop="datePublished">Aug 25</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="article-title" itemprop="name">
-      mysql优化
-    </h1>
-  
-
-      </header>
-      
-      <div class="article-info article-info-post">
-        
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/key-buffer-size/">key_buffer_size</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/">mysql</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/table-open-cache/">table_open_cache</a></li></ul>
-	</div>
-
-        
-	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/mysql/">mysql</a>
-	</div>
-
-
-        <div class="clearfix"></div>
-      </div>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p> <strong>key_buffer_size 索引缓冲区大小</strong></p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator"><span class="keyword">SHOW</span> <span class="keyword">STATUS</span> <span class="keyword">LIKE</span> <span class="string">'key_read%'</span>;</span>  </span><br><span class="line">+<span class="comment">-------------------+-------+  </span></span><br><span class="line">| Variable_name     | Value |  </span><br><span class="line">+<span class="comment">-------------------+-------+  </span></span><br><span class="line">| Key_read_requests |9335458|  </span><br><span class="line">| Key_reads         |301    |  </span><br><span class="line">+<span class="comment">-------------------+-------+</span></span><br></pre></td></tr></table></figure>
-<a id="more"></a>
-<p>Key_reads是从硬盘上读取索引的次数，Key_read_requests是索引请求次数，Key_reads/Key_read_requests即索引失效率，此值越低越好，小于1/1000较好，可以通过调整key_buffer_size的值来调整索引的利用率，可以通过show variables like ‘key_buffer_size’;查看当前值，可以修改my.cnf文件添加key_buffer_size=32M来改变大小，此值也不是越大越好，太大会增加换页率反而降低效率。另，此值只对MyISAM表有效。</p>
-<p><strong>table_open_cache 表缓存</strong></p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator"><span class="keyword">SHOW</span> <span class="keyword">GLOBAL</span> <span class="keyword">STATUS</span> <span class="keyword">LIKE</span> <span class="string">'Open%tables'</span>;</span>  </span><br><span class="line">+<span class="comment">---------------+-------+  </span></span><br><span class="line">| Variable_name | Value |  </span><br><span class="line">+<span class="comment">---------------+-------+  </span></span><br><span class="line">| Open_tables   | 400   |  </span><br><span class="line">| Opened_tables | 24257 |  </span><br><span class="line">+<span class="comment">---------------+-------+  </span></span><br><span class="line">[sql] view plaincopy</span><br><span class="line"><span class="operator"><span class="keyword">show</span> <span class="keyword">variables</span> <span class="keyword">like</span> <span class="string">'table%cache'</span>;</span>  </span><br><span class="line">+<span class="comment">------------------------+-------+  </span></span><br><span class="line">| Variable_name          | Value |  </span><br><span class="line">+<span class="comment">------------------------+-------+  </span></span><br><span class="line">| table_definition_cache | 400   |  </span><br><span class="line">| table_open_cache       | 400   |  </span><br><span class="line">+<span class="comment">------------------------+-------+</span></span><br></pre></td></tr></table></figure>
-<p>Open_tables是当前打开表的数量，Opened_tables是没有在缓存中找到的表数量，table_open_cache是缓存中表的最大数量，如果Open_tables=table_open_cache，而且Opened_tables在不断增加的时候就要增大table_open_cache的值了，通过修改/etc/my.cnf，添加table_open_cache = 1024来改变大小。该值与Connections有关，因为一般而言每个线程会独立打开一个表，手册建议table_open_cache = max_connections * n，n是sql语句中的最大表数。</p>
-<p><strong>索引</strong><br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator"><span class="keyword">show</span> <span class="keyword">status</span> <span class="keyword">like</span> <span class="string">'handler_read_%'</span>;</span>  </span><br><span class="line">+<span class="comment">-----------------------+-------+  </span></span><br><span class="line">| Variable_name         | Value |  </span><br><span class="line">+<span class="comment">-----------------------+-------+  </span></span><br><span class="line">| Handler_read_first    | 0     |  </span><br><span class="line">| Handler_read_key      | 444   |  </span><br><span class="line">| Handler_read_next     | 0     |  </span><br><span class="line">| Handler_read_prev     | 0     |  </span><br><span class="line">| Handler_read_rnd      | 56    |  </span><br><span class="line">| Handler_read_rnd_next | 982   |  </span><br><span class="line">+<span class="comment">-----------------------+-------+</span></span><br></pre></td></tr></table></figure></p>
-<p>前面4个参数都是对索引的读取次数，越大越好，后面2个参数是对数据文件读取的次数，如果Handler_read_rnd或Handler_read_rnd_next过大证明索引没有利用上，要优化sql语句，添加索引或者提高索引利用率。</p>
-<p><strong>thread_cache_size 线程缓存</strong><br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator"><span class="keyword">show</span> <span class="keyword">global</span> <span class="keyword">status</span> <span class="keyword">like</span> <span class="string">'Thread%'</span>;</span>  </span><br><span class="line">+<span class="comment">-------------------+-------+  </span></span><br><span class="line">| Variable_name     | Value |  </span><br><span class="line">+<span class="comment">-------------------+-------+  </span></span><br><span class="line">| Threads_cached    | 0     |  </span><br><span class="line">| Threads_connected | 22    |  </span><br><span class="line">| Threads_created   | 3233  |  </span><br><span class="line">| Threads_running   | 1     |  </span><br><span class="line">+<span class="comment">-------------------+-------+  </span></span><br><span class="line">[sql] view plaincopy</span><br><span class="line"><span class="operator"><span class="keyword">show</span> <span class="keyword">status</span> <span class="keyword">like</span> <span class="string">'%connections%'</span>;</span>  </span><br><span class="line">+<span class="comment">----------------------+-------+  </span></span><br><span class="line">| Variable_name        | Value |  </span><br><span class="line">+<span class="comment">----------------------+-------+  </span></span><br><span class="line">| Connections          | 3234  |  </span><br><span class="line">| Max_used_connections | 25    |  </span><br><span class="line">+<span class="comment">----------------------+-------+</span></span><br></pre></td></tr></table></figure></p>
-<p>thread cache命中率为（Connections-Threads_created）/Connections，命中率当然越高越好，上面因为thread_cache_size=0，所以每有一个连接便重新建立了一个线程，可以修改my.cnf文件添加thread_cache_size=8来改变该值。如果是长连接thread_cache_size的值就不需要设置多大，因为长连接一旦连接就不会断开重新连接也就不需要重新创建线程，短连接要根据情况设置改值大小，和连接数、内存相关（1G8个，或者参考Threads_connected值）。</p>
-<p><strong>innodb_buffer_pool_size innodb缓存</strong></p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator"><span class="keyword">show</span> <span class="keyword">status</span> <span class="keyword">like</span>  <span class="string">'Innodb_buffer_pool_%'</span>;</span>  </span><br><span class="line">+<span class="comment">-----------------------------------+-------+  </span></span><br><span class="line">| Variable_name                     | Value |  </span><br><span class="line">+<span class="comment">-----------------------------------+-------+  </span></span><br><span class="line">| Innodb_buffer_pool_pages_data     | 277   |  </span><br><span class="line">| Innodb_buffer_pool_pages_dirty    | 0     |  </span><br><span class="line">| Innodb_buffer_pool_pages_flushed  | 26    |  </span><br><span class="line">| Innodb_buffer_pool_pages_free     | 234   |  </span><br><span class="line">| Innodb_buffer_pool_pages_misc     | 1     |  </span><br><span class="line">| Innodb_buffer_pool_pages_total    | 512   |  </span><br><span class="line">| Innodb_buffer_pool_read_ahead_rnd | 2     |  </span><br><span class="line">| Innodb_buffer_pool_read_ahead_seq | 11    |  </span><br><span class="line">| Innodb_buffer_pool_read_requests  | 22288 |  </span><br><span class="line">| Innodb_buffer_pool_reads          | 91    |  </span><br><span class="line">| Innodb_buffer_pool_wait_free      | 0     |  </span><br><span class="line">| Innodb_buffer_pool_write_requests | 53    |  </span><br><span class="line">+<span class="comment">-----------------------------------+-------+</span></span><br></pre></td></tr></table></figure>
-<p>innodb buffer缓存innodb表的索引、数据、插入数据时的缓冲等，读取命中率=（Innodb_buffer_pool_read_requests - Innodb_buffer_pool_reads） / Innodb_buffer_pool_read_requests * 100%，通常要大于99%比较好，可以修改my.cnf文件添加innodb_buffer_pool_size=1G来改变该值，参考值=内存*70%~80%。</p>
-<p>如果确定不了参数可以先用mysql提供的参考配置试试，在usr/share/mysql/目录下的<em>my-small.cnf   my-medium.cnf   my-large.cnf   my-huge.cnf   my-innodb-heavy-4G.cnf</em>这几个文件。</p>
-<p>另，最好把mysql字符集设置成utf-8，兼容性更好，可避免中文乱码，在/etc/my.cnf 文件中的 [mysqld]下添加default-character-set=utf8 修改服务器编码，[client] 下添加default-character-set=utf8 修改客户端连接默认编码，一般来讲这个可以不设置，在客户端连接到数据库时客户端主动设置编码方式。</p>
-
-      
-    </div>
-    
-  </div>
-  
-    
-<nav id="article-nav">
-  
-    <a href="/2015/08/28/simplesed/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption"><</strong>
-      <div class="article-nav-title">
-        
-          sed简记
-        
-      </div>
-    </a>
-  
-  
-    <a href="/2015/08/18/ccommonerror/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">C++程序里一些易犯错误</div>
-      <strong class="article-nav-caption">></strong>
-    </a>
-  
-</nav>
-
-  
-</article>
-
-
-<div class="share">
-	<!-- JiaThis Button BEGIN -->
-	<div class="jiathis_style">
-		<span class="jiathis_txt">分享到：</span>
-		<a class="jiathis_button_tsina"></a>
-		<a class="jiathis_button_cqq"></a>
-		<a class="jiathis_button_douban"></a>
-		<a class="jiathis_button_weixin"></a>
-		<a class="jiathis_button_tumblr"></a>
-		<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
-	</div>
-	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
-	<!-- JiaThis Button END -->
-</div>
-
-
-
-<div class="duoshuo">
-	<!-- 多说评论框 start -->
-	<div class="ds-thread" data-thread-key="optimizemysql" data-title="mysql优化" data-url="http://sstask.github.io/2015/08/25/optimizemysql/"></div>
-	<!-- 多说评论框 end -->
-	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
-	<script type="text/javascript">
-	var duoshuoQuery = {short_name:"sstask"};
-	(function() {
-		var ds = document.createElement('script');
-		ds.type = 'text/javascript';ds.async = true;
-		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-		ds.charset = 'UTF-8';
-		(document.getElementsByTagName('head')[0] 
-		 || document.getElementsByTagName('body')[0]).appendChild(ds);
-	})();
-	</script>
-	<!-- 多说公共JS代码 end -->
-</div>
-
-
-
-
-</div>
-      <footer id="footer">
-  <div class="outer">
-    <div id="footer-info">
-    	<div class="footer-left">
-    		&copy; 2015 叶子与桔子
-    	</div>
-      	<div class="footer-right">
-      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
-        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
-</script>
-        <span id="busuanzi_container_site_pv">
-    总访问量<span id="busuanzi_value_site_pv"></span>次
-</span>
-      	</div>
-    </div>
-  </div>
-</footer>
-
-    </div>
-    
-  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
-
-
-<script>
-	var yiliaConfig = {
-		fancybox: true,
-		mathjax: true,
-		animate: true,
-		isHome: false,
-		isPost: true,
-		isArchive: false,
-		isTag: false,
-		isCategory: false,
-		open_in_new: false
-	}
-</script>
-<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
-<script src="/js/main.js" type="text/javascript"></script>
-
-
-
-
-
-
-<script type="text/x-mathjax-config">
-MathJax.Hub.Config({
-    tex2jax: {
-        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-        processEscapes: true,
-        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-    }
-});
-
-MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-        all[i].SourceElement().parentNode.className += ' has-jax';                 
-    }       
-});
-</script>
-
-<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-</script>
-
-
-  </div>
-</body>
-</html>
+    include _partial/comments

@@ -1,367 +1,46 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  
-  <title>linux防火墙 | 叶子的博客</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="今天早上登服务器测试，试了很多次就是连接不上，折腾了很久发现是因为今天服务器重启了，然后没有把防火墙关闭。因为是内网测试服务器，所以图省事每次服务器重启之后都会把防火墙关了，这样就能正常登陆了。于是今天忘了关了就查了很久……还是为了图省事，决定更改防火墙设置，来个一劳永逸。linux防火墙默认阻挡了大部分端口的外部连接，也就是说如果你不修改防火墙，你从外面主动连接不到linux内部，但是可以从li">
-<meta property="og:type" content="article">
-<meta property="og:title" content="linux防火墙">
-<meta property="og:url" content="http://sstask.github.io/2015/10/08/linuxiptables/index.html">
-<meta property="og:site_name" content="叶子的博客">
-<meta property="og:description" content="今天早上登服务器测试，试了很多次就是连接不上，折腾了很久发现是因为今天服务器重启了，然后没有把防火墙关闭。因为是内网测试服务器，所以图省事每次服务器重启之后都会把防火墙关了，这样就能正常登陆了。于是今天忘了关了就查了很久……还是为了图省事，决定更改防火墙设置，来个一劳永逸。linux防火墙默认阻挡了大部分端口的外部连接，也就是说如果你不修改防火墙，你从外面主动连接不到linux内部，但是可以从li">
-<meta property="og:updated_time" content="2015-10-08T16:01:04.519Z">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="linux防火墙">
-<meta name="twitter:description" content="今天早上登服务器测试，试了很多次就是连接不上，折腾了很久发现是因为今天服务器重启了，然后没有把防火墙关闭。因为是内网测试服务器，所以图省事每次服务器重启之后都会把防火墙关了，这样就能正常登陆了。于是今天忘了关了就查了很久……还是为了图省事，决定更改防火墙设置，来个一劳永逸。linux防火墙默认阻挡了大部分端口的外部连接，也就是说如果你不修改防火墙，你从外面主动连接不到linux内部，但是可以从li">
-  
-    <link rel="alternative" href="/atom.xml" title="叶子的博客" type="application/atom+xml">
-  
-  
-    <link rel="icon" href="/favicon.png">
-  
-  <link rel="stylesheet" href="/css/style.css" type="text/css">
-</head>
-<body>
-  <div id="container">
-    <div class="left-col">
-    <div class="overlay"></div>
-<div class="intrude-less">
-	<header id="header" class="inner">
-		<a href="/" class="profilepic">
-			
-			<img lazy-src="/assets/img/blog.jpg" class="js-avatar">
-			
-		</a>
+extends base
 
-		<hgroup>
-		  <h1 class="header-author"><a href="/">叶子与桔子</a></h1>
-		</hgroup>
+block title
+  title= page.title + " | " + config.title
 
-		
-		<p class="header-subtitle">面朝大海，春暖花开</p>
-		
+block content
+  .post.post-page
+    h1.post-title= page.title
+    .post-meta= page.date.format(config.date_format) + " | "
+      if page.categories.length > 0
+        span.categories= __('belongsto')
+          for category in page.categories.toArray()
+            a(href=url_for(category.path))= " " + category.name
+    if theme.duoshuo
+      span.ds-thread-count(data-thread-key=page.path)
+    if theme.disqus
+      span.disqus-comment-count(data-disqus-identifier=page.path)
+    if page.toc
+      div(class="clear")
+        div(id="toc" class="toc-article")
+          div(class="toc-title")= __('contents')
+          != toc(page.content)
+    .post-content
+      != page.content
+    if page.tags
+      .tags
+        for tag in page.tags.toArray()
+          a(href=url_for(tag.path))= tag.name
+    include _partial/post-nav
+    if theme.duoshuo
+      div(class='ds-share flat' data-thread-key=page.path, data-title=page.title, data-url=page.permalink)
+         .ds-share-inline
+            ul.ds-share-icons-16
+              li(data-toggle='ds-share-icons-more')
+                a(class='ds-more' href='javascript:void(0);') 分享到：
+              li
+                a(class='ds-weibo' href='javascript:void(0);' data-service='weibo') 微博
+              li
+                a(class='ds-qzone' href='javascript:void(0);' data-service='qzone') QQ空间
+              li
+                a(class='ds-qqt' href='javascript:void(0);' data-service='qqt') 腾讯微博
+              li
+                a(class='ds-wechat' href='javascript:void(0);' data-service='wechat') 微信
+            .ds-share-icons-more
 
-		
-			<div class="switch-btn">
-				<div class="icon">
-					<div class="icon-ctn">
-						<div class="icon-wrap icon-house" data-idx="0">
-							<div class="birdhouse"></div>
-							<div class="birdhouse_holes"></div>
-						</div>
-						<div class="icon-wrap icon-ribbon hide" data-idx="1">
-							<div class="ribbon"></div>
-						</div>
-						
-						
-						<div class="icon-wrap icon-me hide" data-idx="3">
-							<div class="user"></div>
-							<div class="shoulder"></div>
-						</div>
-						
-					</div>
-					
-				</div>
-				<div class="tips-box hide">
-					<div class="tips-arrow"></div>
-					<ul class="tips-inner">
-						<li>菜单</li>
-						<li>标签</li>
-						
-						
-						<li>关于我</li>
-						
-					</ul>
-				</div>
-			</div>
-		
-
-		<div class="switch-area">
-			<div class="switch-wrap">
-				<section class="switch-part switch-part1">
-					<nav class="header-menu">
-						<ul>
-						
-							<li><a href="/">主页</a></li>
-				        
-							<li><a href="/archives">所有文章</a></li>
-				        
-							<li><a href="/about">关于</a></li>
-				        
-							<li><a href="/link">Link</a></li>
-				        
-						</ul>
-					</nav>
-					<nav class="header-nav">
-						<div class="social">
-							
-								<a class="github" target="_blank" href="https://github.com/sstask" title="github">github</a>
-					        
-								<a class="google" target="_blank" href="http://blog.csdn.net/shujianhenu" title="google">google</a>
-					        
-								<a class="rss" target="_blank" href="/#" title="rss">rss</a>
-					        
-						</div>
-					</nav>
-				</section>
-				
-				
-				<section class="switch-part switch-part2">
-					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/C/" style="font-size: 12px;">C++</a> <a href="/tags/awk/" style="font-size: 10px;">awk</a> <a href="/tags/backup/" style="font-size: 10px;">backup</a> <a href="/tags/blog/" style="font-size: 14px;">blog</a> <a href="/tags/cdkey/" style="font-size: 10px;">cdkey</a> <a href="/tags/cmake/" style="font-size: 10px;">cmake</a> <a href="/tags/dynamiclink/" style="font-size: 10px;">dynamiclink</a> <a href="/tags/error/" style="font-size: 12px;">error</a> <a href="/tags/file/" style="font-size: 10px;">file</a> <a href="/tags/game/" style="font-size: 16px;">game</a> <a href="/tags/game-mysql/" style="font-size: 10px;">game,mysql</a> <a href="/tags/gettimeofday/" style="font-size: 10px;">gettimeofday</a> <a href="/tags/git/" style="font-size: 12px;">git</a> <a href="/tags/github/" style="font-size: 12px;">github</a> <a href="/tags/hexo/" style="font-size: 12px;">hexo</a> <a href="/tags/innodb-buffer/" style="font-size: 10px;">innodb buffer</a> <a href="/tags/iptables/" style="font-size: 10px;">iptables</a> <a href="/tags/key-buffer-size/" style="font-size: 10px;">key_buffer_size</a> <a href="/tags/linux/" style="font-size: 20px;">linux</a> <a href="/tags/md5/" style="font-size: 10px;">md5</a> <a href="/tags/mysql/" style="font-size: 18px;">mysql</a> <a href="/tags/mysqld-multi/" style="font-size: 10px;">mysqld_multi</a> <a href="/tags/newday/" style="font-size: 10px;">newday</a> <a href="/tags/php/" style="font-size: 12px;">php</a> <a href="/tags/protocol-buffer/" style="font-size: 16px;">protocol buffer</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/rank/" style="font-size: 12px;">rank</a> <a href="/tags/repeated/" style="font-size: 10px;">repeated</a> <a href="/tags/script/" style="font-size: 10px;">script</a> <a href="/tags/sed/" style="font-size: 10px;">sed</a> <a href="/tags/shell/" style="font-size: 12px;">shell</a> <a href="/tags/slk/" style="font-size: 10px;">slk</a> <a href="/tags/staticlink/" style="font-size: 10px;">staticlink</a> <a href="/tags/table-open-cache/" style="font-size: 10px;">table_open_cache</a> <a href="/tags/template/" style="font-size: 10px;">template</a> <a href="/tags/vim/" style="font-size: 10px;">vim</a> <a href="/tags/动态解析/" style="font-size: 12px;">动态解析</a>
-					</div>
-				</section>
-				
-				
-				
-
-				
-				
-				<section class="switch-part switch-part3">
-				
-					<div id="js-aboutme">毕业于裤子大，工作在游戏里，擅长服务器开发，偶尔研究前端，爱好电影小说。</div>
-				</section>
-				
-			</div>
-		</div>
-	</header>				
-</div>
-    </div>
-    <div class="mid-col">
-      <nav id="mobile-nav">
-  	<div class="overlay">
-  		<div class="slider-trigger"></div>
-  		<h1 class="header-author js-mobile-header hide">叶子与桔子</h1>
-  	</div>
-	<div class="intrude-less">
-		<header id="header" class="inner">
-			<div class="profilepic">
-				<img lazy-src="/assets/img/blog.jpg" class="js-avatar">
-			</div>
-			<hgroup>
-			  <h1 class="header-author">叶子与桔子</h1>
-			</hgroup>
-			
-			<p class="header-subtitle">面朝大海，春暖花开</p>
-			
-			<nav class="header-menu">
-				<ul>
-				
-					<li><a href="/">主页</a></li>
-		        
-					<li><a href="/archives">所有文章</a></li>
-		        
-					<li><a href="/about">关于</a></li>
-		        
-					<li><a href="/link">Link</a></li>
-		        
-		        <div class="clearfix"></div>
-				</ul>
-			</nav>
-			<nav class="header-nav">
-				<div class="social">
-					
-						<a class="github" target="_blank" href="https://github.com/sstask" title="github">github</a>
-			        
-						<a class="google" target="_blank" href="http://blog.csdn.net/shujianhenu" title="google">google</a>
-			        
-						<a class="rss" target="_blank" href="/#" title="rss">rss</a>
-			        
-				</div>
-			</nav>
-		</header>				
-	</div>
-</nav>
-      <div class="body-wrap"><article id="post-linuxiptables" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/10/08/linuxiptables/" class="article-date">
-  	<time datetime="2015-10-08T12:19:17.000Z" itemprop="datePublished">Oct 8</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="article-title" itemprop="name">
-      linux防火墙
-    </h1>
-  
-
-      </header>
-      
-      <div class="article-info article-info-post">
-        
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iptables/">iptables</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
-	</div>
-
-        
-	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/linux/">linux</a>
-	</div>
-
-
-        <div class="clearfix"></div>
-      </div>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>今天早上登服务器测试，试了很多次就是连接不上，折腾了很久发现是因为今天服务器重启了，然后没有把防火墙关闭。因为是内网测试服务器，所以图省事每次服务器重启之后都会把防火墙关了，这样就能正常登陆了。于是今天忘了关了就查了很久……<br>还是为了图省事，决定更改防火墙设置，来个一劳永逸。<br>linux防火墙默认阻挡了大部分端口的外部连接，也就是说如果你不修改防火墙，你从外面主动连接不到linux内部，但是可以从linux内部向外部发起连接。<br>下面是我服务器上的默认防火墙配置</p>
-<blockquote>
-<p>vim /etc/sysconfig/iptables<br>如果没有/etc/sysconfig/iptables文件，则可以直接运行命令：<br><strong>iptables -A INPUT -p tcp -m state –state NEW -m tcp –dport 3306 -j ACCEPT</strong><br><strong>service iptables save</strong><br><strong>service iptables restart</strong><br><a id="more"></a><br><figure class="highlight haml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">*filter</span><br><span class="line">:INPUT ACCEPT [0:0]</span><br><span class="line">:FORWARD ACCEPT [0:0]</span><br><span class="line">:OUTPUT ACCEPT [55:3890]</span><br><span class="line">-<span class="ruby"><span class="constant">A</span> <span class="constant">INPUT</span> -m state --state <span class="constant">RELATED</span>,<span class="constant">ESTABLISHED</span> -j <span class="constant">ACCEPT</span></span><br><span class="line"></span>-<span class="ruby"><span class="constant">A</span> <span class="constant">INPUT</span> -p icmp -j <span class="constant">ACCEPT</span></span><br><span class="line"></span>-<span class="ruby"><span class="constant">A</span> <span class="constant">INPUT</span> -i lo -j <span class="constant">ACCEPT</span></span><br><span class="line"></span>-<span class="ruby"><span class="constant">A</span> <span class="constant">INPUT</span> -p tcp -m state --state <span class="constant">NEW</span> -m tcp --dport <span class="number">22</span> -j <span class="constant">ACCEPT</span></span><br><span class="line"></span>-<span class="ruby"><span class="constant">A</span> <span class="constant">INPUT</span> -j <span class="constant">REJECT</span> --reject-with icmp-host-prohibited</span><br><span class="line"></span>-<span class="ruby"><span class="constant">A</span> <span class="constant">FORWARD</span> -j <span class="constant">REJECT</span> --reject-with icmp-host-prohibited</span><br><span class="line"></span>COMMIT</span><br></pre></td></tr></table></figure></p>
-</blockquote>
-<p>可以看到它只默认打开了22端口，即ftp服务端口。<br>但是登录服务器的话要连接你自己的服务器端口，所以要把服务器监听端口添加到配置文件里面。<br>以mysql服务端口3306为例，</p>
-<blockquote>
-<p>vim /etc/sysconfig/iptables<br><figure class="highlight pf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">*filter</span><br><span class="line">:INPUT ACCEPT [<span class="number">0</span>:<span class="number">0</span>]</span><br><span class="line">:FORWARD ACCEPT [<span class="number">0</span>:<span class="number">0</span>]</span><br><span class="line">:OUTPUT ACCEPT [<span class="number">55</span>:<span class="number">3890</span>]</span><br><span class="line">-A INPUT -m <span class="keyword">state</span> --state RELATED,ESTABLISHED -j ACCEPT</span><br><span class="line">-A INPUT -p tcp -m <span class="keyword">state</span> --state NEW -m tcp --dport <span class="number">3306</span> -j ACCEPT <span class="comment">#就是这里</span></span><br><span class="line">-A INPUT -p icmp -j ACCEPT</span><br><span class="line">-A INPUT -i lo -j ACCEPT</span><br><span class="line">-A INPUT -p tcp -m <span class="keyword">state</span> --state NEW -m tcp --dport <span class="number">22</span> -j ACCEPT</span><br><span class="line">-A INPUT -j REJECT --reject-with icmp-host-prohibited</span><br><span class="line">-A FORWARD -j REJECT --reject-with icmp-host-prohibited</span><br><span class="line">COMMIT</span><br></pre></td></tr></table></figure></p>
-</blockquote>
-<p>然后重启防火墙服务<strong>service iptables restart</strong></p>
-<blockquote>
-<p>注意要把-A INPUT -p tcp -m state –state NEW -m tcp –dport 3306 -j ACCEPT这句添加到icmp那句的上面，不然配置不生效（关于这点网上也有人说放在22那句下面或者COMMIT上面之类的，都试了下不怎么管用，不知道是不是系统原因）</p>
-</blockquote>
-
-      
-    </div>
-    
-  </div>
-  
-    
-<nav id="article-nav">
-  
-    <a href="/2015/10/20/savedbdata/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption"><</strong>
-      <div class="article-nav-title">
-        
-          DB数据存储
-        
-      </div>
-    </a>
-  
-  
-    <a href="/2015/09/30/gitcmds/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">git命令</div>
-      <strong class="article-nav-caption">></strong>
-    </a>
-  
-</nav>
-
-  
-</article>
-
-
-<div class="share">
-	<!-- JiaThis Button BEGIN -->
-	<div class="jiathis_style">
-		<span class="jiathis_txt">分享到：</span>
-		<a class="jiathis_button_tsina"></a>
-		<a class="jiathis_button_cqq"></a>
-		<a class="jiathis_button_douban"></a>
-		<a class="jiathis_button_weixin"></a>
-		<a class="jiathis_button_tumblr"></a>
-		<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
-	</div>
-	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
-	<!-- JiaThis Button END -->
-</div>
-
-
-
-<div class="duoshuo">
-	<!-- 多说评论框 start -->
-	<div class="ds-thread" data-thread-key="linuxiptables" data-title="linux防火墙" data-url="http://sstask.github.io/2015/10/08/linuxiptables/"></div>
-	<!-- 多说评论框 end -->
-	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
-	<script type="text/javascript">
-	var duoshuoQuery = {short_name:"sstask"};
-	(function() {
-		var ds = document.createElement('script');
-		ds.type = 'text/javascript';ds.async = true;
-		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-		ds.charset = 'UTF-8';
-		(document.getElementsByTagName('head')[0] 
-		 || document.getElementsByTagName('body')[0]).appendChild(ds);
-	})();
-	</script>
-	<!-- 多说公共JS代码 end -->
-</div>
-
-
-
-
-</div>
-      <footer id="footer">
-  <div class="outer">
-    <div id="footer-info">
-    	<div class="footer-left">
-    		&copy; 2015 叶子与桔子
-    	</div>
-      	<div class="footer-right">
-      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
-        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
-</script>
-        <span id="busuanzi_container_site_pv">
-    总访问量<span id="busuanzi_value_site_pv"></span>次
-</span>
-      	</div>
-    </div>
-  </div>
-</footer>
-
-    </div>
-    
-  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
-
-
-<script>
-	var yiliaConfig = {
-		fancybox: true,
-		mathjax: true,
-		animate: true,
-		isHome: false,
-		isPost: true,
-		isArchive: false,
-		isTag: false,
-		isCategory: false,
-		open_in_new: false
-	}
-</script>
-<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
-<script src="/js/main.js" type="text/javascript"></script>
-
-
-
-
-
-
-<script type="text/x-mathjax-config">
-MathJax.Hub.Config({
-    tex2jax: {
-        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-        processEscapes: true,
-        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-    }
-});
-
-MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-        all[i].SourceElement().parentNode.className += ' has-jax';                 
-    }       
-});
-</script>
-
-<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-</script>
-
-
-  </div>
-</body>
-</html>
+    include _partial/comments
