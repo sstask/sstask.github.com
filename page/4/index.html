@@ -1,38 +1,713 @@
-extends base
-- var current_title = page.title || tag.name || category.name || site.title
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>叶子的博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description">
+<meta property="og:type" content="website">
+<meta property="og:title" content="叶子的博客">
+<meta property="og:url" content="http://sstask.github.io/page/4/index.html">
+<meta property="og:site_name" content="叶子的博客">
+<meta property="og:description">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="叶子的博客">
+<meta name="twitter:description">
+  
+    <link rel="alternative" href="/atom.xml" title="叶子的博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="/assets/img/blog.jpg" class="js-avatar">
+			
+		</a>
 
-block title
-  title= config.title + " | " + config.subtitle
-block content
+		<hgroup>
+		  <h1 class="header-author"><a href="/">叶子与桔子</a></h1>
+		</hgroup>
 
-  for post in page.posts.toArray()
-    .post
-      h2.post-title
-        include _partial/helpers
-        a(href=url_for(post.path))
-          +title(post)
-      .post-meta= post.date.format(config.date_format)
-      if theme.duoshuo
-        span.ds-thread-count(data-thread-key=post.path)
-      if theme.disqus
-        span.disqus-comment-count(data-disqus-identifier=post.path)
-      if post.description
-        .post-content
-          != post.description
-      else if post.excerpt
-        .post-content
-          != post.excerpt
-      else if post.content
-        - var br = post.content.indexOf('\n')
-        if br < 0
-          .post-content
-            != post.content
-        else
-          .post-content
-            != post.content.substring(0, br)
-      p(class="readmore")
-        a(href=url_for(post.path))= __('Readmore')
+		
+		<p class="header-subtitle">面朝大海，春暖花开</p>
+		
 
-  include _partial/paginator
-  if theme.disqus
-    script(id='dsq-count-scr' src='//#{theme.disqus}.disqus.com/count.js' async)
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						
+						<div class="icon-wrap icon-me hide" data-idx="3">
+							<div class="user"></div>
+							<div class="shoulder"></div>
+						</div>
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						
+						<li>关于我</li>
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+							<li><a href="/about">关于</a></li>
+				        
+							<li><a href="/link">Link</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="github" target="_blank" href="https://github.com/sstask" title="github">github</a>
+					        
+								<a class="google" target="_blank" href="http://blog.csdn.net/shujianhenu" title="google">google</a>
+					        
+								<a class="rss" target="_blank" href="/#" title="rss">rss</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/C/" style="font-size: 11.67px;">C++</a> <a href="/tags/awk/" style="font-size: 10px;">awk</a> <a href="/tags/backup/" style="font-size: 10px;">backup</a> <a href="/tags/blog/" style="font-size: 13.33px;">blog</a> <a href="/tags/cdkey/" style="font-size: 10px;">cdkey</a> <a href="/tags/cmake/" style="font-size: 10px;">cmake</a> <a href="/tags/dynamic/" style="font-size: 10px;">dynamic</a> <a href="/tags/dynamiclink/" style="font-size: 10px;">dynamiclink</a> <a href="/tags/error/" style="font-size: 11.67px;">error</a> <a href="/tags/file/" style="font-size: 10px;">file</a> <a href="/tags/game/" style="font-size: 15px;">game</a> <a href="/tags/game-mysql/" style="font-size: 10px;">game,mysql</a> <a href="/tags/gettimeofday/" style="font-size: 10px;">gettimeofday</a> <a href="/tags/git/" style="font-size: 11.67px;">git</a> <a href="/tags/github/" style="font-size: 11.67px;">github</a> <a href="/tags/hexo/" style="font-size: 11.67px;">hexo</a> <a href="/tags/innodb-buffer/" style="font-size: 10px;">innodb buffer</a> <a href="/tags/iptables/" style="font-size: 10px;">iptables</a> <a href="/tags/key-buffer-size/" style="font-size: 10px;">key_buffer_size</a> <a href="/tags/linux/" style="font-size: 20px;">linux</a> <a href="/tags/md5/" style="font-size: 10px;">md5</a> <a href="/tags/mysql/" style="font-size: 18.33px;">mysql</a> <a href="/tags/mysqld-multi/" style="font-size: 10px;">mysqld_multi</a> <a href="/tags/newday/" style="font-size: 10px;">newday</a> <a href="/tags/php/" style="font-size: 11.67px;">php</a> <a href="/tags/protocol-buffer/" style="font-size: 16.67px;">protocol buffer</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/rank/" style="font-size: 11.67px;">rank</a> <a href="/tags/repeated/" style="font-size: 10px;">repeated</a> <a href="/tags/script/" style="font-size: 10px;">script</a> <a href="/tags/sed/" style="font-size: 10px;">sed</a> <a href="/tags/shell/" style="font-size: 11.67px;">shell</a> <a href="/tags/slk/" style="font-size: 10px;">slk</a> <a href="/tags/staticlink/" style="font-size: 10px;">staticlink</a> <a href="/tags/table-open-cache/" style="font-size: 10px;">table_open_cache</a> <a href="/tags/template/" style="font-size: 10px;">template</a> <a href="/tags/vim/" style="font-size: 10px;">vim</a> <a href="/tags/动态解析/" style="font-size: 11.67px;">动态解析</a>
+					</div>
+				</section>
+				
+				
+				
+
+				
+				
+				<section class="switch-part switch-part3">
+				
+					<div id="js-aboutme">毕业于裤子大，工作在游戏里，擅长服务器开发，偶尔研究前端，爱好电影小说。</div>
+				</section>
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">叶子与桔子</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="/assets/img/blog.jpg" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">叶子与桔子</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">面朝大海，春暖花开</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+					<li><a href="/about">关于</a></li>
+		        
+					<li><a href="/link">Link</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/sstask" title="github">github</a>
+			        
+						<a class="google" target="_blank" href="http://blog.csdn.net/shujianhenu" title="google">google</a>
+			        
+						<a class="rss" target="_blank" href="/#" title="rss">rss</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap">
+  
+    <article id="post-isanewday" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/07/12/isanewday/" class="article-date">
+  	<time datetime="2015-07-12T02:35:38.000Z" itemprop="datePublished">Jul 12</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/07/12/isanewday/">判断两个时间是不是同一天</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>在项目中很多时候需要判断两个时间是否是同一天，例如用户每天都能领某种福利一次且只能领取一次，这时候当用户领取福利的时就需要判断用户上次领取的时间与当前时间是不是同一天，不是同一天的话可以领取，否则不能领取。</p>
+<p>一般来讲我会用time(NULL)来获取用户当前领取时间，它返回的是一个整数，代表从CUT（Coordinated Universal Time 格林威治时间）时间1970年1月1日00:00:00到当前时刻的秒数，正因为它是一个整数所以这样便于存储和比较。假如两个时间分别是oldtime和newtime，他们都是用time(NULL)得到的整数时间，我们想判断他们是否是同一天只需要分别求得他们的天数，然后判断是不是相等即可，即这样：</p>
+<blockquote>
+<p>IsANewDay gettimeofday<br>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/game/">game</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/gettimeofday/">gettimeofday</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/newday/">newday</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/game/">game</a>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a  href="/2015/07/12/isanewday/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-gencdkey" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/07/06/gencdkey/" class="article-date">
+  	<time datetime="2015-07-06T11:25:47.000Z" itemprop="datePublished">Jul 6</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/07/06/gencdkey/">cdkey和激活码的生成</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>在很多产品中都有cdkey或者激活码需求，这就牵扯到cdkey的生成。cdkey(或激活码，后面已cdkey代替)一般都是由固定长度的一串数字和字母组成，生成的方法有很多，好比最简单的一种就是在26个字母和10个数字中随机抽取一个，然后重复N次，这样就生成了一个长度为N的cdkey。下面介绍一种简单实现的方法，直接上代码：</p>
+<blockquote>
+<p>cdkey=`date +%s%N | md5sum | head -c ${CDKeyLen}`<br>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cdkey/">cdkey</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/game/">game</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/md5/">md5</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/">mysql</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/game/">game</a>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a  href="/2015/07/06/gencdkey/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-rankreward" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/06/22/rankreward/" class="article-date">
+  	<time datetime="2015-06-22T09:05:57.000Z" itemprop="datePublished">Jun 22</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/06/22/rankreward/">排行榜奖励发放</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>一般来说排行榜奖励都通过邮件来发放，要不就是对于在线用户直接发给用户自身，对于离线用户发到用户的离线邮箱，用户上线可以通过邮件取到。这样做简单直接，易于处理，也不容易出错，但是在用户很多的时候可能需要同一时间发送很多封邮件，给数据库造成很大压力。当然也可以通过分时发送来减轻同一时刻给数据库带来的压力，但这就要考虑到如果在没有全部分发完成的时候服务器出现问题的情况，总之难以从根本上解决问题。</p>
+<p>为了减轻数据库的压力，同时防止数据的意外丢失，就需要一次性的把奖励发给所有用户或者存档到数据库中，按照这种需求自然会想到另外一种方案，就是把排行榜中所有的用户标识和名次打包存入到数据的一条或数条记录中，然后等到用户上线时再把记录中的奖励发给用户。数据库设计大概是这样的：</p>
+<blockquote>
+<p>rankreward(ranktype,id,time,rewards)<br>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/game/">game</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/">mysql</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/rank/">rank</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/game/">game</a>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a  href="/2015/06/22/rankreward/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-rankdesign" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/06/21/rankdesign/" class="article-date">
+  	<time datetime="2015-06-21T07:17:19.000Z" itemprop="datePublished">Jun 21</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/06/21/rankdesign/">排行榜设计</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>最近在做排行榜功能，排行榜无非就是对用户一些数据的排序，在量级不是很大的情况下还是比较简单的，在数据结构上使用数组，set，map都可以，依具体情况而定，这里不做过多讨论。现在遇到的问题是在数据库方面的，也就是对排行榜数据该已什么方式进行存储。</p>
+<p>我们用的数据库是mysql，如果排行榜量级在百名之内的话可以把每个进榜用户的数据都当做是一条数据库记录插入表中，因为数据量级比较小，插入删除操作不是太多，对数据库的压力不是很大（定时存储还是要做的，减少对数据的操作频率）。数据库表设计大概是这样的：</p>
+<blockquote>
+<p>rank(ranktype,id,pkpara,…,data)<br>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/game/">game</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/">mysql</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/rank/">rank</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/game/">game</a>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a  href="/2015/06/21/rankdesign/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-vimdisplaych" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/06/17/vimdisplaych/" class="article-date">
+  	<time datetime="2015-06-17T12:15:55.000Z" itemprop="datePublished">Jun 17</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/06/17/vimdisplaych/">设置vim显示中文</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>今天看服务器的log发现有些文件的中文都是乱码，找了一圈发现是vim设置的问题，因为用less或者cat命令查看log都是正常的，用vim查看才出现的乱码。</p>
+<p>编辑<strong>~/.vimrc</strong>文件，添加</p>
+<blockquote>
+<p>view plaincopy<br>set encoding=utf-8<br>set termencoding=utf-8  </p>
+<p>set fileencodings=ucs-bom,utf-8,cp936,gb18030,big5,euc-jp,euc-kr<br>set fileencoding=utf-8  </p>
+</blockquote>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/vim/">vim</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/linux/">linux</a>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a  href="/2015/06/17/vimdisplaych/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-hexobackup" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/06/16/hexobackup/" class="article-date">
+  	<time datetime="2015-06-16T12:39:03.000Z" itemprop="datePublished">Jun 16</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/06/16/hexobackup/">把hexo博客备份到github</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>上个blog讲了搭建hexo blog的方法，并且可以把博客放在github上，很简单而且很有效，github是个好地方。<br>但是github上保存的只是hexo生成好的html文件和一些博客用到的图片之类的，而我想github能保存我博客的源文件，就是.md文件。<br>刚开始我想已附件的方式把源文件链接到网站里面，这样github就会把他们当成资源文件保存了，可是hexo好像不支持附件链接。<br>hexo或者说markdown支持图片的链接，于是我想到了把我的博客源文件制作成图片然后链接进博客html里，这样就能达到保存的效果了。<br>直接讲我怎么做的吧：</p>
+<ul>
+<li>首先下载二维码生成工具<blockquote>
+<p>yum install qrencode</p>
+</blockquote>
+</li>
+<li>对源文件生成二维码图片<blockquote>
+<p>qrencode -o my.md.png “my.md”</p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/blog/">blog</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/github/">github</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hexo/">hexo</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/杂/">杂</a>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a  href="/2015/06/16/hexobackup/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-hexocreate" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/06/15/hexocreate/" class="article-date">
+  	<time datetime="2015-06-15T09:23:02.000Z" itemprop="datePublished">Jun 15</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/06/15/hexocreate/">linux搭建hexo博客并发布到github</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&#160;&#160;&#160;&#160;之前用了wrodpress做博客，自动化做的挺好的，省时省力，一键安装，而且有各种主题各种插件，都挺好的，唯一的不爽在于内部实现挺复杂，发布博客和打开博客的速度比较慢，估计和操作数据库有很大关系吧。于是在网上大概搜了下其他发布博客的框架，发现很多人推荐hexo，所以尝试了下，记录下安装过程，不是那么省心。</p>
+<p>由于hexo是基于node.js的，所以要先安装node.js，在node.js官网下载。刚开始我下载的最新源码，于是开始编译，发现源码很多基于C++11的，但我的编译器不支持，还要升级gcc，折腾了下没有成功放弃。然后下载了node.js的0.10版本，编译且安装成功，但在安装hexo的时候提示需要0.12版本以上，于是又放弃。</p>
+<p>最终我选择了下载node.js最新release版本(非源码，直接是可执行程序)，node-v4.0.0-linux-x64.tar.gz，解压，然后执行</p>
+<blockquote>
+<p>ln -s /home/hexo/node-v4.0.0-linux-x64/bin/node /usr/local/bin/node<br>ln -s /home/hexo/node-v4.0.0-linux-x64/bin/npm /usr/local/bin/npm  </p>
+</blockquote>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/blog/">blog</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/github/">github</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hexo/">hexo</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/杂/">杂</a>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a  href="/2015/06/15/hexocreate/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+  
+    <nav id="page-nav">
+      <a class="extend prev" rel="prev" href="/page/3/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span>
+    </nav>
+  
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2015 叶子与桔子
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+        <span id="busuanzi_container_site_pv">
+    总访问量<span id="busuanzi_value_site_pv"></span>次
+</span>
+      	</div>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: true,
+		isPost: false,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
+<script src="/js/main.js" type="text/javascript"></script>
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  </div>
+</body>
+</html>

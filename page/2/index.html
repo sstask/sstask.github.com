@@ -1,38 +1,761 @@
-extends base
-- var current_title = page.title || tag.name || category.name || site.title
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>叶子的博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description">
+<meta property="og:type" content="website">
+<meta property="og:title" content="叶子的博客">
+<meta property="og:url" content="http://sstask.github.io/page/2/index.html">
+<meta property="og:site_name" content="叶子的博客">
+<meta property="og:description">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="叶子的博客">
+<meta name="twitter:description">
+  
+    <link rel="alternative" href="/atom.xml" title="叶子的博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="/assets/img/blog.jpg" class="js-avatar">
+			
+		</a>
 
-block title
-  title= config.title + " | " + config.subtitle
-block content
+		<hgroup>
+		  <h1 class="header-author"><a href="/">叶子与桔子</a></h1>
+		</hgroup>
 
-  for post in page.posts.toArray()
-    .post
-      h2.post-title
-        include _partial/helpers
-        a(href=url_for(post.path))
-          +title(post)
-      .post-meta= post.date.format(config.date_format)
-      if theme.duoshuo
-        span.ds-thread-count(data-thread-key=post.path)
-      if theme.disqus
-        span.disqus-comment-count(data-disqus-identifier=post.path)
-      if post.description
-        .post-content
-          != post.description
-      else if post.excerpt
-        .post-content
-          != post.excerpt
-      else if post.content
-        - var br = post.content.indexOf('\n')
-        if br < 0
-          .post-content
-            != post.content
-        else
-          .post-content
-            != post.content.substring(0, br)
-      p(class="readmore")
-        a(href=url_for(post.path))= __('Readmore')
+		
+		<p class="header-subtitle">面朝大海，春暖花开</p>
+		
 
-  include _partial/paginator
-  if theme.disqus
-    script(id='dsq-count-scr' src='//#{theme.disqus}.disqus.com/count.js' async)
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						
+						<div class="icon-wrap icon-me hide" data-idx="3">
+							<div class="user"></div>
+							<div class="shoulder"></div>
+						</div>
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						
+						<li>关于我</li>
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+							<li><a href="/about">关于</a></li>
+				        
+							<li><a href="/link">Link</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="github" target="_blank" href="https://github.com/sstask" title="github">github</a>
+					        
+								<a class="google" target="_blank" href="http://blog.csdn.net/shujianhenu" title="google">google</a>
+					        
+								<a class="rss" target="_blank" href="/#" title="rss">rss</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/C/" style="font-size: 11.67px;">C++</a> <a href="/tags/awk/" style="font-size: 10px;">awk</a> <a href="/tags/backup/" style="font-size: 10px;">backup</a> <a href="/tags/blog/" style="font-size: 13.33px;">blog</a> <a href="/tags/cdkey/" style="font-size: 10px;">cdkey</a> <a href="/tags/cmake/" style="font-size: 10px;">cmake</a> <a href="/tags/dynamic/" style="font-size: 10px;">dynamic</a> <a href="/tags/dynamiclink/" style="font-size: 10px;">dynamiclink</a> <a href="/tags/error/" style="font-size: 11.67px;">error</a> <a href="/tags/file/" style="font-size: 10px;">file</a> <a href="/tags/game/" style="font-size: 15px;">game</a> <a href="/tags/game-mysql/" style="font-size: 10px;">game,mysql</a> <a href="/tags/gettimeofday/" style="font-size: 10px;">gettimeofday</a> <a href="/tags/git/" style="font-size: 11.67px;">git</a> <a href="/tags/github/" style="font-size: 11.67px;">github</a> <a href="/tags/hexo/" style="font-size: 11.67px;">hexo</a> <a href="/tags/innodb-buffer/" style="font-size: 10px;">innodb buffer</a> <a href="/tags/iptables/" style="font-size: 10px;">iptables</a> <a href="/tags/key-buffer-size/" style="font-size: 10px;">key_buffer_size</a> <a href="/tags/linux/" style="font-size: 20px;">linux</a> <a href="/tags/md5/" style="font-size: 10px;">md5</a> <a href="/tags/mysql/" style="font-size: 18.33px;">mysql</a> <a href="/tags/mysqld-multi/" style="font-size: 10px;">mysqld_multi</a> <a href="/tags/newday/" style="font-size: 10px;">newday</a> <a href="/tags/php/" style="font-size: 11.67px;">php</a> <a href="/tags/protocol-buffer/" style="font-size: 16.67px;">protocol buffer</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/rank/" style="font-size: 11.67px;">rank</a> <a href="/tags/repeated/" style="font-size: 10px;">repeated</a> <a href="/tags/script/" style="font-size: 10px;">script</a> <a href="/tags/sed/" style="font-size: 10px;">sed</a> <a href="/tags/shell/" style="font-size: 11.67px;">shell</a> <a href="/tags/slk/" style="font-size: 10px;">slk</a> <a href="/tags/staticlink/" style="font-size: 10px;">staticlink</a> <a href="/tags/table-open-cache/" style="font-size: 10px;">table_open_cache</a> <a href="/tags/template/" style="font-size: 10px;">template</a> <a href="/tags/vim/" style="font-size: 10px;">vim</a> <a href="/tags/动态解析/" style="font-size: 11.67px;">动态解析</a>
+					</div>
+				</section>
+				
+				
+				
+
+				
+				
+				<section class="switch-part switch-part3">
+				
+					<div id="js-aboutme">毕业于裤子大，工作在游戏里，擅长服务器开发，偶尔研究前端，爱好电影小说。</div>
+				</section>
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">叶子与桔子</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="/assets/img/blog.jpg" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">叶子与桔子</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">面朝大海，春暖花开</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+					<li><a href="/about">关于</a></li>
+		        
+					<li><a href="/link">Link</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/sstask" title="github">github</a>
+			        
+						<a class="google" target="_blank" href="http://blog.csdn.net/shujianhenu" title="google">google</a>
+			        
+						<a class="rss" target="_blank" href="/#" title="rss">rss</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap">
+  
+    <article id="post-gitcmds" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/09/30/gitcmds/" class="article-date">
+  	<time datetime="2015-09-30T09:42:09.000Z" itemprop="datePublished">Sep 30</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/09/30/gitcmds/">git命令</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="/assets/img/git1.png" alt="git1" title="checkout"><br>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/git/">git</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/linux/">linux</a>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a  href="/2015/09/30/gitcmds/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-linuxdynamiclink" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/09/29/linuxdynamiclink/" class="article-date">
+  	<time datetime="2015-09-29T12:34:08.000Z" itemprop="datePublished">Sep 29</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/09/29/linuxdynamiclink/">linux动态链接</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>在程序中总会用到各式各样的库，有两种使用方式：<em>静态链接库和动态链接库</em>，在windows下分别对应.lib文件和.dll文件，使用静态库时需要包含对应的头文件并引用lib文件，使用动态库则需要手动通过函数加载dll中的函数。<br>linux下使用方法则有所不同，linux下.a文件.so文件分别对应静态和动态链接库。</p>
+<h3 id="静态链接库"><strong>静态链接库</strong></h3><blockquote>
+<p>ar rcs libmylib.a mylib.o <em>生成.a静态库</em><br>gcc -o hello main.c  -L. -lmylib <em>生成可执行文件hello；gcc会在mylib之前自动添加lib，即找文件libmylib.a</em><br>./hello <em>执行</em></p>
+</blockquote>
+<p>可以发现即使删除libmylib.a文件，hello也可以执行。<br>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/dynamiclink/">dynamiclink</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/staticlink/">staticlink</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/linux/">linux</a>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a  href="/2015/09/29/linuxdynamiclink/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-cmakesimple" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/09/28/cmakesimple/" class="article-date">
+  	<time datetime="2015-09-28T13:19:40.000Z" itemprop="datePublished">Sep 28</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/09/28/cmakesimple/">cmake简用</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>如果你厌烦了编写复杂的makefile，那你可以使用cmake。只需要简单的几行代码，cmake就可以帮你自动生成makefile，进而完成复杂的编译工作，而且cmake是夸平台的，不仅可以在linux下使用也可以在windows下使用，最简单的cmake</p>
+<blockquote>
+<p>CMakeLists.txt</p>
+</blockquote>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">project</span><span class="params">(main)</span></span></span><br><span class="line"><span class="function"><span class="title">cmake_minimum_required</span><span class="params">(VERSION <span class="number">2.8</span>)</span></span></span><br><span class="line"><span class="function"><span class="title">aux_source_directory</span><span class="params">(. DIR_SRCS)</span></span></span><br><span class="line"><span class="function"><span class="title">add_executable</span><span class="params">(main $&#123;DIR_SRCS&#125;)</span></span></span><br></pre></td></tr></table></figure>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cmake/">cmake</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/linux/">linux</a>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a  href="/2015/09/28/cmakesimple/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-slkread" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/09/25/slkread/" class="article-date">
+  	<time datetime="2015-09-25T11:21:41.000Z" itemprop="datePublished">Sep 25</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/09/25/slkread/">slk文件读取</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>在项目中数据配置一般用<strong>excel</strong>表格居多，excel格式又有很多，其中要数<strong>csv和slk</strong>最简单易解读。其实csv和slk也不算excel的版本格式，只是excel文件都可以保存为csv、slk格式。<br>csv格式最简单，就是把excel单元格的内容用分号;隔开然后存与文本中，用txt打开这种文件就很容易看到其内容与格式。它不好的地方也在于太多简单，不能存储excel里面的很多信息，例如公式、注释、批注等，当把excel保存为csv的时候这些信息就丢失了，但有时候这样信息是需要的。<br>slk又叫sylk(<strong>SYmbolic LinK </strong>),符号链接文件，它能够存储excel的大部分信息，当然也有一些信息的丢失，其简单格式如下<br><figure class="highlight tp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">ID;<span class="keyword">P</span></span><br><span class="line">C;<span class="keyword">Y</span><span class="number">1</span>;<span class="keyword">X</span><span class="number">1</span>;K<span class="string">"Row 1"</span></span><br><span class="line">C;<span class="keyword">Y</span><span class="number">2</span>;<span class="keyword">X</span><span class="number">1</span>;K<span class="string">"Row 2"</span></span><br><span class="line">C;<span class="keyword">Y</span><span class="number">3</span>;<span class="keyword">X</span><span class="number">1</span>;K<span class="string">"Total"</span></span><br><span class="line">C;<span class="keyword">Y</span><span class="number">1</span>;<span class="keyword">X</span><span class="number">2</span>;K<span class="number">11</span></span><br><span class="line">C;<span class="keyword">Y</span><span class="number">2</span>;<span class="keyword">X</span><span class="number">2</span>;K<span class="number">22</span></span><br><span class="line">C;<span class="keyword">Y</span><span class="number">3</span>;<span class="keyword">X</span><span class="number">2</span>;K<span class="number">0</span>;ER1C<span class="number">2</span>+R2C<span class="number">2</span></span><br><span class="line">E</span><br></pre></td></tr></table></figure></p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/slk/">slk</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/game/">game</a>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a  href="/2015/09/25/slkread/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-pbdynamicananlysis" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/09/08/pbdynamicananlysis/" class="article-date">
+  	<time datetime="2015-09-08T12:45:13.000Z" itemprop="datePublished">Sep 8</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/09/08/pbdynamicananlysis/">protocol buffer动态解析</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>protocol buffer</strong>虽然很好用，但是每次修改proto文件之后就需要重新编译生成消息代码，然后再相应的修改应用程序，用久了就有了繁琐的感觉，还好protocol buffer也提供了动态解析的功能，虽然效率低了点，但也是可以接受的（用protocol buffer3.0测试大概慢了5倍左右）。</p>
+<p>proto文件如下，my.proto</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">syntax = <span class="string">"proto3"</span>;  </span><br><span class="line">message mymsg  </span><br><span class="line">&#123;  </span><br><span class="line">    uint32 len = <span class="number">1</span>;  </span><br><span class="line">    uint32 typ = <span class="number">2</span>;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/protocol-buffer/">protocol buffer</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/动态解析/">动态解析</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/protocol-buffer/">protocol buffer</a>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a  href="/2015/09/08/pbdynamicananlysis/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-simplesed" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/08/28/simplesed/" class="article-date">
+  	<time datetime="2015-08-28T12:52:29.000Z" itemprop="datePublished">Aug 28</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/08/28/simplesed/">sed简记</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>sed</strong>是linux 下的一个文本编辑命令，它功能强大，经常被用来编辑或分析处理一个或多个文件，简化对文件的处理。它和awk的处理方式差不多，都是对输入一行一行的处理，然后输出。</p>
+<blockquote>
+<p>使用格式sed    - [nefri]    ‘action’<br>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sed/">sed</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/linux/">linux</a>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a  href="/2015/08/28/simplesed/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-optimizemysql" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/08/25/optimizemysql/" class="article-date">
+  	<time datetime="2015-08-25T04:13:35.000Z" itemprop="datePublished">Aug 25</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/08/25/optimizemysql/">mysql优化</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p> <strong>key_buffer_size 索引缓冲区大小</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator"><span class="keyword">SHOW</span> <span class="keyword">STATUS</span> <span class="keyword">LIKE</span> <span class="string">'key_read%'</span>;</span>  </span><br><span class="line">+<span class="comment">-------------------+-------+  </span></span><br><span class="line">| Variable_name     | Value |  </span><br><span class="line">+<span class="comment">-------------------+-------+  </span></span><br><span class="line">| Key_read_requests |9335458|  </span><br><span class="line">| Key_reads         |301    |  </span><br><span class="line">+<span class="comment">-------------------+-------+</span></span><br></pre></td></tr></table></figure>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/key-buffer-size/">key_buffer_size</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/">mysql</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/table-open-cache/">table_open_cache</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/mysql/">mysql</a>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a  href="/2015/08/25/optimizemysql/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-ccommonerror" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/08/18/ccommonerror/" class="article-date">
+  	<time datetime="2015-08-18T11:31:43.000Z" itemprop="datePublished">Aug 18</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/08/18/ccommonerror/">C++程序里一些易犯错误</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p> 写程序时经常会遇见些莫名其妙的错误，往往花了大把时间找了很久的bug，最终发现这些都是很小很小的问题，所以把这些可能问题记下来备忘。</p>
+<p><strong>1.指针的加减操作</strong><br>指针的加减操作都是其所指的内容相关的，好比char*+1等于实际地址+1，但int*+1等于实际地址+4，不能像当然的认为p+n就等于地址+n。<br>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C/">C++</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/error/">error</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/C/">C++</a>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a  href="/2015/08/18/ccommonerror/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+  
+    <nav id="page-nav">
+      <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/3/">Next &raquo;</a>
+    </nav>
+  
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2015 叶子与桔子
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+        <span id="busuanzi_container_site_pv">
+    总访问量<span id="busuanzi_value_site_pv"></span>次
+</span>
+      	</div>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: true,
+		isPost: false,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
+<script src="/js/main.js" type="text/javascript"></script>
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  </div>
+</body>
+</html>
