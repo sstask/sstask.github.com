@@ -1,0 +1,532 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  <meta name="baidu_union_verify" content="d1952c66cf48912e21c18c7c581f382a">
+  <meta name="360-site-verification" content="67fbcc5a67f4c65c057315b28fa0b2c8" />
+<meta name="google-site-verification" content="2GzxQ0VtXwTSUdmGm6DzcmhTzM_I9QmzCb_pzpMzD88" />
+  
+    <title>protocol buffer编码规则 | 叶子的博客</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
+    
+    <meta name="author" content="叶子与桔子">
+    
+    <meta name="description" content="这段时间想把protocol buffer用在移动平台上，这时就发现它还是有点庞大的，不易编译或者移植，所以想着了解下它的编解码方式，看看是否能实现一个简单的编码库。看了源码之后就发现，其实虽然protocol buffer支持的数据类型有很多，但是底层的编码方式也只有6种，编解码部分还是很明了的。">
+    
+    
+    
+    
+    <link rel="alternate" href="atom.xml" title="叶子的博客" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+    
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            var _bdId ='391982416296a0d54221f59fe35250d4';
+             hm.src = "//hm.baidu.com/hm.js?" + _bdId;
+             var s = document.getElementsByTagName("script")[0]; 
+             s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+     
+</head>
+
+  <body>
+    <header>
+      <div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="叶子的博客">叶子的博客</a></h1>
+				<a class="blog-motto">面朝大海，春暖花开</a>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜單">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">首页</a></li>
+					
+						<li><a href="/archives">归档</a></li>
+					
+						<li><a href="/about">关于</a></li>
+					
+						<li><a href="/link">Link</a></li>
+					
+					<li>
+					
+                                            <form class="search" action=http://zhannei.baidu.com/cse/search target="_blank">
+                                            <label>Search</label>
+                                        <input name="s" type="hidden" value= null ><input type="text" name="q" size="30" placeholder="搜索"><br>
+					
+					</li>
+				</ul>
+                            </nav>			
+</div>
+
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2015/12/21/gpbencoderule/" title="protocol buffer编码规则" itemprop="url">protocol buffer编码规则</a>
+  </h1>
+  <p class="article-author">By
+    
+      <a href="http://sstask.github.io" title="叶子与桔子">叶子与桔子</a>
+    </p>
+  <p class="article-time">
+    <time datetime="2015-12-21T11:50:46.000Z" itemprop="datePublished">Dec 21</time>
+    更新日期:<time datetime="2015-12-23T09:10:45.918Z" itemprop="dateModified">Dec 23</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目錄</strong>
+		<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#uint32"><span class="toc-number">1.</span> <span class="toc-text">uint32</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#uint64"><span class="toc-number">2.</span> <span class="toc-text">uint64</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#int32"><span class="toc-number">3.</span> <span class="toc-text">int32</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#float"><span class="toc-number">4.</span> <span class="toc-text">float</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#double"><span class="toc-number">5.</span> <span class="toc-text">double</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#string"><span class="toc-number">6.</span> <span class="toc-text">string</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#repeated(simple)"><span class="toc-number">7.</span> <span class="toc-text">repeated(simple)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#repeated(string,message)"><span class="toc-number">8.</span> <span class="toc-text">repeated(string,message)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#map"><span class="toc-number">9.</span> <span class="toc-text">map</span></a></li></ol>
+		</div>
+		
+		<p>这段时间想把protocol buffer用在移动平台上，这时就发现它还是有点庞大的，不易编译或者移植，所以想着了解下它的编解码方式，看看是否能实现一个简单的编码库。看了源码之后就发现，其实虽然protocol buffer支持的数据类型有很多，但是底层的编码方式也只有6种，编解码部分还是很明了的。<br>protocol buffer对每个field编码时，先编码一个uint32类型的tag(tag=fieldnumber&lt;&lt;3|WireType)，接着再编码此field的内容，如此循环往复，直至把所有field编码完。tag是按照uint32类型编码的，filed内容按照其类型分别编码，编码方式如下：</p>
+<h3 id="uint32">uint32</h3><blockquote>
+<p>对应于protocol buffer中类型uint32,sint32和bool，编码方式如下<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">INL <span class="keyword">static</span> uint8* <span class="title">WriteVarint32ToArray</span><span class="params">(uint32 value, uint8* target)</span></span><br><span class="line"></span>&#123;</span><br><span class="line">	<span class="keyword">while</span> (value &gt;= <span class="number">0x80</span>) &#123;</span><br><span class="line">		*target = <span class="keyword">static_cast</span>&lt;uint8&gt;(value | <span class="number">0x80</span>);</span><br><span class="line">		value &gt;&gt;= <span class="number">7</span>;</span><br><span class="line">		++target;</span><br><span class="line">	&#125;</span><br><span class="line">	*target = <span class="keyword">static_cast</span>&lt;uint8&gt;(value);</span><br><span class="line">	<span class="keyword">return</span> target + <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<p>特别的，对于sint32先进行<strong>(static_cast<uint32>(n) &lt;&lt; 1) ^ (n &gt;&gt; 31)</uint32></strong>再编码，对于bool进行<strong>value ? 1 : 0</strong>转换后再编码。</p>
+<h3 id="uint64">uint64</h3><blockquote>
+<p>对应于protocol buffer中类型int64,uint64,sint64,代码如下<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line">	<span class="function">INL <span class="keyword">static</span> uint8* <span class="title">WriteVarint64ToArrayInline</span><span class="params">(uint64 value, uint8* target)</span></span><br><span class="line">	</span>&#123;</span><br><span class="line">		<span class="comment">// Splitting into 32-bit pieces gives better performance on 32-bit</span></span><br><span class="line">		<span class="comment">// processors.</span></span><br><span class="line">		uint32 part0 = <span class="keyword">static_cast</span>&lt;uint32&gt;(value      );</span><br><span class="line">		uint32 part1 = <span class="keyword">static_cast</span>&lt;uint32&gt;(value &gt;&gt; <span class="number">28</span>);</span><br><span class="line">		uint32 part2 = <span class="keyword">static_cast</span>&lt;uint32&gt;(value &gt;&gt; <span class="number">56</span>);</span><br><span class="line"></span><br><span class="line">		<span class="keyword">int</span> size;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> (part2 == <span class="number">0</span>) &#123;</span><br><span class="line">			<span class="keyword">if</span> (part1 == <span class="number">0</span>) &#123;</span><br><span class="line">				<span class="keyword">if</span> (part0 &lt; (<span class="number">1</span> &lt;&lt; <span class="number">14</span>)) &#123;</span><br><span class="line">					<span class="keyword">if</span> (part0 &lt; (<span class="number">1</span> &lt;&lt; <span class="number">7</span>)) &#123;</span><br><span class="line">						size = <span class="number">1</span>; <span class="keyword">goto</span> size1;</span><br><span class="line">					&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">						size = <span class="number">2</span>; <span class="keyword">goto</span> size2;</span><br><span class="line">					&#125;</span><br><span class="line">				&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">					<span class="keyword">if</span> (part0 &lt; (<span class="number">1</span> &lt;&lt; <span class="number">21</span>)) &#123;</span><br><span class="line">						size = <span class="number">3</span>; <span class="keyword">goto</span> size3;</span><br><span class="line">					&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">						size = <span class="number">4</span>; <span class="keyword">goto</span> size4;</span><br><span class="line">					&#125;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">				<span class="keyword">if</span> (part1 &lt; (<span class="number">1</span> &lt;&lt; <span class="number">14</span>)) &#123;</span><br><span class="line">					<span class="keyword">if</span> (part1 &lt; (<span class="number">1</span> &lt;&lt; <span class="number">7</span>)) &#123;</span><br><span class="line">						size = <span class="number">5</span>; <span class="keyword">goto</span> size5;</span><br><span class="line">					&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">						size = <span class="number">6</span>; <span class="keyword">goto</span> size6;</span><br><span class="line">					&#125;</span><br><span class="line">				&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">					<span class="keyword">if</span> (part1 &lt; (<span class="number">1</span> &lt;&lt; <span class="number">21</span>)) &#123;</span><br><span class="line">						size = <span class="number">7</span>; <span class="keyword">goto</span> size7;</span><br><span class="line">					&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">						size = <span class="number">8</span>; <span class="keyword">goto</span> size8;</span><br><span class="line">					&#125;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="keyword">if</span> (part2 &lt; (<span class="number">1</span> &lt;&lt; <span class="number">7</span>)) &#123;</span><br><span class="line">				size = <span class="number">9</span>; <span class="keyword">goto</span> size9;</span><br><span class="line">			&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">				size = <span class="number">10</span>; <span class="keyword">goto</span> size10;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="comment">//GOOGLE_LOG(FATAL) &lt;&lt; "Can't get here.";</span></span><br><span class="line"></span><br><span class="line">size10: target[<span class="number">9</span>] = <span class="keyword">static_cast</span>&lt;uint8&gt;((part2 &gt;&gt;  <span class="number">7</span>) | <span class="number">0x80</span>);</span><br><span class="line">size9 : target[<span class="number">8</span>] = <span class="keyword">static_cast</span>&lt;uint8&gt;((part2      ) | <span class="number">0x80</span>);</span><br><span class="line">size8 : target[<span class="number">7</span>] = <span class="keyword">static_cast</span>&lt;uint8&gt;((part1 &gt;&gt; <span class="number">21</span>) | <span class="number">0x80</span>);</span><br><span class="line">size7 : target[<span class="number">6</span>] = <span class="keyword">static_cast</span>&lt;uint8&gt;((part1 &gt;&gt; <span class="number">14</span>) | <span class="number">0x80</span>);</span><br><span class="line">size6 : target[<span class="number">5</span>] = <span class="keyword">static_cast</span>&lt;uint8&gt;((part1 &gt;&gt;  <span class="number">7</span>) | <span class="number">0x80</span>);</span><br><span class="line">size5 : target[<span class="number">4</span>] = <span class="keyword">static_cast</span>&lt;uint8&gt;((part1      ) | <span class="number">0x80</span>);</span><br><span class="line">size4 : target[<span class="number">3</span>] = <span class="keyword">static_cast</span>&lt;uint8&gt;((part0 &gt;&gt; <span class="number">21</span>) | <span class="number">0x80</span>);</span><br><span class="line">size3 : target[<span class="number">2</span>] = <span class="keyword">static_cast</span>&lt;uint8&gt;((part0 &gt;&gt; <span class="number">14</span>) | <span class="number">0x80</span>);</span><br><span class="line">size2 : target[<span class="number">1</span>] = <span class="keyword">static_cast</span>&lt;uint8&gt;((part0 &gt;&gt;  <span class="number">7</span>) | <span class="number">0x80</span>);</span><br><span class="line">size1 : target[<span class="number">0</span>] = <span class="keyword">static_cast</span>&lt;uint8&gt;((part0      ) | <span class="number">0x80</span>);</span><br><span class="line"></span><br><span class="line">		target[size-<span class="number">1</span>] &amp;= <span class="number">0x7F</span>;</span><br><span class="line">		<span class="keyword">return</span> target + size;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<h3 id="int32">int32</h3><blockquote>
+<p>对应于protocol buffer中类型int32,代码如下<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">INL <span class="keyword">static</span> uint8* <span class="title">WriteVarint32SignExtendedToArray</span><span class="params">(int32 value, uint8* target)</span></span><br><span class="line"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (value &lt; <span class="number">0</span>) &#123;</span><br><span class="line">		<span class="keyword">return</span> WriteVarint64ToArrayInline(<span class="keyword">static_cast</span>&lt;uint64&gt;(value), target);</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> WriteVarint32ToArray(<span class="keyword">static_cast</span>&lt;uint32&gt;(value), target);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<h3 id="float">float</h3><blockquote>
+<p>对应于protocol buffer中类型Fixed32,SFixed32,Float,代码如下<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">	<span class="function">INL <span class="keyword">static</span> uint8* <span class="title">WriteLittleEndian32ToArray</span><span class="params">(uint32 value, uint8* target)</span></span><br><span class="line">	</span>&#123;</span><br><span class="line"><span class="preprocessor">#<span class="keyword">if</span> defined(PROTOBUF_LITTLE_ENDIAN)</span></span><br><span class="line">		<span class="built_in">memcpy</span>(target, &amp;value, <span class="keyword">sizeof</span>(value));</span><br><span class="line"><span class="preprocessor">#<span class="keyword">else</span></span></span><br><span class="line">		target[<span class="number">0</span>] = <span class="keyword">static_cast</span>&lt;uint8&gt;(value);</span><br><span class="line">		target[<span class="number">1</span>] = <span class="keyword">static_cast</span>&lt;uint8&gt;(value &gt;&gt;  <span class="number">8</span>);</span><br><span class="line">		target[<span class="number">2</span>] = <span class="keyword">static_cast</span>&lt;uint8&gt;(value &gt;&gt; <span class="number">16</span>);</span><br><span class="line">		target[<span class="number">3</span>] = <span class="keyword">static_cast</span>&lt;uint8&gt;(value &gt;&gt; <span class="number">24</span>);</span><br><span class="line"><span class="preprocessor">#<span class="keyword">endif</span></span></span><br><span class="line">		<span class="keyword">return</span> target + <span class="keyword">sizeof</span>(value);</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<p>特别的对于float，经过<strong>union {float f; uint32 i;};f = value;return i;</strong>转换后编码。</p>
+<h3 id="double">double</h3><blockquote>
+<p>对应于protocol buffer中类型Fixed64,SFixed64,Double,代码如下<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">	<span class="function">INL <span class="keyword">static</span> uint8* <span class="title">WriteLittleEndian64ToArray</span><span class="params">(uint64 value, uint8* target)</span></span><br><span class="line">	</span>&#123;</span><br><span class="line"><span class="preprocessor">#<span class="keyword">if</span> defined(PROTOBUF_LITTLE_ENDIAN)</span></span><br><span class="line">		<span class="built_in">memcpy</span>(target, &amp;value, <span class="keyword">sizeof</span>(value));</span><br><span class="line"><span class="preprocessor">#<span class="keyword">else</span></span></span><br><span class="line">		uint32 part0 = <span class="keyword">static_cast</span>&lt;uint32&gt;(value);</span><br><span class="line">		uint32 part1 = <span class="keyword">static_cast</span>&lt;uint32&gt;(value &gt;&gt; <span class="number">32</span>);</span><br><span class="line"></span><br><span class="line">		target[<span class="number">0</span>] = <span class="keyword">static_cast</span>&lt;uint8&gt;(part0);</span><br><span class="line">		target[<span class="number">1</span>] = <span class="keyword">static_cast</span>&lt;uint8&gt;(part0 &gt;&gt;  <span class="number">8</span>);</span><br><span class="line">		target[<span class="number">2</span>] = <span class="keyword">static_cast</span>&lt;uint8&gt;(part0 &gt;&gt; <span class="number">16</span>);</span><br><span class="line">		target[<span class="number">3</span>] = <span class="keyword">static_cast</span>&lt;uint8&gt;(part0 &gt;&gt; <span class="number">24</span>);</span><br><span class="line">		target[<span class="number">4</span>] = <span class="keyword">static_cast</span>&lt;uint8&gt;(part1);</span><br><span class="line">		target[<span class="number">5</span>] = <span class="keyword">static_cast</span>&lt;uint8&gt;(part1 &gt;&gt;  <span class="number">8</span>);</span><br><span class="line">		target[<span class="number">6</span>] = <span class="keyword">static_cast</span>&lt;uint8&gt;(part1 &gt;&gt; <span class="number">16</span>);</span><br><span class="line">		target[<span class="number">7</span>] = <span class="keyword">static_cast</span>&lt;uint8&gt;(part1 &gt;&gt; <span class="number">24</span>);</span><br><span class="line"><span class="preprocessor">#<span class="keyword">endif</span></span></span><br><span class="line">		<span class="keyword">return</span> target + <span class="keyword">sizeof</span>(value);</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<p>特别的对于double，经过<strong>union {double f; uint64 i;};f = value;return i;</strong>转换后编码。</p>
+<h3 id="string">string</h3><blockquote>
+<p>对应于protocol buffer中类型string,message,代码如下<br><figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">INL <span class="keyword">static</span> uint8* WriteRawToArray(<span class="keyword">const</span> <span class="keyword">void</span>* buffer, <span class="keyword">int</span> size, uint8* <span class="keyword">target</span>)</span><br><span class="line">&#123;</span><br><span class="line">	memcpy(<span class="keyword">target</span>, buffer, size);</span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">target</span> + size;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<p>对于这种复杂结构protocol buffer先写入tag，然后写入内容长度，最后写入编码内容。<br>特别的对于message类型，先把其编码成string，然后再按string类型编码进其宿主message。</p>
+<h3 id="repeated(simple)">repeated(simple)</h3><blockquote>
+<p>对应于protocol buffer中所有非string,message类型的repeated,编码如下:<br><figure class="highlight dns"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">WireFormatLit<span class="number">e::</span>WriteTagToArray(field_number_arg, WireFormatLit<span class="number">e::</span>WIRETYPE_LENGTH_DELIMITED, target)<span class="comment">;</span></span><br><span class="line">io<span class="number">::C</span>odedOutputStream<span class="number">::</span>WriteVarint32ToArray(_lens_cached_byte_size_, target)<span class="comment">;</span></span><br><span class="line">for(int i = 0<span class="comment">; i &lt; value.count; ++i)&#123;</span></span><br><span class="line">			WriteNoTagDataToArray(value[i], target)<span class="comment">;</span></span><br><span class="line">			&#125;</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<p>其中_lens_cached_byte<em>size</em>表示repeated中所有内容编码后的长度。</p>
+<h3 id="repeated(string,message)">repeated(string,message)</h3><blockquote>
+<p>对应于protocol buffer中string,message类型的repeated,编码如下:<br><figure class="highlight lisp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">for<span class="list">(<span class="keyword">int</span> i = <span class="number">0</span><span class="comment">; i &lt; value.count; ++i)&#123;</span></span><br><span class="line">                                target = WireFormatLite:<span class="keyword">:WriteTagToArray</span><span class="list">(<span class="keyword">field_number_arg</span>, WireFormatLite:<span class="keyword">:WIRETYPE_LENGTH_DELIMITED</span>, target)</span><span class="comment">;</span></span><br><span class="line">			target = io:<span class="keyword">:CodedOutputStream</span>:<span class="keyword">:WriteVarint32ToArray</span><span class="list">(<span class="keyword">value</span>[i]._lens_cached_byte_size_, target)</span><span class="comment">;</span></span><br><span class="line">			target = io:<span class="keyword">:CodedOutputStream</span>:<span class="keyword">:WriteRawToArray</span><span class="list">(<span class="keyword">value</span>[i].buf, value[i]._lens_cached_byte_size_, target)</span><span class="comment">;</span></span><br><span class="line">			&#125;</span></span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<p>这是把repeated当成单独的多个独立成员编码的。<br>_lens_cached_byte<em>size</em>表示string的长度或者message编码后的长度，tempbuf即string的内容或者message编码后的内容。</p>
+<h3 id="map">map</h3><blockquote>
+<p>对应于protocol buffer中map类型<br>之前博文中已经讲过protocol buffer中的map实际上是一repeated message，此message包含两个成员，fieldnumber=1的key的fieldnumber=2的value，所以其编码就是按照repeated(string,message)的编码方式编码的。</p>
+</blockquote>
+  
+	</div>
+		<footer class="article-footer clearfix">
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/encode/">encode</a><a href="/tags/protocol-buffer/">protocol buffer</a>
+  </div>
+
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/protocol-buffer/">protocol buffer</a>
+</div>
+
+
+
+<div class="article-share" id="share">
+
+  <div data-url="http://sstask.github.io/2015/12/21/gpbencoderule/" data-title="protocol buffer编码规则 | 叶子的博客" data-tsina="null" class="share clearfix">
+  </div>
+
+</div>
+</footer>   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2015/12/23/simplegpb/" title="一个简单的protobuf兼容库">
+  <strong>PREVIOUS:</strong><br/>
+  <span>
+  一个简单的protobuf兼容库</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2015/12/14/gpbcreatemsg/"  title="protocol buffer动态创建库">
+ <strong>NEXT:</strong><br/> 
+ <span>protocol buffer动态创建库
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section class="comment">
+	
+	<div class="ds-thread" data-title="protocol buffer编码规则" data-thread-key="gpbencoderule" data-author-key="叶子与桔子" data-url="http://sstask.github.io/post/gpbencoderule"></div>
+	
+</section>
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="顯示側邊欄"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目錄</strong>
+  <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#uint32"><span class="toc-number">1.</span> <span class="toc-text">uint32</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#uint64"><span class="toc-number">2.</span> <span class="toc-text">uint64</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#int32"><span class="toc-number">3.</span> <span class="toc-text">int32</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#float"><span class="toc-number">4.</span> <span class="toc-text">float</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#double"><span class="toc-number">5.</span> <span class="toc-text">double</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#string"><span class="toc-number">6.</span> <span class="toc-text">string</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#repeated(simple)"><span class="toc-number">7.</span> <span class="toc-text">repeated(simple)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#repeated(string,message)"><span class="toc-number">8.</span> <span class="toc-text">repeated(string,message)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#map"><span class="toc-number">9.</span> <span class="toc-text">map</span></a></li></ol>
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隱藏側邊欄"></a></div>
+<aside class="clearfix">
+<div id="authorInfo">
+	
+		<div class="author-logo"></div>		
+	
+	<div class="social-list" class="clearfix">
+		
+		
+		
+		<a href="https://github.com/sstask" target="_blank" title="github"></a>
+		
+		
+		
+	</div>
+</div>
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分類</p>
+		<ul>
+		
+			<li><a href="/categories/C/" title="C++">C++<sup>2</sup></a></li>
+		
+			<li><a href="/categories/game/" title="game">game<sup>6</sup></a></li>
+		
+			<li><a href="/categories/linux/" title="linux">linux<sup>8</sup></a></li>
+		
+			<li><a href="/categories/mysql/" title="mysql">mysql<sup>4</sup></a></li>
+		
+			<li><a href="/categories/protocol-buffer/" title="protocol buffer">protocol buffer<sup>7</sup></a></li>
+		
+			<li><a href="/categories/script/" title="script">script<sup>1</sup></a></li>
+		
+			<li><a href="/categories/杂/" title="杂">杂<sup>5</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">標簽</p>
+		<ul class="clearfix">
+		
+			<li><a href="/tags/C/" title="C++">C++<sup>2</sup></a></li>
+		
+			<li><a href="/tags/awk/" title="awk">awk<sup>1</sup></a></li>
+		
+			<li><a href="/tags/backup/" title="backup">backup<sup>1</sup></a></li>
+		
+			<li><a href="/tags/blog/" title="blog">blog<sup>3</sup></a></li>
+		
+			<li><a href="/tags/cdkey/" title="cdkey">cdkey<sup>1</sup></a></li>
+		
+			<li><a href="/tags/cmake/" title="cmake">cmake<sup>1</sup></a></li>
+		
+			<li><a href="/tags/dynamic/" title="dynamic">dynamic<sup>1</sup></a></li>
+		
+			<li><a href="/tags/dynamiclink/" title="dynamiclink">dynamiclink<sup>1</sup></a></li>
+		
+			<li><a href="/tags/encode/" title="encode">encode<sup>1</sup></a></li>
+		
+			<li><a href="/tags/error/" title="error">error<sup>2</sup></a></li>
+		
+			<li><a href="/tags/file/" title="file">file<sup>1</sup></a></li>
+		
+			<li><a href="/tags/game/" title="game">game<sup>4</sup></a></li>
+		
+			<li><a href="/tags/game-mysql/" title="game,mysql">game,mysql<sup>1</sup></a></li>
+		
+			<li><a href="/tags/gettimeofday/" title="gettimeofday">gettimeofday<sup>1</sup></a></li>
+		
+			<li><a href="/tags/git/" title="git">git<sup>2</sup></a></li>
+		
+			<li><a href="/tags/github/" title="github">github<sup>2</sup></a></li>
+		
+			<li><a href="/tags/hexo/" title="hexo">hexo<sup>2</sup></a></li>
+		
+			<li><a href="/tags/innodb-buffer/" title="innodb buffer">innodb buffer<sup>1</sup></a></li>
+		
+			<li><a href="/tags/iptables/" title="iptables">iptables<sup>1</sup></a></li>
+		
+			<li><a href="/tags/key-buffer-size/" title="key_buffer_size">key_buffer_size<sup>1</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情鏈接</p>
+    <ul>
+      <li><a href="http://hexo.io" target="_blank" title="Hexo">Hexo</a></li>
+      <li><a href="http://gengbiao.me" target="_blank" title="coney">coney's Blog</a></li>
+    </ul>
+</div>
+
+
+  <div class="rsspart">
+	<a href="atom.xml" target="_blank" title="rss">RSS 訂閱</a>
+</div>
+
+  
+  <div class="tagcloudlist">
+    <p class="asidetitle">標簽雲</p>
+    <div class="tagcloudlist clearfix">
+       <a href="/tags/C/" style="font-size: 12px;">C++</a> <a href="/tags/awk/" style="font-size: 10px;">awk</a> <a href="/tags/backup/" style="font-size: 10px;">backup</a> <a href="/tags/blog/" style="font-size: 14px;">blog</a> <a href="/tags/cdkey/" style="font-size: 10px;">cdkey</a> <a href="/tags/cmake/" style="font-size: 10px;">cmake</a> <a href="/tags/dynamic/" style="font-size: 10px;">dynamic</a> <a href="/tags/dynamiclink/" style="font-size: 10px;">dynamiclink</a> <a href="/tags/encode/" style="font-size: 10px;">encode</a> <a href="/tags/error/" style="font-size: 12px;">error</a> <a href="/tags/file/" style="font-size: 10px;">file</a> <a href="/tags/game/" style="font-size: 16px;">game</a> <a href="/tags/game-mysql/" style="font-size: 10px;">game,mysql</a> <a href="/tags/gettimeofday/" style="font-size: 10px;">gettimeofday</a> <a href="/tags/git/" style="font-size: 12px;">git</a> <a href="/tags/github/" style="font-size: 12px;">github</a> <a href="/tags/hexo/" style="font-size: 12px;">hexo</a> <a href="/tags/innodb-buffer/" style="font-size: 10px;">innodb buffer</a> <a href="/tags/iptables/" style="font-size: 10px;">iptables</a> <a href="/tags/key-buffer-size/" style="font-size: 10px;">key_buffer_size</a> <a href="/tags/linux/" style="font-size: 20px;">linux</a> <a href="/tags/md5/" style="font-size: 10px;">md5</a> <a href="/tags/mysql/" style="font-size: 18px;">mysql</a> <a href="/tags/mysqld-multi/" style="font-size: 10px;">mysqld_multi</a> <a href="/tags/newday/" style="font-size: 10px;">newday</a> <a href="/tags/php/" style="font-size: 12px;">php</a> <a href="/tags/protocol-buffer/" style="font-size: 18px;">protocol buffer</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/rank/" style="font-size: 12px;">rank</a> <a href="/tags/repeated/" style="font-size: 10px;">repeated</a> <a href="/tags/script/" style="font-size: 10px;">script</a> <a href="/tags/sed/" style="font-size: 10px;">sed</a> <a href="/tags/shell/" style="font-size: 12px;">shell</a> <a href="/tags/slk/" style="font-size: 10px;">slk</a> <a href="/tags/staticlink/" style="font-size: 10px;">staticlink</a> <a href="/tags/table-open-cache/" style="font-size: 10px;">table_open_cache</a> <a href="/tags/template/" style="font-size: 10px;">template</a> <a href="/tags/vim/" style="font-size: 10px;">vim</a> <a href="/tags/动态解析/" style="font-size: 12px;">动态解析</a>
+    </div>
+  </div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+    
+            <p class="copyright"> © 2015 
+		
+		<a href="http://sstask.github.io" target="_blank" title="叶子与桔子">叶子与桔子</a>
+		
+            && Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> && Theme by <a href="http://gengbiao.me" target="_blank" title="coney">coney</a>
+            </div>
+</footer>
+    <script src="/js/jquery-2.1.0.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else
+    {
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      h  = $('article h2')
+      ah = $('article h2'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  if(ah.length==0){
+    t.css('display','none');
+  }else{
+    c.click(function(){
+      ta.css('display', 'block').addClass('fadeIn');
+    });
+    o.click(function(){
+      ta.css('display', 'none');
+    });
+    $(window).scroll(function(){
+      ta.css("top",Math.max(140,320-$(this).scrollTop()));
+    });
+  };
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina');
+  var html = [
+  '<a href="#" class="overlay" id="qrcode"></a>',
+  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#share"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
+  '<a href="#textlogo" class="article-back-to-top" title="Top"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="QRcode"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="Weibo"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+  $('.article-share-qrcode').click(function(){
+    var imgSrc = $('#qrcode-pic').attr('data-src');
+    $('#qrcode-pic').attr('src', imgSrc);
+    $('#qrcode-pic').load(function(){
+        $('.qrcode strong').text(' ');
+    });
+  });
+});     
+</script>
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"sstask"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+
+<script>
+    
+        var _bdImg = '4';
+    
+    window._bd_share_config={
+        "common":{
+            "bdSnsKey":{
+
+            },
+            "bdText":"",
+            "bdMini":"2",
+            "bdMiniList":[
+                "qzone",
+                "tsina",
+                "weixin",
+                "renren",
+                "tqq",
+                "tieba",
+                "douban",
+                "sqq",
+                "diandian",
+                "huaban",
+                "youdao",
+                "mail",
+                "ty",
+                "fbook",
+                "twi",
+                "linkedin",
+                "copy",
+                "print"
+            ],
+            "bdPic":"",
+            "bdStyle":"0",
+            "bdSize":"16"
+        },
+        "slide":{
+            "type":"slide",
+            "bdImg":_bdImg,
+            "bdPos":"right",
+            "bdTop":"350"
+        },
+        "image":{
+            "viewList":[
+                "weixin",
+                "qzone",
+                "tsina",
+                "renren",
+                "douban",
+                "tqq"
+            ],
+            "viewText":"分享：",
+            "viewSize":"16"
+        },
+        "selectShare":{
+            "bdContainerClass":null,
+            "bdSelectMiniList":[
+                "weixin",
+                "qzone",
+                "tsina",
+                "renren",
+                "douban",
+                "tqq"
+            ]
+        }
+    };
+    with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+
+
+
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'null', 'null');  
+ga('send', 'pageview');
+</script>
+
+
+  </body>
+</html>
+

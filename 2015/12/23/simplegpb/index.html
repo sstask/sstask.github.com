@@ -7,12 +7,12 @@
   <meta name="360-site-verification" content="67fbcc5a67f4c65c057315b28fa0b2c8" />
 <meta name="google-site-verification" content="2GzxQ0VtXwTSUdmGm6DzcmhTzM_I9QmzCb_pzpMzD88" />
   
-    <title>protocol buffer中repeated和map类型的动态解析 | 叶子的博客</title>
+    <title>一个简单的protobuf兼容库 | 叶子的博客</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
     
     <meta name="author" content="叶子与桔子">
     
-    <meta name="description" content="在之前的博客里简单介绍了protocol buffer的动态解析方法，对于不同的类型调用消息的Reflection中对应的方法进行读取，对于一个field如下处理：123456789101112131415switch (field-&amp;gt;cpp_type()) &amp;#123;#define HANDLE_TYPE(UPPERCASE, FUNCASE)\		case google::protobuf::FieldDescriptor::CPPTYPE_##UPPERCASE :\		val = reflection-&amp;gt;Get##FUNCASE(*message, field);\		break		HANDLE_TYPE( INT32, Int32);		HANDLE_TYPE( INT64, Int64);		HANDLE_TYPE(UINT32, UInt32);		HANDLE_TYPE(UINT64, UInt64);		HANDLE_TYPE(DOUBLE, Double);		HANDLE_TYPE( FLOAT, Float);		HANDLE_TYPE(  BOOL, Bool);		HANDLE_TYPE(  ENUM, EnumValue);#undef HANDLE_TYPE">
+    <meta name="description" content="上篇博文已经提到了，protocol buffer虽然简单好用，但是你必须把他的库文件整个加载到你的项目中，虽然大部分时候你只是想用他的编码和解码部分，编译他有时候也不是件容易事，如果能简单的引用他生成的消息文件就在项目中使用就好了(不需要引入protocol buffer库)。因此自己写了一个简单">
     
     
     
@@ -78,15 +78,15 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2015/12/11/gpbrepeatedmap/" title="protocol buffer中repeated和map类型的动态解析" itemprop="url">protocol buffer中repeated和map类型的动态解析</a>
+      <a href="/2015/12/23/simplegpb/" title="一个简单的protobuf兼容库" itemprop="url">一个简单的protobuf兼容库</a>
   </h1>
   <p class="article-author">By
     
       <a href="http://sstask.github.io" title="叶子与桔子">叶子与桔子</a>
     </p>
   <p class="article-time">
-    <time datetime="2015-12-11T05:04:44.000Z" itemprop="datePublished">Dec 11</time>
-    更新日期:<time datetime="2015-12-11T06:00:50.810Z" itemprop="dateModified">Dec 11</time>
+    <time datetime="2015-12-23T12:31:44.000Z" itemprop="datePublished">Dec 23</time>
+    更新日期:<time datetime="2015-12-23T12:58:09.803Z" itemprop="dateModified">Dec 23</time>
     
   </p>
 </header>
@@ -98,32 +98,17 @@
 		
 		</div>
 		
-		<p>在之前的博客里简单介绍了protocol buffer的动态解析方法，对于不同的类型调用消息的Reflection中对应的方法进行读取，对于一个field如下处理：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">switch</span> (field-&gt;cpp_type()) &#123;</span><br><span class="line"><span class="preprocessor">#<span class="keyword">define</span> HANDLE_TYPE(UPPERCASE, FUNCASE)\</span><br><span class="line">		case google::protobuf::FieldDescriptor::CPPTYPE_##UPPERCASE :\</span><br><span class="line">		val = reflection-&gt;Get##FUNCASE(*message, field);\</span><br><span class="line">		break</span></span><br><span class="line"></span><br><span class="line">		HANDLE_TYPE( INT32, Int32);</span><br><span class="line">		HANDLE_TYPE( INT64, Int64);</span><br><span class="line">		HANDLE_TYPE(UINT32, UInt32);</span><br><span class="line">		HANDLE_TYPE(UINT64, UInt64);</span><br><span class="line">		HANDLE_TYPE(DOUBLE, Double);</span><br><span class="line">		HANDLE_TYPE( FLOAT, Float);</span><br><span class="line">		HANDLE_TYPE(  BOOL, Bool);</span><br><span class="line">		HANDLE_TYPE(  ENUM, EnumValue);</span><br><span class="line"><span class="preprocessor">#<span class="keyword">undef</span> HANDLE_TYPE</span></span><br></pre></td></tr></table></figure></p>
-<a id="more"></a>
-<p>上面的宏定义摘抄于protocol buffer源代码。<br>可见对于每种类型protocol buffer中都有对应的解析函数，特别的对应string有reflection-&gt;GetString，对应Message有reflection-&gt;GetMessage，但对于repeated和map类型的成员就不能这么简单的处理了。<br><strong>repeated</strong></p>
-<blockquote>
-<p>在protocol buffer中repeated的编码方式是与普通类型不同的(string,Message类型直接依次独立编码repeated内容，其他类型先编码tag，再编码repeated.size，最后依次编码repeated内容，具体编码方式在后面博客中仔细分析)，所以对于repeated类型要用另外的解析函数来读取。</p>
-</blockquote>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> count = reflection-&gt;FieldSize(*message, field);</span><br><span class="line"><span class="keyword">switch</span> (field-&gt;cpp_type()) &#123;</span><br><span class="line">    ...</span><br><span class="line">    reflection-&gt;GetRepeated<span class="preprocessor">##FUNCASE(*message, field);<span class="comment">//注意是带Repeated的方法，其他同上</span></span></span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>map</strong></p>
-<blockquote>
-<p>在protocol buffer3.0版本中增加了map类型，和C++stl中的map作用类似，但是从编码方式上你会看出它完完全全的是个repeated类型，而且是个存储Message成员的repeated类型，直接看map在protocol buffer3.0中的定义方式就一目了然了:</p>
-</blockquote>
-<figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Proto3 maps are represented on the wire as a message with</span></span><br><span class="line"><span class="comment">// "key" and a "value".</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">// For example, the syntax:</span></span><br><span class="line"><span class="comment">// map&lt;key_type, value_type&gt; map_field = N;</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">// is represented as:</span></span><br><span class="line"><span class="comment">// message MapFieldEntry &#123;</span></span><br><span class="line"><span class="comment">//   option map_entry = true;   // marks the map construct in the descriptor</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">//   key_type key = 1;</span></span><br><span class="line"><span class="comment">//   value_type value = 2;</span></span><br><span class="line"><span class="comment">// &#125;</span></span><br><span class="line"><span class="comment">// repeated MapFieldEntry map_field = N;</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">// See go/proto3-maps for more information.</span></span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>可见在编码和解码中map完全是一种特别的repeated类型(map_entry来标识)，只是在使用方式上有区别而已，所以要对其进行动态解析就直接调用对应于repeated的方法就可以了。</p>
-</blockquote>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> count = reflection-&gt;FieldSize(*message, field);<span class="comment">//field即map字段对应的field</span></span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; count; ++i)&#123;</span><br><span class="line">    <span class="keyword">const</span> google::protobuf::Message&amp; msg= reflection-&gt;GetRepeatedMessage(*message, field, i);</span><br><span class="line">   <span class="keyword">const</span> google::protobuf::Reflection *mapref = msg-&gt;GetReflection();</span><br><span class="line">   <span class="keyword">const</span> google::protobuf::FieldDescriptor* mapfd=msg-&gt;GetDescriptor()-&gt;FindFieldByName(<span class="string">"key"</span>);</span><br><span class="line">   ...</span><br><span class="line">   valkey = mapref-&gt;Get<span class="preprocessor">##FUNCASE(msg, mapfd);<span class="comment">//具体解析方式同上上</span></span></span><br><span class="line">   ...</span><br><span class="line">   mapfd=msg-&gt;GetDescriptor()-&gt;FindFieldByName(<span class="string">"value"</span>);</span><br><span class="line">   ...</span><br><span class="line">   valval = mapref-&gt;Get<span class="preprocessor">##FUNCASE(msg, mapfd);</span></span><br><span class="line">   ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>protocol buffer中map的实现方式还是比较巧妙的，完全借用了repeated类型来实现，某种方面来讲也实现了和protocol buffer低版本的兼容，明白了它在protocol buffer内容的表现方式就很容易理解它了。</p>
-</blockquote>
+		<p>上篇博文已经提到了，protocol buffer虽然简单好用，但是你必须把他的库文件整个加载到你的项目中，虽然大部分时候你只是想用他的编码和解码部分，编译他有时候也不是件容易事，如果能简单的引用他生成的消息文件就在项目中使用就好了(不需要引入protocol buffer库)。<br>因此自己写了一个简单的protocol buffer的编码和解码文件，在使用时直接引用这一个头文件就可以了，省去了protocol buffer“庞大”库的引入。<br>其实上篇博文已经讲了protocol buffer的编码方式，从其中也不难推导出他的解码方式，所以这里就不再介绍他的解码方式了。有了protocol buffer的编码解码方式就很容易对相应数据进行编解码了。<br>具体编解码见文件<a href="https://github.com/sstask/simpleprotobuf/blob/master/gpbencode.h" target="_blank" rel="external">gpbencode.h</a><br>1.<strong>gpbencoder</strong>实现protocol buffer编码，大体这样<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> Type&gt;</span><br><span class="line"><span class="function">INL <span class="keyword">static</span> uint8* <span class="title">WriteDataToArray</span><span class="params">(field_number, Type value, output)</span></span></span><br></pre></td></tr></table></figure></p>
+<p>2.<strong>gpbdecoder</strong>实现protocol buffer解码，大体这样<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> CType&gt;</span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">static</span> <span class="keyword">bool</span> <span class="title">ReadPrimitive</span><span class="params">(io::CodedInputStream* input, CType* value)</span></span></span><br></pre></td></tr></table></figure></p>
+<p>3.<strong>WireFormatLite</strong>是protocol buffer中存在的类，它主要抽象出了protocol buffer中各个类型的编码解码，该实现也基本与protocol buffer源码一直，以便后面如果protocol buffer更新了可以跟着更新，具体的也可以查阅protocol buffer源码。<br>4.<strong>CodedInputStream CodedOutputStream</strong>这两个类也是protocol buffer中存在的，他们主要实现了基础数据的底层编码解码，这里的基本也是从protocol buffer中搬过来的。</p>
+<p>为了兼容protocol buffer的实现方式，我也实现了一个把.proto生成.h的类，该类生成的文件完全依赖于上面的<strong>gpbencoder gpbdecoder</strong>，所以在使用的使用只需要引用<strong>gpbencode.h</strong>即可，抛弃了对protocol buffer的依赖。<br>具体实现见<a href="https://github.com/sstask/simpleprotobuf/blob/master/gpb_generator.cpp" target="_blank" rel="external">gpb_generator.cpp</a></p>
   
 	</div>
 		<footer class="article-footer clearfix">
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/protocol-buffer/">protocol buffer</a><a href="/tags/repeated/">repeated</a>
+  <span></span> <a href="/tags/protocol-buffer/">protocol buffer</a>
   </div>
 
 
@@ -136,7 +121,7 @@
 
 <div class="article-share" id="share">
 
-  <div data-url="http://sstask.github.io/2015/12/11/gpbrepeatedmap/" data-title="protocol buffer中repeated和map类型的动态解析 | 叶子的博客" data-tsina="null" class="share clearfix">
+  <div data-url="http://sstask.github.io/2015/12/23/simplegpb/" data-title="一个简单的protobuf兼容库 | 叶子的博客" data-tsina="null" class="share clearfix">
   </div>
 
 </div>
@@ -145,19 +130,11 @@
 	
 <nav class="article-nav clearfix">
  
- <div class="prev" >
- <a href="/2015/12/14/gpbcreatemsg/" title="protocol buffer动态创建库">
-  <strong>PREVIOUS:</strong><br/>
-  <span>
-  protocol buffer动态创建库</span>
-</a>
-</div>
-
 
 <div class="next">
-<a href="/2015/12/05/gpbmessage/"  title="protocol buffer动态解析和动态生成库">
+<a href="/2015/12/21/gpbencoderule/"  title="protocol buffer编码规则">
  <strong>NEXT:</strong><br/> 
- <span>protocol buffer动态解析和动态生成库
+ <span>protocol buffer编码规则
 </span>
 </a>
 </div>
@@ -167,7 +144,7 @@
 	
 <section class="comment">
 	
-	<div class="ds-thread" data-title="protocol buffer中repeated和map类型的动态解析" data-thread-key="gpbrepeatedmap" data-author-key="叶子与桔子" data-url="http://sstask.github.io/post/gpbrepeatedmap"></div>
+	<div class="ds-thread" data-title="一个简单的protobuf兼容库" data-thread-key="simplegpb" data-author-key="叶子与桔子" data-url="http://sstask.github.io/post/simplegpb"></div>
 	
 </section>
 
