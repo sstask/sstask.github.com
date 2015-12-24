@@ -86,7 +86,7 @@
     </p>
   <p class="article-time">
     <time datetime="2015-12-23T12:31:44.000Z" itemprop="datePublished">Dec 23</time>
-    更新日期:<time datetime="2015-12-23T12:58:09.803Z" itemprop="dateModified">Dec 23</time>
+    更新日期:<time datetime="2015-12-24T02:08:18.043Z" itemprop="dateModified">Dec 24</time>
     
   </p>
 </header>
@@ -101,7 +101,7 @@
 		<p>上篇博文已经提到了，protocol buffer虽然简单好用，但是你必须把他的库文件整个加载到你的项目中，虽然大部分时候你只是想用他的编码和解码部分，编译他有时候也不是件容易事，如果能简单的引用他生成的消息文件就在项目中使用就好了(不需要引入protocol buffer库)。<br>因此自己写了一个简单的protocol buffer的编码和解码文件，在使用时直接引用这一个头文件就可以了，省去了protocol buffer“庞大”库的引入。<br>其实上篇博文已经讲了protocol buffer的编码方式，从其中也不难推导出他的解码方式，所以这里就不再介绍他的解码方式了。有了protocol buffer的编码解码方式就很容易对相应数据进行编解码了。<br>具体编解码见文件<a href="https://github.com/sstask/simpleprotobuf/blob/master/gpbencode.h" target="_blank" rel="external">gpbencode.h</a><br>1.<strong>gpbencoder</strong>实现protocol buffer编码，大体这样<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> Type&gt;</span><br><span class="line"><span class="function">INL <span class="keyword">static</span> uint8* <span class="title">WriteDataToArray</span><span class="params">(field_number, Type value, output)</span></span></span><br></pre></td></tr></table></figure></p>
 <p>2.<strong>gpbdecoder</strong>实现protocol buffer解码，大体这样<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> CType&gt;</span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">static</span> <span class="keyword">bool</span> <span class="title">ReadPrimitive</span><span class="params">(io::CodedInputStream* input, CType* value)</span></span></span><br></pre></td></tr></table></figure></p>
 <p>3.<strong>WireFormatLite</strong>是protocol buffer中存在的类，它主要抽象出了protocol buffer中各个类型的编码解码，该实现也基本与protocol buffer源码一直，以便后面如果protocol buffer更新了可以跟着更新，具体的也可以查阅protocol buffer源码。<br>4.<strong>CodedInputStream CodedOutputStream</strong>这两个类也是protocol buffer中存在的，他们主要实现了基础数据的底层编码解码，这里的基本也是从protocol buffer中搬过来的。</p>
-<p>为了兼容protocol buffer的实现方式，我也实现了一个把.proto生成.h的类，该类生成的文件完全依赖于上面的<strong>gpbencoder gpbdecoder</strong>，所以在使用的使用只需要引用<strong>gpbencode.h</strong>即可，抛弃了对protocol buffer的依赖。<br>具体实现见<a href="https://github.com/sstask/simpleprotobuf/blob/master/gpb_generator.cpp" target="_blank" rel="external">gpb_generator.cpp</a></p>
+<p>为了兼容protocol buffer的实现方式，我也实现了一个把.proto生成.h的类，该类生成的文件完全依赖于上面的<strong>gpbencoder gpbdecoder</strong>，所以在使用的使用只需要引用<strong>gpbencode.h</strong>即可，抛弃了对protocol buffer的依赖。<br>具体实现见<a href="https://github.com/sstask/simpleprotobuf/blob/master/gpb_generator.cpp" target="_blank" rel="external">gpb_generator.cpp</a><br>它本身是依赖于protocol buffer库的，但生成的文件不依赖protocol buffer。</p>
   
 	</div>
 		<footer class="article-footer clearfix">

@@ -76,6 +76,34 @@
 
   <section class="post" itemscope itemprop="blogPost">
   
+    <a href="/2015/12/23/simplegpb/" title="一个简单的protobuf兼容库" itemprop="url">
+  
+      <time datetime="2015-12-23T12:31:44.000Z" itemprop="datePublished">Dec 23</time>
+    <h1 itemprop="name">一个简单的protobuf兼容库</h1>
+    
+     
+           <p itemprop="description" >上篇博文已经提到了，protocol buffer虽然简单好用，但是你必须把他的库文件整个加载到你的项目中，虽然大部分时候你只是想用他的编码和解码部分，编译他有时候也不是件容易事，如果能简单的引用他生成的消息文件就在项目中使用就好了(不需要引入protocol buffer库)。</p>
+        
+    
+  </a>
+</section>
+
+  <section class="post" itemscope itemprop="blogPost">
+  
+    <a href="/2015/12/21/gpbencoderule/" title="protocol buffer编码规则" itemprop="url">
+  
+      <time datetime="2015-12-21T11:50:46.000Z" itemprop="datePublished">Dec 21</time>
+    <h1 itemprop="name">protocol buffer编码规则</h1>
+    
+     
+           <p itemprop="description" >这段时间想把protocol buffer用在移动平台上，这时就发现它还是有点庞大的，不易编译或者移植，所以想着了解下它的编解码方式，看看是否能实现一个简单的编码库。看了源码之后就发现，其实虽然protocol buffer支持的数据类型有很多，但是底层的编码方式也只有6种，编解</p>
+        
+    
+  </a>
+</section>
+
+  <section class="post" itemscope itemprop="blogPost">
+  
     <a href="/2015/12/14/gpbcreatemsg/" title="protocol buffer动态创建库" itemprop="url">
   
       <time datetime="2015-12-14T12:12:01.000Z" itemprop="datePublished">Dec 14</time>
@@ -162,42 +190,9 @@ bool newproto(const cha</p>
   </a>
 </section>
 
-  <section class="post" itemscope itemprop="blogPost">
-  
-    <a href="/2015/10/20/savedbdata/" title="DB数据存储" itemprop="url">
-  
-      <time datetime="2015-10-20T09:39:45.000Z" itemprop="datePublished">Oct 20</time>
-    <h1 itemprop="name">DB数据存储</h1>
-    
-     
-       <p itemprop="description" >一般在项目中总是会遇到需要把数据储存到数据库的情况，下面就讨论下存储方案。
-直接储存
-最简单的当然是直接存储了，当数据变化的时候直接插入或更新数据库，但当数据量很大或者数据变化频率很快的时候数据库压力太大，不妥。
-
-定时存储
-当数据变化时并不立马更新数据库，而是先把数据存在内存里</p>
-      
-    
-  </a>
-</section>
-
-  <section class="post" itemscope itemprop="blogPost">
-  
-    <a href="/2015/10/08/linuxiptables/" title="linux防火墙" itemprop="url">
-  
-      <time datetime="2015-10-08T12:19:17.000Z" itemprop="datePublished">Oct 8</time>
-    <h1 itemprop="name">linux防火墙</h1>
-    
-     
-       <p itemprop="description" >今天早上登服务器测试，试了很多次就是连接不上，折腾了很久发现是因为今天服务器重启了，然后没有把防火墙关闭。因为是内网测试服务器，所以图省事每次服务器重启之后都会把防火墙关了，这样就能正常登陆了。于是今天忘了关了就查了很久……还是为了图省事，决定更改防火墙设置，来个一劳永逸。lin</p>
-      
-    
-  </a>
-</section>
-
 
   <nav id="page-nav" class="clearfix">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
   </nav>
 
 </div>
@@ -234,7 +229,7 @@ bool newproto(const cha</p>
 		
 			<li><a href="/categories/mysql/" title="mysql">mysql<sup>4</sup></a></li>
 		
-			<li><a href="/categories/protocol-buffer/" title="protocol buffer">protocol buffer<sup>5</sup></a></li>
+			<li><a href="/categories/protocol-buffer/" title="protocol buffer">protocol buffer<sup>7</sup></a></li>
 		
 			<li><a href="/categories/script/" title="script">script<sup>1</sup></a></li>
 		
@@ -265,6 +260,8 @@ bool newproto(const cha</p>
 		
 			<li><a href="/tags/dynamiclink/" title="dynamiclink">dynamiclink<sup>1</sup></a></li>
 		
+			<li><a href="/tags/encode/" title="encode">encode<sup>1</sup></a></li>
+		
 			<li><a href="/tags/error/" title="error">error<sup>2</sup></a></li>
 		
 			<li><a href="/tags/file/" title="file">file<sup>1</sup></a></li>
@@ -287,8 +284,6 @@ bool newproto(const cha</p>
 		
 			<li><a href="/tags/key-buffer-size/" title="key_buffer_size">key_buffer_size<sup>1</sup></a></li>
 		
-			<li><a href="/tags/linux/" title="linux">linux<sup>8</sup></a></li>
-		
 		</ul>
 </div>
 
@@ -310,7 +305,7 @@ bool newproto(const cha</p>
   <div class="tagcloudlist">
     <p class="asidetitle">標簽雲</p>
     <div class="tagcloudlist clearfix">
-       <a href="/tags/C/" style="font-size: 11.67px;">C++</a> <a href="/tags/awk/" style="font-size: 10px;">awk</a> <a href="/tags/backup/" style="font-size: 10px;">backup</a> <a href="/tags/blog/" style="font-size: 13.33px;">blog</a> <a href="/tags/cdkey/" style="font-size: 10px;">cdkey</a> <a href="/tags/cmake/" style="font-size: 10px;">cmake</a> <a href="/tags/dynamic/" style="font-size: 10px;">dynamic</a> <a href="/tags/dynamiclink/" style="font-size: 10px;">dynamiclink</a> <a href="/tags/error/" style="font-size: 11.67px;">error</a> <a href="/tags/file/" style="font-size: 10px;">file</a> <a href="/tags/game/" style="font-size: 15px;">game</a> <a href="/tags/game-mysql/" style="font-size: 10px;">game,mysql</a> <a href="/tags/gettimeofday/" style="font-size: 10px;">gettimeofday</a> <a href="/tags/git/" style="font-size: 11.67px;">git</a> <a href="/tags/github/" style="font-size: 11.67px;">github</a> <a href="/tags/hexo/" style="font-size: 11.67px;">hexo</a> <a href="/tags/innodb-buffer/" style="font-size: 10px;">innodb buffer</a> <a href="/tags/iptables/" style="font-size: 10px;">iptables</a> <a href="/tags/key-buffer-size/" style="font-size: 10px;">key_buffer_size</a> <a href="/tags/linux/" style="font-size: 20px;">linux</a> <a href="/tags/md5/" style="font-size: 10px;">md5</a> <a href="/tags/mysql/" style="font-size: 18.33px;">mysql</a> <a href="/tags/mysqld-multi/" style="font-size: 10px;">mysqld_multi</a> <a href="/tags/newday/" style="font-size: 10px;">newday</a> <a href="/tags/php/" style="font-size: 11.67px;">php</a> <a href="/tags/protocol-buffer/" style="font-size: 16.67px;">protocol buffer</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/rank/" style="font-size: 11.67px;">rank</a> <a href="/tags/repeated/" style="font-size: 10px;">repeated</a> <a href="/tags/script/" style="font-size: 10px;">script</a> <a href="/tags/sed/" style="font-size: 10px;">sed</a> <a href="/tags/shell/" style="font-size: 11.67px;">shell</a> <a href="/tags/slk/" style="font-size: 10px;">slk</a> <a href="/tags/staticlink/" style="font-size: 10px;">staticlink</a> <a href="/tags/table-open-cache/" style="font-size: 10px;">table_open_cache</a> <a href="/tags/template/" style="font-size: 10px;">template</a> <a href="/tags/vim/" style="font-size: 10px;">vim</a> <a href="/tags/动态解析/" style="font-size: 11.67px;">动态解析</a>
+       <a href="/tags/C/" style="font-size: 12px;">C++</a> <a href="/tags/awk/" style="font-size: 10px;">awk</a> <a href="/tags/backup/" style="font-size: 10px;">backup</a> <a href="/tags/blog/" style="font-size: 14px;">blog</a> <a href="/tags/cdkey/" style="font-size: 10px;">cdkey</a> <a href="/tags/cmake/" style="font-size: 10px;">cmake</a> <a href="/tags/dynamic/" style="font-size: 10px;">dynamic</a> <a href="/tags/dynamiclink/" style="font-size: 10px;">dynamiclink</a> <a href="/tags/encode/" style="font-size: 10px;">encode</a> <a href="/tags/error/" style="font-size: 12px;">error</a> <a href="/tags/file/" style="font-size: 10px;">file</a> <a href="/tags/game/" style="font-size: 16px;">game</a> <a href="/tags/game-mysql/" style="font-size: 10px;">game,mysql</a> <a href="/tags/gettimeofday/" style="font-size: 10px;">gettimeofday</a> <a href="/tags/git/" style="font-size: 12px;">git</a> <a href="/tags/github/" style="font-size: 12px;">github</a> <a href="/tags/hexo/" style="font-size: 12px;">hexo</a> <a href="/tags/innodb-buffer/" style="font-size: 10px;">innodb buffer</a> <a href="/tags/iptables/" style="font-size: 10px;">iptables</a> <a href="/tags/key-buffer-size/" style="font-size: 10px;">key_buffer_size</a> <a href="/tags/linux/" style="font-size: 20px;">linux</a> <a href="/tags/md5/" style="font-size: 10px;">md5</a> <a href="/tags/mysql/" style="font-size: 18px;">mysql</a> <a href="/tags/mysqld-multi/" style="font-size: 10px;">mysqld_multi</a> <a href="/tags/newday/" style="font-size: 10px;">newday</a> <a href="/tags/php/" style="font-size: 12px;">php</a> <a href="/tags/protocol-buffer/" style="font-size: 18px;">protocol buffer</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/rank/" style="font-size: 12px;">rank</a> <a href="/tags/repeated/" style="font-size: 10px;">repeated</a> <a href="/tags/script/" style="font-size: 10px;">script</a> <a href="/tags/sed/" style="font-size: 10px;">sed</a> <a href="/tags/shell/" style="font-size: 12px;">shell</a> <a href="/tags/slk/" style="font-size: 10px;">slk</a> <a href="/tags/staticlink/" style="font-size: 10px;">staticlink</a> <a href="/tags/table-open-cache/" style="font-size: 10px;">table_open_cache</a> <a href="/tags/template/" style="font-size: 10px;">template</a> <a href="/tags/vim/" style="font-size: 10px;">vim</a> <a href="/tags/动态解析/" style="font-size: 12px;">动态解析</a>
     </div>
   </div>
 
