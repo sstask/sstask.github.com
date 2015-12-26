@@ -7,12 +7,22 @@
   <meta name="360-site-verification" content="67fbcc5a67f4c65c057315b28fa0b2c8" />
 <meta name="google-site-verification" content="2GzxQ0VtXwTSUdmGm6DzcmhTzM_I9QmzCb_pzpMzD88" />
   
-    <title>git命令 | 叶子的博客</title>
+    <title>python相关 | 叶子的博客</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
     
     <meta name="author" content="叶子与桔子">
     
-    <meta name="description" content="">
+    <meta name="description" content="python安装
+
+yum install python
+
+pip安装
+
+wget https://bootstrap.pypa.io/get-pip.pypython get-pip.py
+
+执行外部命令
+
+import commandsstatus, output = commands.gets">
     
     
     
@@ -78,15 +88,15 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2015/09/30/gitcmds/" title="git命令" itemprop="url">git命令</a>
+      <a href="/2015/12/26/aboutpython/" title="python相关" itemprop="url">python相关</a>
   </h1>
   <p class="article-author">By
     
       <a href="http://sstask.github.io" title="叶子与桔子">叶子与桔子</a>
     </p>
   <p class="article-time">
-    <time datetime="2015-09-30T09:42:09.000Z" itemprop="datePublished">Sep 30</time>
-    更新日期:<time datetime="2015-10-29T02:09:19.789Z" itemprop="dateModified">Oct 29</time>
+    <time datetime="2015-12-26T07:52:44.000Z" itemprop="datePublished">Dec 26</time>
+    更新日期:<time datetime="2015-12-26T08:08:46.475Z" itemprop="dateModified">Dec 26</time>
     
   </p>
 </header>
@@ -98,46 +108,38 @@
 		
 		</div>
 		
-		<p><img src="/assets/img/git1.png" alt="git1" title="checkout"><br> <a id="more"></a><br>基本命令</p>
+		<p><strong>python安装</strong></p>
 <blockquote>
-<p>git config –global user.name “Your Name”<br>git config –global user.email “email@example.com”<br>git init<br>git add file<br>git commit -m “xxx”<br>git status<br>git diff<br>git checkout -b dev<br>git merge –no-ff -m “merge with no-ff” dev<br>git branch -d dev</p>
+<p>yum install python</p>
 </blockquote>
-<p><img src="/assets/img/git2.png" alt="git2" title="reset"><br>checkout命令通常用来从仓库中取出文件，或者在分支中切换。<br>checkout命令让git把文件复制到工作目录和暂存区域。比如git checkout HEAD~ foo.c把文件从foo.c提交节点HEAD~ (当前提交节点的父节点)复制到工作目录并且生成索引。注意当前分支没有变化。<br>reset命令把当前分支指向另一个位置，并且有选择的变动工作目录和索引。也用来在从历史仓库中复制文件到索引，而不动工作目录。<br>如果不给选项，那么当前分支指向到那个提交。如果用–hard选项，那么工作目录也更新，如果用–soft选项，那么都不变。 </p>
-<p>git reset –hard HEAD^ 回退到上个版本<br>git reset –hard commit_id 回退到某个版本<br>git log 查看提交历史<br>git reflog 查看命令历史</p>
-<p>Git跟踪并管理的是修改，而非文件，每次修改，如果不add到暂存区，那就不会加入到commit中。</p>
-<p>git rm 删除一个文件</p>
-<p>提交代码的更改一共分2个阶段。</p>
-<ul>
-<li>从工作目录，提交到stage。</li>
-<li>从stage提交到master。<br>从工作目录提交到stage，需要用add或者rm命令，只提交到stage，而没有提交到master，是不会自动同步到master的。<br>从stage提交到master用commit命令。<br>退回也是要分两步，一个是从master退回到stage，然后再从stage退回到工作目录。<br>对于还没有提交到stage的，可以从stage用checkout命令退回，这一步会取stage中的文件状态，覆盖掉工作目录中文件的状态，跟master完全没关系。<br>对于已经到达stage的，想把state中的文件状态用master中的覆盖掉，就用reset命令，这样就把stage中修改用master的状态覆盖掉了，完全跟工作目录没关系</li>
-</ul>
-<p>ssh-keygen -t rsa -C “youremail@example.com”<br>//本地库关联到github远程库 先有本地后有远程<br>git remote add origin git@server-name:path/repo-name.git<br>git push -u origin master<br>git push origin master<br>//github远程库关联到本地库 先有远程后有本地<br>git clone git@server-name:path/repo-name.git<br>git push origin master</p>
-<p>git checkout -b dev 创建并切换分支<br>git branch 查看分支<br>git checkout master 切换回master分支<br>git merge dev 合并指定分支到当前分支<br>git merge –no-ff -m “merge with no-ff” dev   加上–no-ff参数，删除分支后，不会丢掉分支信息<br>git branch -d dev 删除分支</p>
-<p>修复bug时，我们会通过创建新的bug分支进行修复，然后合并，最后删除；<br>当手头工作没有完成时，先把工作现场git stash一下，然后去修复bug，修复后，再git stash pop，回到工作现场。<br>git stash<br>git checkout master  之前在dev分支开发，先切回主线<br>git checkout -b issue-101<br>修改bug<br>git commit -m “fix bug 101”<br>git checkout master<br>git merge –no-ff -m “merged bug fix 101” issue-101<br>git branch -d issue-101<br>git checkout dev<br>git stash pop</p>
-<p>丢弃一个没有被合并过的分支，可以通过git branch -D name强行删除</p>
-<p>git tag name 新建一个标签，默认为HEAD，也可以指定一个commit id；<br>git tag 查看所有标签。<br>git show tagname<br>git push origin tagname 推送本地标签；<br>git tag -d tagname 删除一个本地标签；<br>git push origin :refs/tags/tagname 删除一个远程标签。</p>
-<p>忽略某些文件时，需要编写.gitignore文件，放在仓库根目录<br>git config –global alias.st status 配置别名<br>git config –global alias.lg “log –color –graph –pretty=format:’%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)\&lt;%an>%Creset’ –abbrev-commit”<br>或者修改配置文件.git/config 添加<br>[alias]<br>    co = checkout<br>    ci = commit<br>    br = branch<br>    st = status<br>仓库目录下的.git/config是当前仓库配置<br>用户主目录下的一个隐藏文件.gitconfig是全局配置</p>
-<p>参考<br><a href="http://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000" target="_blank" rel="external">http://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000</a><br><a href="http://my.oschina.net/xdev/blog/114383" target="_blank" rel="external">http://my.oschina.net/xdev/blog/114383</a><br><a href="http://marklodato.github.io/visual-git-guide/index-zh-cn.html" target="_blank" rel="external">http://marklodato.github.io/visual-git-guide/index-zh-cn.html</a><br><a href="http://www.worldhello.net/gotgithub/index.html" target="_blank" rel="external">http://www.worldhello.net/gotgithub/index.html</a></p>
+<p><strong>pip安装</strong></p>
+<blockquote>
+<p>wget <a href="https://bootstrap.pypa.io/get-pip.py" target="_blank" rel="external">https://bootstrap.pypa.io/get-pip.py</a><br>python get-pip.py</p>
+</blockquote>
+<p><strong>执行外部命令</strong></p>
+<blockquote>
+<p>import commands<br>status, output = commands.getstatusoutput(“ls”)<br>print status, output</p>
+</blockquote>
   
 	</div>
 		<footer class="article-footer clearfix">
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/git/">git</a><a href="/tags/linux/">linux</a>
+  <span></span> <a href="/tags/pip/">pip</a><a href="/tags/python/">python</a>
   </div>
 
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/linux/">linux</a>
+  <a class="article-category-link" href="/categories/script/">script</a>
 </div>
 
 
 
 <div class="article-share" id="share">
 
-  <div data-url="http://sstask.github.io/2015/09/30/gitcmds/" data-title="git命令 | 叶子的博客" data-tsina="null" class="share clearfix">
+  <div data-url="http://sstask.github.io/2015/12/26/aboutpython/" data-title="python相关 | 叶子的博客" data-tsina="null" class="share clearfix">
   </div>
 
 </div>
@@ -146,19 +148,11 @@
 	
 <nav class="article-nav clearfix">
  
- <div class="prev" >
- <a href="/2015/10/08/linuxiptables/" title="linux防火墙">
-  <strong>PREVIOUS:</strong><br/>
-  <span>
-  linux防火墙</span>
-</a>
-</div>
-
 
 <div class="next">
-<a href="/2015/09/29/linuxdynamiclink/"  title="linux动态链接">
+<a href="/2015/12/26/linuxoperations/"  title="linux运维相关">
  <strong>NEXT:</strong><br/> 
- <span>linux动态链接
+ <span>linux运维相关
 </span>
 </a>
 </div>
@@ -168,7 +162,7 @@
 	
 <section class="comment">
 	
-	<div class="ds-thread" data-title="git命令" data-thread-key="gitcmds" data-author-key="叶子与桔子" data-url="http://sstask.github.io/post/gitcmds"></div>
+	<div class="ds-thread" data-title="python相关" data-thread-key="aboutpython" data-author-key="叶子与桔子" data-url="http://sstask.github.io/post/aboutpython"></div>
 	
 </section>
 
