@@ -7,12 +7,14 @@
   <meta name="360-site-verification" content="67fbcc5a67f4c65c057315b28fa0b2c8" />
 <meta name="google-site-verification" content="2GzxQ0VtXwTSUdmGm6DzcmhTzM_I9QmzCb_pzpMzD88" />
   
-    <title>protocol buffer动态解析和动态生成库 | 叶子的博客</title>
+    <title>lua相关 | 叶子的博客</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
     
     <meta name="author" content="叶子与桔子">
     
-    <meta name="description" content="目前在项目中通信协议的封装用的都是google protocol buffer，本来也没什么问题，效率高而且也挺方便使用的，但是用久了就发现这种传统的使用方法很大的降低了工作效率。我们的使用方式是，在.proto文件定义消息格式，通过protoc.exe生成.pb.h和.pb.cc文件，然后直接引用这些生成的文件来打包和解析消息。在我们项目中改动最频繁的就是这些消息协议文件了，而这些文件一旦改变整个项目就需要重新编译(消息文件几乎在所有模块里都要被引用)，前期项目小的时候还无所谓，但后期积累的模块就太多了，重新编译要等个十来分钟，而这仅仅是因为改变了一个消息的定义才引发的。某些时刻你会发现这十来分钟也是难以忍受的，所以我就想着怎么才能在协议改变的时候也不需要重新编译这个项目，而且仅仅编译有限的几个文件来解决问题。">
+    <meta name="description" content="loadfile12345lua_State* L = luaL_newstate();luaL_openlibs(L);luaL_dofile(L, &quot;xx.lua&quot;);or luaL_loadfile(L, &quot;xx.lua&quot;); lua_pcall(L,0,0,0);
+
+luaL_loadfile(L, “xx.lua”)之后一定要调用lua_pcall(L,0,0,0)，否则读取不到脚本中的任何内容。luaL_loadfile生成一个匿名函数放在栈顶，当执行这个函数才会生成文件中的这些全局变量。">
     
     
     
@@ -78,15 +80,15 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2015/12/05/gpbmessage/" title="protocol buffer动态解析和动态生成库" itemprop="url">protocol buffer动态解析和动态生成库</a>
+      <a href="/2016/01/06/aboutlua/" title="lua相关" itemprop="url">lua相关</a>
   </h1>
   <p class="article-author">By
     
       <a href="http://sstask.github.io" title="叶子与桔子">叶子与桔子</a>
     </p>
   <p class="article-time">
-    <time datetime="2015-12-05T06:45:13.000Z" itemprop="datePublished">Dec 5</time>
-    更新日期:<time datetime="2015-12-05T08:16:44.151Z" itemprop="dateModified">Dec 5</time>
+    <time datetime="2016-01-06T12:27:31.000Z" itemprop="datePublished">Jan 6</time>
+    更新日期:<time datetime="2016-01-06T13:05:01.247Z" itemprop="dateModified">Jan 6</time>
     
   </p>
 </header>
@@ -98,38 +100,35 @@
 		
 		</div>
 		
-		<p>目前在项目中通信协议的封装用的都是google protocol buffer，本来也没什么问题，效率高而且也挺方便使用的，但是用久了就发现这种传统的使用方法很大的降低了工作效率。<br>我们的使用方式是，在.proto文件定义消息格式，通过protoc.exe生成.pb.h和.pb.cc文件，然后直接引用这些生成的文件来打包和解析消息。在我们项目中改动最频繁的就是这些消息协议文件了，而这些文件一旦改变整个项目就需要重新编译(消息文件几乎在所有模块里都要被引用)，前期项目小的时候还无所谓，但后期积累的模块就太多了，重新编译要等个十来分钟，而这仅仅是因为改变了一个消息的定义才引发的。<br>某些时刻你会发现这十来分钟也是难以忍受的，所以我就想着怎么才能在协议改变的时候也不需要重新编译这个项目，而且仅仅编译有限的几个文件来解决问题。<br><a id="more"></a><br>在之前的博客里已经提到过protocol buffer动态解析的问题，通过这种技巧可以直接读取proto文件，获得消息的定义，最后从字节流中解析出消息内容，中间省略了.pb.h和.pb.cc文件的生成过程，从而避免了文件的大规模重新编译。（请参阅<a href="http://sstask.com/2015/09/08/pbdynamicananlysis/）" target="_blank" rel="external">http://sstask.com/2015/09/08/pbdynamicananlysis/）</a><br>大体的流程是这样的：</p>
+		<p><strong>loadfile</strong><br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">lua_State* L = luaL_newstate();</span><br><span class="line">luaL_openlibs(L);</span><br><span class="line"></span><br><span class="line">luaL_dofile(L, <span class="string">"xx.lua"</span>);</span><br><span class="line"><span class="function">or <span class="title">luaL_loadfile</span><span class="params">(L, <span class="string">"xx.lua"</span>)</span></span>; lua_pcall(L,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>);</span><br></pre></td></tr></table></figure></p>
 <blockquote>
-<p>通过google::protobuf::compiler::Importer加载proto文件，获取FileDescriptor<br>通过Importer-&gt;pool()-&gt;FindMessageTypeByName获取Descriptor<br>通过Descriptor获取Message<br>通过Message获取FieldDescriptor<br>最后通过FieldDescriptor读取或者写入filed的数值。</p>
+<p>luaL_loadfile(L, “xx.lua”)之后一定要调用lua_pcall(L,0,0,0)，否则读取不到脚本中的任何内容。luaL_loadfile生成一个匿名函数放在栈顶，当执行这个函数才会生成文件中的这些全局变量。<br><a id="more"></a></p>
 </blockquote>
-<p>具体的操作方法在之前的博客里也写的比较清楚了，剩下的要做的也只是封装的问题，提供一个比较完善且便于使用的接口。<br>如果.proto文件内容如下：<br><figure class="highlight protobuf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">syntax = <span class="string">"proto3"</span>;</span><br><span class="line"><span class="class"><span class="keyword">message</span> <span class="title">mytag</span></span><br><span class="line"></span>&#123;</span><br><span class="line">	<span class="built_in">int32</span> tag= <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">message</span> <span class="title">mymsg</span></span><br><span class="line"></span>&#123;</span><br><span class="line">	<span class="built_in">int32</span> len = <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">repeated</span> <span class="built_in">int32</span> typ = <span class="number">2</span>;</span><br><span class="line">        map&lt;<span class="built_in">uint32</span>,<span class="built_in">string</span>&gt; str = <span class="number">3</span>;</span><br><span class="line">        mytag tag = <span class="number">4</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>我定义了一个gpbmessage类，<strong>直接如下调用构造函数就可以生成一个消息</strong><br><figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">gpbmessage <span class="title">gms</span><span class="params">(<span class="string">"mymsg"</span>)</span></span>;</span><br></pre></td></tr></table></figure></p>
-<p><strong>写入消息内容如下(可以写入vector和map，vector对应protocolbuffer里的repeated类型，map对应pb3.0里的map)</strong><br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">gms.setval(<span class="string">"len"</span>, <span class="number">2</span>);</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; vecs;</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; ++i)</span><br><span class="line">    vecs.push_back(i);</span><br><span class="line">gms.setrepeatedval(<span class="string">"typ"</span>, vecs);</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">map</span>&lt;<span class="keyword">int</span>,<span class="built_in">std</span>::<span class="built_in">string</span>&gt; mapmy;</span><br><span class="line">mapmy[<span class="number">1</span>]=<span class="string">"1"</span>;</span><br><span class="line">mapmy[<span class="number">2</span>]=<span class="string">"22"</span>;</span><br><span class="line">gms.setmap(<span class="string">"str"</span>,mapmy);</span><br></pre></td></tr></table></figure></p>
-<p><strong>message类型的写入（repeated和map类型读取和上面一致）</strong><br><figure class="highlight lasso"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">gpbmessage <span class="built_in">tag</span>(<span class="string">"mytag"</span>);</span><br><span class="line"><span class="built_in">tag</span><span class="built_in">.</span>setval(<span class="string">"tag"</span>,<span class="number">1</span>);</span><br><span class="line">gms<span class="built_in">.</span>setval(<span class="string">"tag"</span>,<span class="built_in">tag</span>);</span><br></pre></td></tr></table></figure></p>
-<p><strong>流化消息和protocol buffer原有方式一致：</strong><br><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="rule"><span class="attribute">std</span>:<span class="value">:string out</span></span>;</span><br><span class="line"><span class="tag">gms</span><span class="class">.serializetostring</span>(&amp;<span class="tag">out</span>);</span><br></pre></td></tr></table></figure></p>
-<p><strong>读取并生成消息</strong><br><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">gpbmessage <span class="title">gms1</span>(<span class="params"><span class="string">"mymsg"</span>, <span class="keyword">out</span></span>)</span>;</span><br></pre></td></tr></table></figure></p>
-<p><strong>读取消息内容</strong><br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> val;</span><br><span class="line">assert(gms1.getval(<span class="string">"len"</span>, val));</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; vecs1;</span><br><span class="line">assert(gms.getrepeatedval(<span class="string">"typ"</span>, vecs1));</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">map</span>&lt;<span class="keyword">int</span>,<span class="built_in">std</span>::<span class="built_in">string</span>&gt; mapmy1;</span><br><span class="line">assert(gms.getmap(<span class="string">"str"</span>, mapmy1));</span><br><span class="line"></span><br><span class="line"><span class="function">gpbmessage <span class="title">tag</span><span class="params">()</span></span>;</span><br><span class="line">assert(gms.getval(<span class="string">"tag"</span>,tag));</span><br></pre></td></tr></table></figure></p>
-<p>可以看到上面这些操作不但囊括了protocol buffer里的所有类型，而且也使得repeated类型和map类型的操作更加简单方便。这里把原生的repeated类型和map类型转换成了stl中的vector和map进行处理，虽然损失了一定的效率，但是操作更加方便快捷。<br>在下篇博客里我将会讲讲protocol buffer中repeated类型和map类型的处理方法。<br>有兴趣可以直接看代码，上代码<br><a href="https://github.com/sstask/googleprotobufmore/blob/master/gpbmessage.h" target="_blank" rel="external">https://github.com/sstask/googleprotobufmore/blob/master/gpbmessage.h</a></p>
+<p><strong>require</strong></p>
+<blockquote>
+<p>require和loadfile完成的功能相同，只有两点不同：1.require会搜索目录加载文件。2.require会避免加载同一个文件。搜索路径(?;?.lua;c:\windows\?;/usr/local/lua/?/?.lua)</p>
+</blockquote>
+<p><strong>table</strong><br><figure class="highlight lisp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">lua_newtable<span class="list">(<span class="keyword">L</span>)</span><span class="comment">;    /* creates a new table */</span></span><br><span class="line">lua_pushinteger<span class="list">(<span class="keyword">L</span>, <span class="number">1</span>)</span><span class="comment">;</span></span><br><span class="line">lua_pushstring<span class="list">(<span class="keyword">L</span>, <span class="string">"a"</span>)</span><span class="comment">;</span></span><br><span class="line">lua_settable<span class="list">(<span class="keyword">L</span>, <span class="number">-3</span>)</span><span class="comment">;   /* key[1] = "a" */</span></span><br><span class="line">lua_pushinteger<span class="list">(<span class="keyword">L</span>, <span class="number">2</span>)</span><span class="comment">;</span></span><br><span class="line">lua_pushstring<span class="list">(<span class="keyword">L</span>, <span class="string">"b"</span>)</span><span class="comment">;</span></span><br><span class="line">lua_settable<span class="list">(<span class="keyword">L</span>, <span class="number">-3</span>)</span><span class="comment">;   /* key[2] = "b" */</span></span><br><span class="line">lua_setglobal<span class="list">(<span class="keyword">L</span>,<span class="string">"key"</span>)</span><span class="comment">;</span></span><br><span class="line"></span><br><span class="line">lua_getglobal<span class="list">(<span class="keyword">L</span>,<span class="string">"key"</span>)</span><span class="comment">;</span></span><br><span class="line">lua_pushinteger<span class="list">(<span class="keyword">L</span>,<span class="number">1</span>)</span><span class="comment">;</span></span><br><span class="line">lua_gettable<span class="list">(<span class="keyword">L</span>,<span class="number">-2</span>)</span><span class="comment">;</span></span><br><span class="line">const char* str=lua_tostring<span class="list">(<span class="keyword">L</span>,<span class="number">-1</span>)</span><span class="comment">;//a</span></span><br><span class="line">lua_pop<span class="list">(<span class="keyword">L</span>,<span class="number">1</span>)</span><span class="comment">;</span></span><br><span class="line">lua_pushinteger<span class="list">(<span class="keyword">L</span>,<span class="number">2</span>)</span><span class="comment">;</span></span><br><span class="line">lua_gettable<span class="list">(<span class="keyword">L</span>,<span class="number">-2</span>)</span><span class="comment">;</span></span><br><span class="line">str=lua_tostring<span class="list">(<span class="keyword">L</span>,<span class="number">-1</span>)</span><span class="comment">;//b</span></span><br><span class="line">lua_pop<span class="list">(<span class="keyword">L</span>,<span class="number">2</span>)</span><span class="comment">;</span></span><br></pre></td></tr></table></figure></p>
   
 	</div>
 		<footer class="article-footer clearfix">
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/protocol-buffer/">protocol buffer</a><a href="/tags/动态解析/">动态解析</a>
+  <span></span> <a href="/tags/lua/">lua</a>
   </div>
 
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/protocol-buffer/">protocol buffer</a>
+  <a class="article-category-link" href="/categories/script/">script</a>
 </div>
 
 
 
 <div class="article-share" id="share">
 
-  <div data-url="http://sstask.github.io/2015/12/05/gpbmessage/" data-title="protocol buffer动态解析和动态生成库 | 叶子的博客" data-tsina="null" class="share clearfix">
+  <div data-url="http://sstask.github.io/2016/01/06/aboutlua/" data-title="lua相关 | 叶子的博客" data-tsina="null" class="share clearfix">
   </div>
 
 </div>
@@ -138,19 +137,11 @@
 	
 <nav class="article-nav clearfix">
  
- <div class="prev" >
- <a href="/2015/12/11/gpbrepeatedmap/" title="protocol buffer中repeated和map类型的动态解析">
-  <strong>PREVIOUS:</strong><br/>
-  <span>
-  protocol buffer中repeated和map类型的动态解析</span>
-</a>
-</div>
-
 
 <div class="next">
-<a href="/2015/11/03/mysqlbackup/"  title="mysql多实例主从备份">
+<a href="/2015/12/26/aboutpython/"  title="python相关">
  <strong>NEXT:</strong><br/> 
- <span>mysql多实例主从备份
+ <span>python相关
 </span>
 </a>
 </div>
@@ -160,7 +151,7 @@
 	
 <section class="comment">
 	
-	<div class="ds-thread" data-title="protocol buffer动态解析和动态生成库" data-thread-key="gpbmessage" data-author-key="叶子与桔子" data-url="http://sstask.github.io/post/gpbmessage"></div>
+	<div class="ds-thread" data-title="lua相关" data-thread-key="aboutlua" data-author-key="叶子与桔子" data-url="http://sstask.github.io/post/aboutlua"></div>
 	
 </section>
 
