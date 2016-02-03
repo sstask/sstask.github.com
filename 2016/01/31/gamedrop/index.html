@@ -7,12 +7,14 @@
   <meta name="360-site-verification" content="67fbcc5a67f4c65c057315b28fa0b2c8" />
 <meta name="google-site-verification" content="2GzxQ0VtXwTSUdmGm6DzcmhTzM_I9QmzCb_pzpMzD88" />
   
-    <title>邮件系统设计 | 叶子的博客</title>
+    <title>掉落 | 叶子的博客</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
     
     <meta name="author" content="叶子与桔子">
     
-    <meta name="description" content="在游戏中邮件系统是少不了的，它可以用来给用户发补偿啊奖励啊通知啊什么的，其他项目很多也都有邮件系统，做法应该大同小异，这里主要讲一下设计思路。当然最简单的做法就是给每个用户都建立一块区域来存储邮件，当有邮件时直接把邮件添加到该区域，读取是也是直接从这块区域获取就行了。这样做的问题在于当要给全体用户发放邮件的时候服务器压力会很大，邮件都只是在内存还好，如果要操作数据库的话肯定是不行的。所以最好对于不同的情况采用不同的方法来，这里我按目标用户的不同把邮件大体分为三类：全体邮件、多人邮件、个人邮件，下面分别讲讲他们不同的实现方式。">
+    <meta name="description" content="说起来掉落很简单，无非就是随机，随机到了就掉落，随机不到就不掉，但是实际应用中一些细节还是需要注意的，这里简单记录下。掉落一般分为2种，一种是独立概率掉落，一种是圆桌概率掉落，下面分别介绍。
+独立掉落
+独立掉落即是多个物品分别独立随机，有可能同时掉落多个物品，也有可能一个物品也不掉落。例如，物品A掉">
     
     
     
@@ -78,15 +80,15 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2016/01/23/gamemail/" title="邮件系统设计" itemprop="url">邮件系统设计</a>
+      <a href="/2016/01/31/gamedrop/" title="掉落" itemprop="url">掉落</a>
   </h1>
   <p class="article-author">By
     
       <a href="http://sstask.github.io" title="叶子与桔子">叶子与桔子</a>
     </p>
   <p class="article-time">
-    <time datetime="2016-01-23T06:47:14.000Z" itemprop="datePublished">Jan 23</time>
-    更新日期:<time datetime="2016-02-03T07:36:02.944Z" itemprop="dateModified">Feb 3</time>
+    <time datetime="2016-01-31T09:29:02.000Z" itemprop="datePublished">Jan 31</time>
+    更新日期:<time datetime="2016-02-03T10:18:25.930Z" itemprop="dateModified">Feb 3</time>
     
   </p>
 </header>
@@ -95,32 +97,27 @@
 		
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目錄</strong>
-		<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#全体邮件"><span class="toc-number">1.</span> <span class="toc-text">全体邮件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#多人邮件"><span class="toc-number">2.</span> <span class="toc-text">多人邮件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#个人邮件"><span class="toc-number">3.</span> <span class="toc-text">个人邮件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#其他"><span class="toc-number">4.</span> <span class="toc-text">其他</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#一些优化"><span class="toc-number">5.</span> <span class="toc-text">一些优化</span></a></li></ol>
+		<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#独立掉落"><span class="toc-number">1.</span> <span class="toc-text">独立掉落</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#圆桌掉落"><span class="toc-number">2.</span> <span class="toc-text">圆桌掉落</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#应用"><span class="toc-number">3.</span> <span class="toc-text">应用</span></a></li></ol>
 		</div>
 		
-		<p>在游戏中邮件系统是少不了的，它可以用来给用户发补偿啊奖励啊通知啊什么的，其他项目很多也都有邮件系统，做法应该大同小异，这里主要讲一下设计思路。<br>当然最简单的做法就是给每个用户都建立一块区域来存储邮件，当有邮件时直接把邮件添加到该区域，读取是也是直接从这块区域获取就行了。这样做的问题在于当要给全体用户发放邮件的时候服务器压力会很大，邮件都只是在内存还好，如果要操作数据库的话肯定是不行的。<br>所以最好对于不同的情况采用不同的方法来，这里我按目标用户的不同把邮件大体分为三类：全体邮件、多人邮件、个人邮件，下面分别讲讲他们不同的实现方式。<br><a id="more"></a></p>
-<h3 id="全体邮件">全体邮件</h3><blockquote>
-<p>全体邮件是指给所有用户发放的一种邮件，内容大家都一样，一般是一些通知和补偿什么的。<br><strong>对于这种邮件我们专门使用一片区域来存储，当有全体邮件时只需要存储到这片区域即可</strong>，这样就把数万个区域的操作降低到了一个区域的操作。<br>但是邮件总是要发给个人的，什么时候发放到个人呢，也很容易，当用户要查看邮件列表的时候我们先在全体邮件区检查一下有没有这个人没有领取的邮件，如果有的话直接把邮件发到这个人的个人区域即可。这样就把全局邮件的发放时间给均摊了，服务器肯定没压力。<br>要怎么知道某个人有木有领取过全体邮件呢，也简单，在个人区域记录一个该用户领取到的全局邮件的最大邮件id，就表明了该id之前的所以邮件已经发给他了（所以全体邮件都有一个id，而且是应该自增长的）。</p>
+		<p>说起来掉落很简单，无非就是随机，随机到了就掉落，随机不到就不掉，但是实际应用中一些细节还是需要注意的，这里简单记录下。<br>掉落一般分为2种，一种是独立概率掉落，一种是圆桌概率掉落，下面分别介绍。</p>
+<h3 id="独立掉落">独立掉落</h3><blockquote>
+<p>独立掉落即是多个物品分别独立随机，有可能同时掉落多个物品，也有可能一个物品也不掉落。<br>例如，物品A掉落概率10%，物品B掉落概率30%，物品C掉落概率50%，这时候要独立生成3个1-100的随机数，如果第一个随机数在1-10范围内则掉落A，如果第二个随机数在1-30范围内则掉落B，如果第三个随机数在1-50范围内则掉落C。</p>
 </blockquote>
-<h3 id="多人邮件">多人邮件</h3><blockquote>
-<p>多人邮件是指给多个同时发放的一种邮件，它有多个目标用户，如果少量还好，但是目标较多的话还是应该考虑下服务器压力问题。<br>其实这种邮件的处理方式和全体邮件差不多，同样是开辟个独立的区域来存放该类邮件，该邮件里要记录目标用户有哪些，当用户获取邮件列表的时候在该区域查找有没有此用户的邮件，如果有直接把邮件发给用户，并在列表中把该用户删除。</p>
+<h3 id="圆桌掉落">圆桌掉落</h3><blockquote>
+<p>圆桌掉落要求多个物品中按照一定概率只能掉落其中的一种，而且必定要掉落一种。<br>例如，10%概率掉落物品A，30%概率掉落物品B，余下一律掉落物品C。<br>有些人可能会像上面一样，先对物品A进行概率随机，如果成功则直接掉落A，不成功再对B进行随机，成功直接掉落B，不成功则掉落C，结束。咋一看没什么问题，但是细想一下会发现这样的掉落方式无形中改变了原来的掉落概率，物品A的掉落概率是10%没错，但是物品B的掉落概率变成了（1-10%）*30%，因为A不成功才会掉落B，而C的掉落概率则变成了1-10%-（1-10%）*30%，显然这种结果不是所期望的。<br>所以要，N种物品按照概率组成一个圆桌，然后产生一个随机数，落到哪块就掉哪个物品。<br>这个例子中，产生一个随机数，如果数值在1-10范围内则掉落A，在11-30范围内则掉落B，在31-100范围内则掉落C，这样的掉落概率就和实际中相同。<br>在实际应用中，也不必去按照100来进行数值计算，好比可以规定A掉落概率100，B掉落概率300，C掉落概率1000，则A的掉落概率是100/(100+300+1000)，B的掉落概率是300/(100+300+1000)，剩下的是C，然后在[1-(100+300+1000)]中随机出一个数，看看落到哪个范围就好了。</p>
 </blockquote>
-<h3 id="个人邮件">个人邮件</h3><blockquote>
-<p>这种邮件不用多说，就是单独发给某个用户的邮件了。<br>做法和刚开始说的方式一样，给每个用户分配一片区域来存放邮件(其实大多时候就是数据库中的一条记录)，当有新邮件或者邮件状态改变时直接操作该区域即可。</p>
+<h3 id="应用">应用</h3><blockquote>
+<p>在实际应用中我习惯于把这两种掉落结合起来使用，<strong>大包+小包</strong>的掉落方式<br>1.小包<br>小包里面包含有N个掉落物品，完全按照圆桌概率掉落，也就是说必定而且只会掉落其中的一种物品。<br>2.大包<br>大包里面包含N个小包，完全按照独立概率掉落，即可能掉落多个小包，也可能不掉。</p>
 </blockquote>
-<h3 id="其他">其他</h3><blockquote>
-<p>上面的实现方式虽然涵盖了大部分情况，但是依然有些特例不好处理。例如，当我要通过邮件给用户发放排行榜奖励的时候，这种量级也不少，而且每个人的邮件内容又不一样，通过个人邮件发压力太大，通过多人邮件发内容又要不相同。所以这时要考虑其他解决方案（好比我之前博客里写的<em>排行榜奖励发放</em>）。<br>其实这里也可以通过多人邮件发放，只是在邮件里除了要记录目标用户以为还要记录每个用户的排行名次，这样当他们查看邮件的时候再生成新的邮件发给个人。</p>
-</blockquote>
-<h3 id="一些优化">一些优化</h3><blockquote>
-<p>上面的方案里一些细节可以自己细化，好比新用户就不给他发之前的全局邮件了，好比多人邮件的目标用户少于5人的话直接按照个人邮件来发，好比定时把全局邮件和多人邮件转化为个人邮件等等。<br>邮件也不能做的那么死板，要根据具体项目的需求进行优化。例如在我们项目里30天之前的邮件可以直接丢弃，用户邮箱最多只能有30封邮件，用户邮件如果已经被阅读过而且附近已经领过则至多保存7天等等。</p>
-</blockquote>
+<p>在运用时大包小包结合使用，如果想完全独立掉落时可以在对应的小包里只配置一种物品，这样该物品就是100%掉落了，如果想完全圆桌概率掉落则可以把大包里的掉落概率设置为100%，小包里面配置多种物品，这样就完全按小包来掉落了。好处更在于你也可以独立随机掉落几个小包，最后小包按照圆桌概率来掉落物品，基本上满足了大部分的需求。</p>
   
 	</div>
 		<footer class="article-footer clearfix">
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/mail/">mail</a>
+  <span></span> <a href="/tags/drop/">drop</a>
   </div>
 
 
@@ -133,7 +130,7 @@
 
 <div class="article-share" id="share">
 
-  <div data-url="http://sstask.github.io/2016/01/23/gamemail/" data-title="邮件系统设计 | 叶子的博客" data-tsina="null" class="share clearfix">
+  <div data-url="http://sstask.github.io/2016/01/31/gamedrop/" data-title="掉落 | 叶子的博客" data-tsina="null" class="share clearfix">
   </div>
 
 </div>
@@ -142,19 +139,11 @@
 	
 <nav class="article-nav clearfix">
  
- <div class="prev" >
- <a href="/2016/01/31/gamedrop/" title="掉落">
-  <strong>PREVIOUS:</strong><br/>
-  <span>
-  掉落</span>
-</a>
-</div>
-
 
 <div class="next">
-<a href="/2016/01/06/aboutlua/"  title="lua相关">
+<a href="/2016/01/23/gamemail/"  title="邮件系统设计">
  <strong>NEXT:</strong><br/> 
- <span>lua相关
+ <span>邮件系统设计
 </span>
 </a>
 </div>
@@ -164,7 +153,7 @@
 	
 <section class="comment">
 	
-	<div class="ds-thread" data-title="邮件系统设计" data-thread-key="gamemail" data-author-key="叶子与桔子" data-url="http://sstask.github.io/post/gamemail"></div>
+	<div class="ds-thread" data-title="掉落" data-thread-key="gamedrop" data-author-key="叶子与桔子" data-url="http://sstask.github.io/post/gamedrop"></div>
 	
 </section>
 
@@ -174,7 +163,7 @@
 
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目錄</strong>
-  <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#全体邮件"><span class="toc-number">1.</span> <span class="toc-text">全体邮件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#多人邮件"><span class="toc-number">2.</span> <span class="toc-text">多人邮件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#个人邮件"><span class="toc-number">3.</span> <span class="toc-text">个人邮件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#其他"><span class="toc-number">4.</span> <span class="toc-text">其他</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#一些优化"><span class="toc-number">5.</span> <span class="toc-text">一些优化</span></a></li></ol>
+  <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#独立掉落"><span class="toc-number">1.</span> <span class="toc-text">独立掉落</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#圆桌掉落"><span class="toc-number">2.</span> <span class="toc-text">圆桌掉落</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#应用"><span class="toc-number">3.</span> <span class="toc-text">应用</span></a></li></ol>
   </div>
 
 <div id="asidepart">
