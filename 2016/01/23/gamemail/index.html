@@ -7,12 +7,12 @@
   <meta name="360-site-verification" content="67fbcc5a67f4c65c057315b28fa0b2c8" />
 <meta name="google-site-verification" content="2GzxQ0VtXwTSUdmGm6DzcmhTzM_I9QmzCb_pzpMzD88" />
   
-    <title>一个简单的protobuf兼容库 | 叶子的博客</title>
+    <title>邮件系统设计 | 叶子的博客</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
     
     <meta name="author" content="叶子与桔子">
     
-    <meta name="description" content="上篇博文已经提到了，protocol buffer虽然简单好用，但是你必须把他的库文件整个加载到你的项目中，虽然大部分时候你只是想用他的编码和解码部分，编译他有时候也不是件容易事，如果能简单的引用他生成的消息文件就在项目中使用就好了(不需要引入protocol buffer库)。因此自己写了一个简单">
+    <meta name="description" content="在游戏中邮件系统是少不了的，它可以用来给用户发补偿啊奖励啊通知啊什么的，其他项目很多也都有邮件系统，做法应该大同小异，这里主要讲一下设计思路。当然最简单的做法就是给每个用户都建立一块区域来存储邮件，当有邮件时直接把邮件添加到该区域，读取是也是直接从这块区域获取就行了。这样做的问题在于当要给全体用户发放邮件的时候服务器压力会很大，邮件都只是在内存还好，如果要操作数据库的话肯定是不行的。所以最好对于不同的情况采用不同的方法来，这里我按目标用户的不同把邮件大体分为三类：全体邮件、多人邮件、个人邮件，下面分别讲讲他们不同的实现方式。">
     
     
     
@@ -78,15 +78,15 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2015/12/23/simplegpb/" title="一个简单的protobuf兼容库" itemprop="url">一个简单的protobuf兼容库</a>
+      <a href="/2016/01/23/gamemail/" title="邮件系统设计" itemprop="url">邮件系统设计</a>
   </h1>
   <p class="article-author">By
     
       <a href="http://sstask.github.io" title="叶子与桔子">叶子与桔子</a>
     </p>
   <p class="article-time">
-    <time datetime="2015-12-23T12:31:44.000Z" itemprop="datePublished">Dec 23</time>
-    更新日期:<time datetime="2015-12-24T02:08:18.043Z" itemprop="dateModified">Dec 24</time>
+    <time datetime="2016-01-23T06:47:14.000Z" itemprop="datePublished">Jan 23</time>
+    更新日期:<time datetime="2016-02-03T07:36:02.944Z" itemprop="dateModified">Feb 3</time>
     
   </p>
 </header>
@@ -95,33 +95,45 @@
 		
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目錄</strong>
-		
+		<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#全体邮件"><span class="toc-number">1.</span> <span class="toc-text">全体邮件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#多人邮件"><span class="toc-number">2.</span> <span class="toc-text">多人邮件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#个人邮件"><span class="toc-number">3.</span> <span class="toc-text">个人邮件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#其他"><span class="toc-number">4.</span> <span class="toc-text">其他</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#一些优化"><span class="toc-number">5.</span> <span class="toc-text">一些优化</span></a></li></ol>
 		</div>
 		
-		<p>上篇博文已经提到了，protocol buffer虽然简单好用，但是你必须把他的库文件整个加载到你的项目中，虽然大部分时候你只是想用他的编码和解码部分，编译他有时候也不是件容易事，如果能简单的引用他生成的消息文件就在项目中使用就好了(不需要引入protocol buffer库)。<br>因此自己写了一个简单的protocol buffer的编码和解码文件，在使用时直接引用这一个头文件就可以了，省去了protocol buffer“庞大”库的引入。<br>其实上篇博文已经讲了protocol buffer的编码方式，从其中也不难推导出他的解码方式，所以这里就不再介绍他的解码方式了。有了protocol buffer的编码解码方式就很容易对相应数据进行编解码了。<br>具体编解码见文件<a href="https://github.com/sstask/simpleprotobuf/blob/master/gpbencode.h" target="_blank" rel="external">gpbencode.h</a><br>1.<strong>gpbencoder</strong>实现protocol buffer编码，大体这样<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> Type&gt;</span><br><span class="line"><span class="function">INL <span class="keyword">static</span> uint8* <span class="title">WriteDataToArray</span><span class="params">(field_number, Type value, output)</span></span></span><br></pre></td></tr></table></figure></p>
-<p>2.<strong>gpbdecoder</strong>实现protocol buffer解码，大体这样<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> CType&gt;</span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">static</span> <span class="keyword">bool</span> <span class="title">ReadPrimitive</span><span class="params">(io::CodedInputStream* input, CType* value)</span></span></span><br></pre></td></tr></table></figure></p>
-<p>3.<strong>WireFormatLite</strong>是protocol buffer中存在的类，它主要抽象出了protocol buffer中各个类型的编码解码，该实现也基本与protocol buffer源码一直，以便后面如果protocol buffer更新了可以跟着更新，具体的也可以查阅protocol buffer源码。<br>4.<strong>CodedInputStream CodedOutputStream</strong>这两个类也是protocol buffer中存在的，他们主要实现了基础数据的底层编码解码，这里的基本也是从protocol buffer中搬过来的。</p>
-<p>为了兼容protocol buffer的实现方式，我也实现了一个把.proto生成.h的类，该类生成的文件完全依赖于上面的<strong>gpbencoder gpbdecoder</strong>，所以在使用的使用只需要引用<strong>gpbencode.h</strong>即可，抛弃了对protocol buffer的依赖。<br>具体实现见<a href="https://github.com/sstask/simpleprotobuf/blob/master/gpb_generator.cpp" target="_blank" rel="external">gpb_generator.cpp</a><br>它本身是依赖于protocol buffer库的，但生成的文件不依赖protocol buffer。</p>
+		<p>在游戏中邮件系统是少不了的，它可以用来给用户发补偿啊奖励啊通知啊什么的，其他项目很多也都有邮件系统，做法应该大同小异，这里主要讲一下设计思路。<br>当然最简单的做法就是给每个用户都建立一块区域来存储邮件，当有邮件时直接把邮件添加到该区域，读取是也是直接从这块区域获取就行了。这样做的问题在于当要给全体用户发放邮件的时候服务器压力会很大，邮件都只是在内存还好，如果要操作数据库的话肯定是不行的。<br>所以最好对于不同的情况采用不同的方法来，这里我按目标用户的不同把邮件大体分为三类：全体邮件、多人邮件、个人邮件，下面分别讲讲他们不同的实现方式。<br><a id="more"></a></p>
+<h3 id="全体邮件">全体邮件</h3><blockquote>
+<p>全体邮件是指给所有用户发放的一种邮件，内容大家都一样，一般是一些通知和补偿什么的。<br><strong>对于这种邮件我们专门使用一片区域来存储，当有全体邮件时只需要存储到这片区域即可</strong>，这样就把数万个区域的操作降低到了一个区域的操作。<br>但是邮件总是要发给个人的，什么时候发放到个人呢，也很容易，当用户要查看邮件列表的时候我们先在全体邮件区检查一下有没有这个人没有领取的邮件，如果有的话直接把邮件发到这个人的个人区域即可。这样就把全局邮件的发放时间给均摊了，服务器肯定没压力。<br>要怎么知道某个人有木有领取过全体邮件呢，也简单，在个人区域记录一个该用户领取到的全局邮件的最大邮件id，就表明了该id之前的所以邮件已经发给他了（所以全体邮件都有一个id，而且是应该自增长的）。</p>
+</blockquote>
+<h3 id="多人邮件">多人邮件</h3><blockquote>
+<p>多人邮件是指给多个同时发放的一种邮件，它有多个目标用户，如果少量还好，但是目标较多的话还是应该考虑下服务器压力问题。<br>其实这种邮件的处理方式和全体邮件差不多，同样是开辟个独立的区域来存放该类邮件，该邮件里要记录目标用户有哪些，当用户获取邮件列表的时候在该区域查找有没有此用户的邮件，如果有直接把邮件发给用户，并在列表中把该用户删除。</p>
+</blockquote>
+<h3 id="个人邮件">个人邮件</h3><blockquote>
+<p>这种邮件不用多说，就是单独发给某个用户的邮件了。<br>做法和刚开始说的方式一样，给每个用户分配一片区域来存放邮件(其实大多时候就是数据库中的一条记录)，当有新邮件或者邮件状态改变时直接操作该区域即可。</p>
+</blockquote>
+<h3 id="其他">其他</h3><blockquote>
+<p>上面的实现方式虽然涵盖了大部分情况，但是依然有些特例不好处理。例如，当我要通过邮件给用户发放排行榜奖励的时候，这种量级也不少，而且每个人的邮件内容又不一样，通过个人邮件发压力太大，通过多人邮件发内容又要不相同。所以这时要考虑其他解决方案（好比我之前博客里写的<em>排行榜奖励发放</em>）。<br>其实这里也可以通过多人邮件发放，只是在邮件里除了要记录目标用户以为还要记录每个用户的排行名次，这样当他们查看邮件的时候再生成新的邮件发给个人。</p>
+</blockquote>
+<h3 id="一些优化">一些优化</h3><blockquote>
+<p>上面的方案里一些细节可以自己细化，好比新用户就不给他发之前的全局邮件了，好比多人邮件的目标用户少于5人的话直接按照个人邮件来发，好比定时把全局邮件和多人邮件转化为个人邮件等等。<br>邮件也不能做的那么死板，要根据具体项目的需求进行优化。例如在我们项目里30天之前的邮件可以直接丢弃，用户邮箱最多只能有30封邮件，用户邮件如果已经被阅读过而且附近已经领过则至多保存7天等等。</p>
+</blockquote>
   
 	</div>
 		<footer class="article-footer clearfix">
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/protocol-buffer/">protocol buffer</a>
+  <span></span> <a href="/tags/mail/">mail</a>
   </div>
 
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/protocol-buffer/">protocol buffer</a>
+  <a class="article-category-link" href="/categories/game/">game</a>
 </div>
 
 
 
 <div class="article-share" id="share">
 
-  <div data-url="http://sstask.github.io/2015/12/23/simplegpb/" data-title="一个简单的protobuf兼容库 | 叶子的博客" data-tsina="null" class="share clearfix">
+  <div data-url="http://sstask.github.io/2016/01/23/gamemail/" data-title="邮件系统设计 | 叶子的博客" data-tsina="null" class="share clearfix">
   </div>
 
 </div>
@@ -130,19 +142,11 @@
 	
 <nav class="article-nav clearfix">
  
- <div class="prev" >
- <a href="/2015/12/26/linuxoperations/" title="linux运维相关">
-  <strong>PREVIOUS:</strong><br/>
-  <span>
-  linux运维相关</span>
-</a>
-</div>
-
 
 <div class="next">
-<a href="/2015/12/21/gpbencoderule/"  title="protocol buffer编码规则">
+<a href="/2016/01/06/aboutlua/"  title="lua相关">
  <strong>NEXT:</strong><br/> 
- <span>protocol buffer编码规则
+ <span>lua相关
 </span>
 </a>
 </div>
@@ -152,7 +156,7 @@
 	
 <section class="comment">
 	
-	<div class="ds-thread" data-title="一个简单的protobuf兼容库" data-thread-key="simplegpb" data-author-key="叶子与桔子" data-url="http://sstask.github.io/post/simplegpb"></div>
+	<div class="ds-thread" data-title="邮件系统设计" data-thread-key="gamemail" data-author-key="叶子与桔子" data-url="http://sstask.github.io/post/gamemail"></div>
 	
 </section>
 
@@ -162,7 +166,7 @@
 
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目錄</strong>
-  
+  <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#全体邮件"><span class="toc-number">1.</span> <span class="toc-text">全体邮件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#多人邮件"><span class="toc-number">2.</span> <span class="toc-text">多人邮件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#个人邮件"><span class="toc-number">3.</span> <span class="toc-text">个人邮件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#其他"><span class="toc-number">4.</span> <span class="toc-text">其他</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#一些优化"><span class="toc-number">5.</span> <span class="toc-text">一些优化</span></a></li></ol>
   </div>
 
 <div id="asidepart">
