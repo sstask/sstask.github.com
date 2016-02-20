@@ -7,19 +7,14 @@
   <meta name="360-site-verification" content="67fbcc5a67f4c65c057315b28fa0b2c8" />
 <meta name="google-site-verification" content="2GzxQ0VtXwTSUdmGm6DzcmhTzM_I9QmzCb_pzpMzD88" />
   
-    <title>linux运维相关 | 叶子的博客</title>
+    <title>mysql主从服务器安装脚本 | 叶子的博客</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
     
     <meta name="author" content="叶子与桔子">
     
-    <meta name="description" content="在工作中总是会遇见各种各样的linux运维相关的东西，而且有些东西仅仅只是那么一次，所以有必要把这些东西记录一下。
-远程执行命令或者脚本1.主机间建立ssh信任关系
+    <meta name="description" content="mysql主服务器的安装1.yum -y install mysql2.yum -y install mysql-server3.yum -y install mysql-devel4.按需求修改mysql配置/etc/my.cnf
 
-ssh-keygen -t rsassh-copy-id -i ~/.ssh/id_rsa.pub usr@remoteip
-
-2.执行命令
-
-ssh usr@remoteip “cd /home;ls”">
+如修改数据库文件存放位置datadir = $mysql_dat">
     
     
     
@@ -85,15 +80,15 @@ ssh usr@remoteip “cd /home;ls”">
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2015/12/26/linuxoperations/" title="linux运维相关" itemprop="url">linux运维相关</a>
+      <a href="/2016/02/21/installmysql/" title="mysql主从服务器安装脚本" itemprop="url">mysql主从服务器安装脚本</a>
   </h1>
   <p class="article-author">By
     
       <a href="http://sstask.github.io" title="叶子与桔子">叶子与桔子</a>
     </p>
   <p class="article-time">
-    <time datetime="2015-12-26T06:37:07.000Z" itemprop="datePublished">Dec 26</time>
-    更新日期:<time datetime="2016-02-03T07:57:23.786Z" itemprop="dateModified">Feb 3</time>
+    <time datetime="2016-02-20T17:18:46.000Z" itemprop="datePublished">Feb 21</time>
+    更新日期:<time datetime="2016-02-20T17:35:31.675Z" itemprop="dateModified">Feb 21</time>
     
   </p>
 </header>
@@ -102,29 +97,21 @@ ssh usr@remoteip “cd /home;ls”">
 		
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目錄</strong>
-		<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#远程执行命令或者脚本"><span class="toc-number">1.</span> <span class="toc-text">远程执行命令或者脚本</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Polysh"><span class="toc-number">2.</span> <span class="toc-text">Polysh</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#samba"><span class="toc-number">3.</span> <span class="toc-text">samba</span></a></li></ol>
+		<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#mysql主服务器的安装"><span class="toc-number">1.</span> <span class="toc-text">mysql主服务器的安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#mysql从服务器安装"><span class="toc-number">2.</span> <span class="toc-text">mysql从服务器安装</span></a></li></ol>
 		</div>
 		
-		<p>在工作中总是会遇见各种各样的linux运维相关的东西，而且有些东西仅仅只是那么一次，所以有必要把这些东西记录一下。</p>
-<h3 id="远程执行命令或者脚本">远程执行命令或者脚本</h3><p>1.主机间建立ssh信任关系</p>
+		<h3 id="mysql主服务器的安装">mysql主服务器的安装</h3><p>1.yum -y install mysql<br>2.yum -y install mysql-server<br>3.yum -y install mysql-devel<br>4.按需求修改mysql配置/etc/my.cnf</p>
 <blockquote>
-<p>ssh-keygen -t rsa<br>ssh-copy-id -i ~/.ssh/id_rsa.pub usr@remoteip</p>
+<p>如修改数据库文件存放位置datadir = $mysql_data_dir<br>修改日志文件位置log_bin = mysql_log_dir/mysql-bin.log log-error = mysql_log_dir/mysqld.log</p>
 </blockquote>
-<p>2.执行命令</p>
+<p>5.自启动chkconfig mysqld on<br>6.设置root密码 /usr/bin/mysqladmin -u root password “root_pwd”<br>7.添加用户GRANT all privileges on <em>.</em> to ‘username’@’%’ identified by ‘pwd’ WITH GRANT OPTION;flush privileges;</p>
 <blockquote>
-<p>ssh usr@remoteip “cd /home;ls”<br><a id="more"></a></p>
+<p><a href="https://github.com/sstask/usefulscripts/blob/master/installmasterdb.sh" target="_blank" rel="external">脚本在此</a></p>
 </blockquote>
-<p>3.执行脚本<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="shebang">#!/bin/bash</span></span><br><span class="line">ssh usr@remoteip &gt; /dev/null <span class="number">2</span>&gt;&amp;<span class="number">1</span> &lt;&lt; remotescript</span><br><span class="line"><span class="built_in">cd</span> /home</span><br><span class="line">ls</span><br><span class="line"><span class="built_in">exit</span></span><br><span class="line">remotescript</span><br></pre></td></tr></table></figure></p>
-<p>或者</p>
+<h3 id="mysql从服务器安装">mysql从服务器安装</h3><p>1.yum -y install mysql<br>2.yum -y install mysql-server<br>3.yum -y install mysql-devel<br>4.修改mysql配置/etc/my.cnf<br><figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="title">[mysqld_multi]</span></span><br><span class="line"><span class="setting">mysqld = <span class="value">/usr/bin/mysqld_safe</span></span></span><br><span class="line"><span class="setting">mysqladmin = <span class="value">/usr/bin/mysqladmin</span></span></span><br><span class="line"><span class="title"></span><br><span class="line">[mysqld3307]</span></span><br><span class="line"><span class="setting">port = <span class="value"><span class="number">3307</span></span></span></span><br><span class="line"><span class="setting">datadir = <span class="value">/mysql/<span class="number">3307</span>/data</span></span></span><br><span class="line"><span class="setting">socket = <span class="value">/mysql/<span class="number">3307</span>/mysql.sock</span></span></span><br><span class="line"><span class="setting">pid-file = <span class="value">/mysql/<span class="number">3307</span>/mysqld.pid</span></span></span><br><span class="line"><span class="setting">log-error = <span class="value">/mysql/<span class="number">3307</span>/mysqld.log</span></span></span><br><span class="line"><span class="setting">user = <span class="value">mysql</span></span></span><br><span class="line"><span class="setting">server-id = <span class="value"><span class="number">3307</span></span></span></span><br><span class="line"><span class="setting">read-only = <span class="value"><span class="number">1</span></span></span></span><br><span class="line"><span class="setting">replicate-ignore-db = <span class="value">mysql</span></span></span><br></pre></td></tr></table></figure></p>
+<p>5.启动<br>/usr/bin/mysql_install_db –datadir=/mysql/3307/data –user=mysql<br>/usr/bin/mysqld_multi start 3307<br>6.设置root密码 /usr/bin/mysqladmin -uroot password “root_pwd” -S /mysql/3307/data/mysql.sock<br>7.在主mysql服务器中添加slave账号，记录bin日志位置<br>8.change master to master_host=……</p>
 <blockquote>
-<p>ssh usr@remoteip “bash” &lt; myscript.sh<br>注意在执行脚本时默认的环境变量是/usr/local/bin:/bin:/usr/bin;如果你的脚本依赖于其他环境变量就要在脚本第一行执行命令 source ~/.bashrc或export PATH=$PATH:$HOME/bin;等</p>
-</blockquote>
-<p>当然还有其他很多方法，例如<strong>except</strong>,可以实现交互式远程执行脚本,<strong>ansible</strong>,一个专业的自动化运维工具。</p>
-<h3 id="Polysh">Polysh</h3><blockquote>
-<p>Polysh允许我们在一个shell中同时向多个远程主机发送命令，返回的结果在这个shell中显示，对于需要登录多个远程主机，并执行相同指令的情况，大大减少了工作量。<br>polysh 192.168.1.101 192.168.1.102<br>cmd</p>
-</blockquote>
-<h3 id="samba">samba</h3><blockquote>
-<p>samba可以实现远程文件夹到本地的映射，也就是实现了文件共享。这样可以方便的使用本地的一些软件来管理远程文件，好比用windows编辑器来远程编辑linux上的文件。</p>
+<p><a href="https://github.com/sstask/usefulscripts/blob/master/installslavedb.sh" target="_blank" rel="external">脚本在此</a></p>
 </blockquote>
   
 	</div>
@@ -132,20 +119,20 @@ ssh usr@remoteip “cd /home;ls”">
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/linux/">linux</a><a href="/tags/operations/">operations</a>
+  <span></span> <a href="/tags/mysql/">mysql</a><a href="/tags/script/">script</a>
   </div>
 
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/linux/">linux</a>
+  <a class="article-category-link" href="/categories/mysql/">mysql</a>
 </div>
 
 
 
 <div class="article-share" id="share">
 
-  <div data-url="http://sstask.github.io/2015/12/26/linuxoperations/" data-title="linux运维相关 | 叶子的博客" data-tsina="null" class="share clearfix">
+  <div data-url="http://sstask.github.io/2016/02/21/installmysql/" data-title="mysql主从服务器安装脚本 | 叶子的博客" data-tsina="null" class="share clearfix">
   </div>
 
 </div>
@@ -154,19 +141,11 @@ ssh usr@remoteip “cd /home;ls”">
 	
 <nav class="article-nav clearfix">
  
- <div class="prev" >
- <a href="/2015/12/26/aboutpython/" title="python相关">
-  <strong>PREVIOUS:</strong><br/>
-  <span>
-  python相关</span>
-</a>
-</div>
-
 
 <div class="next">
-<a href="/2015/12/23/simplegpb/"  title="一个简单的protobuf兼容库">
+<a href="/2016/01/31/gamedrop/"  title="掉落">
  <strong>NEXT:</strong><br/> 
- <span>一个简单的protobuf兼容库
+ <span>掉落
 </span>
 </a>
 </div>
@@ -176,7 +155,7 @@ ssh usr@remoteip “cd /home;ls”">
 	
 <section class="comment">
 	
-	<div class="ds-thread" data-title="linux运维相关" data-thread-key="linuxoperations" data-author-key="叶子与桔子" data-url="http://sstask.github.io/post/linuxoperations"></div>
+	<div class="ds-thread" data-title="mysql主从服务器安装脚本" data-thread-key="installmysql" data-author-key="叶子与桔子" data-url="http://sstask.github.io/post/installmysql"></div>
 	
 </section>
 
@@ -186,7 +165,7 @@ ssh usr@remoteip “cd /home;ls”">
 
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目錄</strong>
-  <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#远程执行命令或者脚本"><span class="toc-number">1.</span> <span class="toc-text">远程执行命令或者脚本</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Polysh"><span class="toc-number">2.</span> <span class="toc-text">Polysh</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#samba"><span class="toc-number">3.</span> <span class="toc-text">samba</span></a></li></ol>
+  <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#mysql主服务器的安装"><span class="toc-number">1.</span> <span class="toc-text">mysql主服务器的安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#mysql从服务器安装"><span class="toc-number">2.</span> <span class="toc-text">mysql从服务器安装</span></a></li></ol>
   </div>
 
 <div id="asidepart">
