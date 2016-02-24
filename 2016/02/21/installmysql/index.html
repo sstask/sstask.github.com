@@ -88,7 +88,7 @@
     </p>
   <p class="article-time">
     <time datetime="2016-02-20T17:18:46.000Z" itemprop="datePublished">Feb 21</time>
-    更新日期:<time datetime="2016-02-20T17:35:31.675Z" itemprop="dateModified">Feb 21</time>
+    更新日期:<time datetime="2016-02-24T12:16:22.757Z" itemprop="dateModified">Feb 24</time>
     
   </p>
 </header>
@@ -106,12 +106,12 @@
 </blockquote>
 <p>5.自启动chkconfig mysqld on<br>6.设置root密码 /usr/bin/mysqladmin -u root password “root_pwd”<br>7.添加用户GRANT all privileges on <em>.</em> to ‘username’@’%’ identified by ‘pwd’ WITH GRANT OPTION;flush privileges;</p>
 <blockquote>
-<p><a href="https://github.com/sstask/usefulscripts/blob/master/installmasterdb.sh" target="_blank" rel="external">脚本在此</a></p>
+<p><a href="https://github.com/sstask/usefulscripts/blob/master/mysqlmaster.sh" target="_blank" rel="external">脚本在此</a></p>
 </blockquote>
 <h3 id="mysql从服务器安装">mysql从服务器安装</h3><p>1.yum -y install mysql<br>2.yum -y install mysql-server<br>3.yum -y install mysql-devel<br>4.修改mysql配置/etc/my.cnf<br><figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="title">[mysqld_multi]</span></span><br><span class="line"><span class="setting">mysqld = <span class="value">/usr/bin/mysqld_safe</span></span></span><br><span class="line"><span class="setting">mysqladmin = <span class="value">/usr/bin/mysqladmin</span></span></span><br><span class="line"><span class="title"></span><br><span class="line">[mysqld3307]</span></span><br><span class="line"><span class="setting">port = <span class="value"><span class="number">3307</span></span></span></span><br><span class="line"><span class="setting">datadir = <span class="value">/mysql/<span class="number">3307</span>/data</span></span></span><br><span class="line"><span class="setting">socket = <span class="value">/mysql/<span class="number">3307</span>/mysql.sock</span></span></span><br><span class="line"><span class="setting">pid-file = <span class="value">/mysql/<span class="number">3307</span>/mysqld.pid</span></span></span><br><span class="line"><span class="setting">log-error = <span class="value">/mysql/<span class="number">3307</span>/mysqld.log</span></span></span><br><span class="line"><span class="setting">user = <span class="value">mysql</span></span></span><br><span class="line"><span class="setting">server-id = <span class="value"><span class="number">3307</span></span></span></span><br><span class="line"><span class="setting">read-only = <span class="value"><span class="number">1</span></span></span></span><br><span class="line"><span class="setting">replicate-ignore-db = <span class="value">mysql</span></span></span><br></pre></td></tr></table></figure></p>
 <p>5.启动<br>/usr/bin/mysql_install_db –datadir=/mysql/3307/data –user=mysql<br>/usr/bin/mysqld_multi start 3307<br>6.设置root密码 /usr/bin/mysqladmin -uroot password “root_pwd” -S /mysql/3307/data/mysql.sock<br>7.在主mysql服务器中添加slave账号，记录bin日志位置<br>8.change master to master_host=……</p>
 <blockquote>
-<p><a href="https://github.com/sstask/usefulscripts/blob/master/installslavedb.sh" target="_blank" rel="external">脚本在此</a></p>
+<p><a href="https://github.com/sstask/usefulscripts/blob/master/mysqlslave.sh" target="_blank" rel="external">脚本在此</a></p>
 </blockquote>
   
 	</div>
