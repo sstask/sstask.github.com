@@ -7,13 +7,12 @@
   <meta name="360-site-verification" content="67fbcc5a67f4c65c057315b28fa0b2c8" />
 <meta name="google-site-verification" content="2GzxQ0VtXwTSUdmGm6DzcmhTzM_I9QmzCb_pzpMzD88" />
   
-    <title>mysql优化 | 叶子的博客</title>
+    <title>linux添加新硬盘 | 叶子的博客</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
     
     <meta name="author" content="叶子与桔子">
     
-    <meta name="description" content="key_buffer_size 索引缓冲区大小
-1234567SHOW STATUS LIKE &#39;key_read%&#39;;  +-------------------+-------+  | Variable_name     | Value |  +-------------------+-------+  | Key_read_requests |9335458|  | Key_reads         |301    |  +-------------------+-------+">
+    <meta name="description" content="在简化的linux系统中新加的硬盘不会被识别，要手动进行不些设置才能够使用，下面记录下设置方法。当你添加一块新硬盘后使用fdisk -l查看123456789101112131415161718192021Disk /dev/sda: 31.5 GB, 31457280000 bytes255 he">
     
     
     
@@ -79,15 +78,15 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2015/08/25/optimizemysql/" title="mysql优化" itemprop="url">mysql优化</a>
+      <a href="/2016/03/07/linuxadddisk/" title="linux添加新硬盘" itemprop="url">linux添加新硬盘</a>
   </h1>
   <p class="article-author">By
     
       <a href="http://sstask.github.io" title="叶子与桔子">叶子与桔子</a>
     </p>
   <p class="article-time">
-    <time datetime="2015-08-25T04:13:35.000Z" itemprop="datePublished">Aug 25</time>
-    更新日期:<time datetime="2015-10-29T02:11:56.347Z" itemprop="dateModified">Oct 29</time>
+    <time datetime="2016-03-07T11:40:28.000Z" itemprop="datePublished">Mar 7</time>
+    更新日期:<time datetime="2016-03-07T12:38:10.972Z" itemprop="dateModified">Mar 7</time>
     
   </p>
 </header>
@@ -99,42 +98,35 @@
 		
 		</div>
 		
-		<p> <strong>key_buffer_size 索引缓冲区大小</strong></p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator"><span class="keyword">SHOW</span> <span class="keyword">STATUS</span> <span class="keyword">LIKE</span> <span class="string">'key_read%'</span>;</span>  </span><br><span class="line">+<span class="comment">-------------------+-------+  </span></span><br><span class="line">| Variable_name     | Value |  </span><br><span class="line">+<span class="comment">-------------------+-------+  </span></span><br><span class="line">| Key_read_requests |9335458|  </span><br><span class="line">| Key_reads         |301    |  </span><br><span class="line">+<span class="comment">-------------------+-------+</span></span><br></pre></td></tr></table></figure>
-<a id="more"></a>
-<p>Key_reads是从硬盘上读取索引的次数，Key_read_requests是索引请求次数，Key_reads/Key_read_requests即索引失效率，此值越低越好，小于1/1000较好，可以通过调整key_buffer_size的值来调整索引的利用率，可以通过show variables like ‘key_buffer_size’;查看当前值，可以修改my.cnf文件添加key_buffer_size=32M来改变大小，此值也不是越大越好，太大会增加换页率反而降低效率。另，此值只对MyISAM表有效。</p>
-<p><strong>table_open_cache 表缓存</strong></p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator"><span class="keyword">SHOW</span> <span class="keyword">GLOBAL</span> <span class="keyword">STATUS</span> <span class="keyword">LIKE</span> <span class="string">'Open%tables'</span>;</span>  </span><br><span class="line">+<span class="comment">---------------+-------+  </span></span><br><span class="line">| Variable_name | Value |  </span><br><span class="line">+<span class="comment">---------------+-------+  </span></span><br><span class="line">| Open_tables   | 400   |  </span><br><span class="line">| Opened_tables | 24257 |  </span><br><span class="line">+<span class="comment">---------------+-------+  </span></span><br><span class="line">[sql] view plaincopy</span><br><span class="line"><span class="operator"><span class="keyword">show</span> <span class="keyword">variables</span> <span class="keyword">like</span> <span class="string">'table%cache'</span>;</span>  </span><br><span class="line">+<span class="comment">------------------------+-------+  </span></span><br><span class="line">| Variable_name          | Value |  </span><br><span class="line">+<span class="comment">------------------------+-------+  </span></span><br><span class="line">| table_definition_cache | 400   |  </span><br><span class="line">| table_open_cache       | 400   |  </span><br><span class="line">+<span class="comment">------------------------+-------+</span></span><br></pre></td></tr></table></figure>
-<p>Open_tables是当前打开表的数量，Opened_tables是没有在缓存中找到的表数量，table_open_cache是缓存中表的最大数量，如果Open_tables=table_open_cache，而且Opened_tables在不断增加的时候就要增大table_open_cache的值了，通过修改/etc/my.cnf，添加table_open_cache = 1024来改变大小。该值与Connections有关，因为一般而言每个线程会独立打开一个表，手册建议table_open_cache = max_connections * n，n是sql语句中的最大表数。</p>
-<p><strong>索引</strong><br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator"><span class="keyword">show</span> <span class="keyword">status</span> <span class="keyword">like</span> <span class="string">'handler_read_%'</span>;</span>  </span><br><span class="line">+<span class="comment">-----------------------+-------+  </span></span><br><span class="line">| Variable_name         | Value |  </span><br><span class="line">+<span class="comment">-----------------------+-------+  </span></span><br><span class="line">| Handler_read_first    | 0     |  </span><br><span class="line">| Handler_read_key      | 444   |  </span><br><span class="line">| Handler_read_next     | 0     |  </span><br><span class="line">| Handler_read_prev     | 0     |  </span><br><span class="line">| Handler_read_rnd      | 56    |  </span><br><span class="line">| Handler_read_rnd_next | 982   |  </span><br><span class="line">+<span class="comment">-----------------------+-------+</span></span><br></pre></td></tr></table></figure></p>
-<p>前面4个参数都是对索引的读取次数，越大越好，后面2个参数是对数据文件读取的次数，如果Handler_read_rnd或Handler_read_rnd_next过大证明索引没有利用上，要优化sql语句，添加索引或者提高索引利用率。</p>
-<p><strong>thread_cache_size 线程缓存</strong><br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator"><span class="keyword">show</span> <span class="keyword">global</span> <span class="keyword">status</span> <span class="keyword">like</span> <span class="string">'Thread%'</span>;</span>  </span><br><span class="line">+<span class="comment">-------------------+-------+  </span></span><br><span class="line">| Variable_name     | Value |  </span><br><span class="line">+<span class="comment">-------------------+-------+  </span></span><br><span class="line">| Threads_cached    | 0     |  </span><br><span class="line">| Threads_connected | 22    |  </span><br><span class="line">| Threads_created   | 3233  |  </span><br><span class="line">| Threads_running   | 1     |  </span><br><span class="line">+<span class="comment">-------------------+-------+  </span></span><br><span class="line">[sql] view plaincopy</span><br><span class="line"><span class="operator"><span class="keyword">show</span> <span class="keyword">status</span> <span class="keyword">like</span> <span class="string">'%connections%'</span>;</span>  </span><br><span class="line">+<span class="comment">----------------------+-------+  </span></span><br><span class="line">| Variable_name        | Value |  </span><br><span class="line">+<span class="comment">----------------------+-------+  </span></span><br><span class="line">| Connections          | 3234  |  </span><br><span class="line">| Max_used_connections | 25    |  </span><br><span class="line">+<span class="comment">----------------------+-------+</span></span><br></pre></td></tr></table></figure></p>
-<p>thread cache命中率为（Connections-Threads_created）/Connections，命中率当然越高越好，上面因为thread_cache_size=0，所以每有一个连接便重新建立了一个线程，可以修改my.cnf文件添加thread_cache_size=8来改变该值。如果是长连接thread_cache_size的值就不需要设置多大，因为长连接一旦连接就不会断开重新连接也就不需要重新创建线程，短连接要根据情况设置改值大小，和连接数、内存相关（1G8个，或者参考Threads_connected值）。</p>
-<p><strong>innodb_buffer_pool_size innodb缓存</strong></p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator"><span class="keyword">show</span> <span class="keyword">status</span> <span class="keyword">like</span>  <span class="string">'Innodb_buffer_pool_%'</span>;</span>  </span><br><span class="line">+<span class="comment">-----------------------------------+-------+  </span></span><br><span class="line">| Variable_name                     | Value |  </span><br><span class="line">+<span class="comment">-----------------------------------+-------+  </span></span><br><span class="line">| Innodb_buffer_pool_pages_data     | 277   |  </span><br><span class="line">| Innodb_buffer_pool_pages_dirty    | 0     |  </span><br><span class="line">| Innodb_buffer_pool_pages_flushed  | 26    |  </span><br><span class="line">| Innodb_buffer_pool_pages_free     | 234   |  </span><br><span class="line">| Innodb_buffer_pool_pages_misc     | 1     |  </span><br><span class="line">| Innodb_buffer_pool_pages_total    | 512   |  </span><br><span class="line">| Innodb_buffer_pool_read_ahead_rnd | 2     |  </span><br><span class="line">| Innodb_buffer_pool_read_ahead_seq | 11    |  </span><br><span class="line">| Innodb_buffer_pool_read_requests  | 22288 |  </span><br><span class="line">| Innodb_buffer_pool_reads          | 91    |  </span><br><span class="line">| Innodb_buffer_pool_wait_free      | 0     |  </span><br><span class="line">| Innodb_buffer_pool_write_requests | 53    |  </span><br><span class="line">+<span class="comment">-----------------------------------+-------+</span></span><br></pre></td></tr></table></figure>
-<p>innodb buffer缓存innodb表的索引、数据、插入数据时的缓冲等，读取命中率=（Innodb_buffer_pool_read_requests - Innodb_buffer_pool_reads） / Innodb_buffer_pool_read_requests * 100%，通常要大于99%比较好，可以修改my.cnf文件添加innodb_buffer_pool_size=1G来改变该值，参考值=内存*70%~80%。</p>
-<p>如果确定不了参数可以先用mysql提供的参考配置试试，在usr/share/mysql/目录下的<em>my-small.cnf   my-medium.cnf   my-large.cnf   my-huge.cnf   my-innodb-heavy-4G.cnf</em>这几个文件。</p>
-<p>另，最好把mysql字符集设置成utf-8，兼容性更好，可避免中文乱码，在/etc/my.cnf 文件中的 [mysqld]下添加default-character-set=utf8 修改服务器编码，[client] 下添加default-character-set=utf8 修改客户端连接默认编码，一般来讲这个可以不设置，在客户端连接到数据库时客户端主动设置编码方式。</p>
+		<p>在简化的linux系统中新加的硬盘不会被识别，要手动进行不些设置才能够使用，下面记录下设置方法。<br>当你添加一块新硬盘后使用<strong>fdisk -l</strong>查看<br><figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="label">Disk</span> /dev/sda: <span class="number">31</span>.<span class="number">5</span> GB, <span class="number">31457280000</span> <span class="keyword">bytes</span><br><span class="line"></span><span class="number">255</span> heads, <span class="number">63</span> sectors/track, <span class="number">3824</span> cylinders</span><br><span class="line"><span class="label">Units</span> = cylinders of <span class="number">16065</span> * <span class="number">512</span> = <span class="number">8225280</span> <span class="keyword">bytes</span><br><span class="line"></span><span class="label">Sector</span> size (logical/physical): <span class="number">512</span> <span class="keyword">bytes </span>/ <span class="number">512</span> <span class="keyword">bytes</span><br><span class="line"></span>I/O size (minimum/optimal): <span class="number">512</span> <span class="keyword">bytes </span>/ <span class="number">512</span> <span class="keyword">bytes</span><br><span class="line"></span><span class="label">Disk</span> identifier: <span class="number">0x000e00a8</span></span><br><span class="line"></span><br><span class="line">   Device <span class="keyword">Boot </span>     Start         <span class="preprocessor">End</span>      <span class="keyword">Blocks </span>  Id  System</span><br><span class="line">/dev/sda1   *           <span class="number">1</span>          <span class="number">64</span>      <span class="number">512000</span>   <span class="number">83</span>  Linux</span><br><span class="line"><span class="label">Partition</span> <span class="number">1</span> does not <span class="preprocessor">end</span> on cylinder <span class="keyword">boundary.</span><br><span class="line"></span>/dev/sda2              <span class="number">64</span>        <span class="number">1045</span>     <span class="number">7875584</span>   <span class="number">8</span>e  Linux LVM</span><br><span class="line">/dev/sda3            <span class="number">1045</span>        <span class="number">3824</span>    <span class="number">22327672</span>   <span class="number">83</span>  Linux</span><br><span class="line"></span><br><span class="line"><span class="label">Disk</span> /dev/sdb: <span class="number">137</span>.<span class="number">4</span> GB, <span class="number">137438953472</span> <span class="keyword">bytes</span><br><span class="line"></span><span class="number">255</span> heads, <span class="number">63</span> sectors/track, <span class="number">16709</span> cylinders</span><br><span class="line"><span class="label">Units</span> = cylinders of <span class="number">16065</span> * <span class="number">512</span> = <span class="number">8225280</span> <span class="keyword">bytes</span><br><span class="line"></span><span class="label">Sector</span> size (logical/physical): <span class="number">512</span> <span class="keyword">bytes </span>/ <span class="number">512</span> <span class="keyword">bytes</span><br><span class="line"></span>I/O size (minimum/optimal): <span class="number">512</span> <span class="keyword">bytes </span>/ <span class="number">512</span> <span class="keyword">bytes</span><br><span class="line"></span><span class="label">Disk</span> identifier: <span class="number">0x00000000</span></span><br><span class="line"></span><br><span class="line"><span class="label">Disk</span> /dev/sdb doesn<span class="string">'t contain a valid partition table</span></span><br></pre></td></tr></table></figure></p>
+<p><strong>Disk /dev/sdb</strong>这个就是我新加的硬盘，它后面会显示<em>doesn’t contain a valid partition table</em>错误，因为该盘尚未分区和挂载。<br>然后用<strong>fdisk /dev/sdb</strong>命令来进行分区，</p>
+<blockquote>
+<p>1.输入n 创建一个新分区<br>2.输入p 代表主分区<br>3.输入1 表示1块<br>4.后面是大小，可以回车用默认的<br>5.输入w 保存</p>
+</blockquote>
+<p>这时候用<strong>fdisk -l</strong>就能看见新的分区了<br><figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="label">Disk</span> /dev/sdb: <span class="number">137</span>.<span class="number">4</span> GB, <span class="number">137438953472</span> <span class="keyword">bytes</span><br><span class="line"></span><span class="number">255</span> heads, <span class="number">63</span> sectors/track, <span class="number">16709</span> cylinders</span><br><span class="line"><span class="label">Units</span> = cylinders of <span class="number">16065</span> * <span class="number">512</span> = <span class="number">8225280</span> <span class="keyword">bytes</span><br><span class="line"></span><span class="label">Sector</span> size (logical/physical): <span class="number">512</span> <span class="keyword">bytes </span>/ <span class="number">512</span> <span class="keyword">bytes</span><br><span class="line"></span>I/O size (minimum/optimal): <span class="number">512</span> <span class="keyword">bytes </span>/ <span class="number">512</span> <span class="keyword">bytes</span><br><span class="line"></span><span class="label">Disk</span> identifier: <span class="number">0xd06cae49</span></span><br><span class="line"></span><br><span class="line">   Device <span class="keyword">Boot </span>     Start         <span class="preprocessor">End</span>      <span class="keyword">Blocks </span>  Id  System</span><br><span class="line">/dev/sdb1               <span class="number">1</span>       <span class="number">16709</span>   <span class="number">134215011</span>   <span class="number">83</span>  Linux</span><br></pre></td></tr></table></figure></p>
+<p>分区之后开始格式化<strong> mkfs -t ext3 /dev/sdb1</strong><br>格式化之后我们需要把该盘挂载到一个目录下面，<strong>mount /dev/sdb1 /work</strong><br>挂载之后修改/etc/fstab文件完成开机自动挂载，即在文件中添加<br><strong>/dev/sdb1 /work      ext3    defaults        1 2</strong></p>
+<p>但是这块盘现在只有root用户有写权限，如果要让其他用户也可以读写则需要修改权限，<br><strong>chown -R user: /work改变所属者</strong>或者<strong>chmod -R 777 /work所有用户可读写</strong></p>
+<p>这样用着可能也不是很方便，因为你工作时需要使用新的目录/work，这时可以使用<strong>ln -s</strong>命令把新的硬盘目录软连接到你想放在的目录里面，<br>例如<strong>ln -s /work /home/xxx</strong>，这样就可以在自己熟悉的地方使用新的硬盘了</p>
   
 	</div>
 		<footer class="article-footer clearfix">
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/key-buffer-size/">key_buffer_size</a><a href="/tags/mysql/">mysql</a><a href="/tags/table-open-cache/">table_open_cache</a>
+  <span></span> <a href="/tags/mount/">mount</a>
   </div>
 
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/mysql/">mysql</a>
+  <a class="article-category-link" href="/categories/linux/">linux</a>
 </div>
 
 
 
 <div class="article-share" id="share">
 
-  <div data-url="http://sstask.github.io/2015/08/25/optimizemysql/" data-title="mysql优化 | 叶子的博客" data-tsina="null" class="share clearfix">
+  <div data-url="http://sstask.github.io/2016/03/07/linuxadddisk/" data-title="linux添加新硬盘 | 叶子的博客" data-tsina="null" class="share clearfix">
   </div>
 
 </div>
@@ -143,19 +135,11 @@
 	
 <nav class="article-nav clearfix">
  
- <div class="prev" >
- <a href="/2015/08/28/simplesed/" title="sed简记">
-  <strong>PREVIOUS:</strong><br/>
-  <span>
-  sed简记</span>
-</a>
-</div>
-
 
 <div class="next">
-<a href="/2015/08/18/ccommonerror/"  title="C++程序里一些易犯错误">
+<a href="/2016/02/21/installmysql/"  title="mysql主从服务器安装脚本">
  <strong>NEXT:</strong><br/> 
- <span>C++程序里一些易犯错误
+ <span>mysql主从服务器安装脚本
 </span>
 </a>
 </div>
@@ -165,7 +149,7 @@
 	
 <section class="comment">
 	
-	<div class="ds-thread" data-title="mysql优化" data-thread-key="optimizemysql" data-author-key="叶子与桔子" data-url="http://sstask.github.io/post/optimizemysql"></div>
+	<div class="ds-thread" data-title="linux添加新硬盘" data-thread-key="linuxadddisk" data-author-key="叶子与桔子" data-url="http://sstask.github.io/post/linuxadddisk"></div>
 	
 </section>
 
