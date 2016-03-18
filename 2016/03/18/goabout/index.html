@@ -7,15 +7,13 @@
   <meta name="360-site-verification" content="67fbcc5a67f4c65c057315b28fa0b2c8" />
 <meta name="google-site-verification" content="2GzxQ0VtXwTSUdmGm6DzcmhTzM_I9QmzCb_pzpMzD88" />
   
-    <title>排行榜奖励发放 | 叶子的博客</title>
+    <title>go相关 | 叶子的博客</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
     
     <meta name="author" content="叶子与桔子">
     
-    <meta name="description" content="一般来说排行榜奖励都通过邮件来发放，要不就是对于在线用户直接发给用户自身，对于离线用户发到用户的离线邮箱，用户上线可以通过邮件取到。这样做简单直接，易于处理，也不容易出错，但是在用户很多的时候可能需要同一时间发送很多封邮件，给数据库造成很大压力。当然也可以通过分时发送来减轻同一时刻给数据库带来的压力，但这就要考虑到如果在没有全部分发完成的时候服务器出现问题的情况，总之难以从根本上解决问题。
-为了减轻数据库的压力，同时防止数据的意外丢失，就需要一次性的把奖励发给所有用户或者存档到数据库中，按照这种需求自然会想到另外一种方案，就是把排行榜中所有的用户标识和名次打包存入到数据的一条或数条记录中，然后等到用户上线时再把记录中的奖励发给用户。数据库设计大概是这样的：
-
-rankreward(ranktype,id,time,rewards)">
+    <meta name="description" content="这几天研究了一下go语言，顺便记录下一些重点或者感觉不太好理解的地方（与c++相比）。
+1.array数组的声明方式 var a [10]int数组是多个相同类型数组的集合，不同于c++在go里array更像一个结构体或者vector，如果b=a这样赋值的话就直接把a的内容拷贝给了b,而且go中数组">
     
     
     
@@ -81,15 +79,15 @@ rankreward(ranktype,id,time,rewards)">
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2015/06/22/rankreward/" title="排行榜奖励发放" itemprop="url">排行榜奖励发放</a>
+      <a href="/2016/03/18/goabout/" title="go相关" itemprop="url">go相关</a>
   </h1>
   <p class="article-author">By
     
       <a href="http://sstask.github.io" title="叶子与桔子">叶子与桔子</a>
     </p>
   <p class="article-time">
-    <time datetime="2015-06-22T09:05:57.000Z" itemprop="datePublished">Jun 22</time>
-    更新日期:<time datetime="2015-10-29T02:13:28.544Z" itemprop="dateModified">Oct 29</time>
+    <time datetime="2016-03-18T08:36:26.000Z" itemprop="datePublished">Mar 18</time>
+    更新日期:<time datetime="2016-03-18T09:39:17.650Z" itemprop="dateModified">Mar 18</time>
     
   </p>
 </header>
@@ -98,45 +96,39 @@ rankreward(ranktype,id,time,rewards)">
 		
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目錄</strong>
-		
+		<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-array"><span class="toc-number">1.</span> <span class="toc-text">1.array</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-slice"><span class="toc-number">2.</span> <span class="toc-text">2.slice</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-map_chan"><span class="toc-number">3.</span> <span class="toc-text">3.map chan</span></a></li></ol>
 		</div>
 		
-		<p>一般来说排行榜奖励都通过邮件来发放，要不就是对于在线用户直接发给用户自身，对于离线用户发到用户的离线邮箱，用户上线可以通过邮件取到。这样做简单直接，易于处理，也不容易出错，但是在用户很多的时候可能需要同一时间发送很多封邮件，给数据库造成很大压力。当然也可以通过分时发送来减轻同一时刻给数据库带来的压力，但这就要考虑到如果在没有全部分发完成的时候服务器出现问题的情况，总之难以从根本上解决问题。</p>
-<p>为了减轻数据库的压力，同时防止数据的意外丢失，就需要一次性的把奖励发给所有用户或者存档到数据库中，按照这种需求自然会想到另外一种方案，就是把排行榜中所有的用户标识和名次打包存入到数据的一条或数条记录中，然后等到用户上线时再把记录中的奖励发给用户。数据库设计大概是这样的：</p>
+		<p>这几天研究了一下go语言，顺便记录下一些重点或者感觉不太好理解的地方（与c++相比）。</p>
+<h3 id="1-array">1.array</h3><p>数组的声明方式 var a [10]int<br>数组是多个相同类型数组的集合，不同于c++在go里<strong>array更像一个结构体或者vector</strong>，如果b=a这样赋值的话就直接把a的内容拷贝给了b,而且go中数组的长度是不可变的。</p>
+<h3 id="2-slice">2.slice</h3><p>slice的声明方式 var a []int或者b:=make([]int,3,10)或者c:=[]int{1,2,3}<br><strong>与array声明方式的区别在于[]中有木有长度值</strong><br>slice的长度是可变的，可以通过append增加元素。<br><strong>slice更像一个结构体</strong>，它包含三个成员:pointer(指向数组) len（数组长度） cap（数组容量），所以当对slice进行互相赋值的时候也只是把这三个值给重置了而已，这样反倒更像C++中的数组了。</p>
+<h3 id="3-map_chan">3.map chan</h3><p><strong>map chan好像c++中的指针</strong>，例如m:=map[int]string{1:”a”,2:”b”} m只是一个指针，它指向了一个map，如果把m赋值给另外一个map n，这时候m和n指向的地址相同，所以他们的成员也自然是一样的了。如果想把m的内容赋值给n需要遍历插入。chan也是一样的原理。</p>
 <blockquote>
-<p>rankreward(ranktype,id,time,rewards)<br><a id="more"></a></p>
-<pre><code class="sql">+<span class="comment">----------+------------------+------+-----+---------+----------------+  </span>
-| Field    | Type             | Null | Key | Default | Extra          |  
-+<span class="comment">----------+------------------+------+-----+---------+----------------+  </span>
-| ranktype | int(10) unsigned | NO   |     | NULL    |                |  
-| id       | int(10) unsigned | NO   | PRI | NULL    | auto_increment |  
-| time     | int(10) unsigned | NO   |     | NULL    |                |  
-| rewards  | blob             | YES  |     | NULL    |                |  
-+<span class="comment">----------+------------------+------+-----+---------+----------------+</span>
-</code></pre>
-<p> ranktype(排行榜类型)，reward存储多个用户标识(一般为id)和用户名次，id(奖励id，唯一标识记录并且自增长)，time(奖励发放时间)<br>如果名次太多也可以分为多列或者多行来存储，尽量维持在几条，方便对数据库进行一次性插入。当服务器启动时把表中的所有数据读取到内存，在内存中构建用户到奖励的映射，用户上线时通过这个映射把奖励再发给用户，这样就达到了分时发放奖励的效果。</p>
+<ul>
+<li><strong>go里面所有的变量或者参数传递都是值传递，只是有些类型在底层实现上和指针类似才造成了引用传递的错觉(例如slice map chan)。（特别的，闭包里对外部变量的记录是引用）</strong></li>
+<li><strong>go里可以定义一个变量的指针，这里的指针具有C++里指针和引用的优点，它可以像指针一样多次赋值和传递，又可以像引用一样使用(操作成员不需要额外操作符)</strong></li>
+</ul>
 </blockquote>
-<p>仔细分析会发现这样做也有一点风险，就是如果把奖励放给用户了，但是由于某种原因这条数据库记录修改没保存到数据库，这样就会造成奖励的多次发放。或者先保存修改之后再发放奖励，这样也会可能产生有用户没有收到奖励的情形。所以为了保险，应该<em>在用户自己的数据中存储一条数据来记录该用户目前已经领到哪天的排行榜奖励了</em>，这样如果发生了多次发放奖励的情况可以根据用户自身的数据来判断出来，防止了此类情况的发生。由于id字段是自增长的，所以只需要在发放奖励时把最新(最大)的id记录到用户身上，并且拿奖励id与用户原有奖励id进行比较，如果小于等于用户原有奖励id就表明是重复奖励，这时不给予发放。</p>
   
 	</div>
 		<footer class="article-footer clearfix">
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/game/">game</a><a href="/tags/mysql/">mysql</a><a href="/tags/rank/">rank</a>
+  <span></span> <a href="/tags/go/">go</a>
   </div>
 
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/game/">game</a>
+  <a class="article-category-link" href="/categories/script/">script</a>
 </div>
 
 
 
 <div class="article-share" id="share">
 
-  <div data-url="http://sstask.github.io/2015/06/22/rankreward/" data-title="排行榜奖励发放 | 叶子的博客" data-tsina="null" class="share clearfix">
+  <div data-url="http://sstask.github.io/2016/03/18/goabout/" data-title="go相关 | 叶子的博客" data-tsina="null" class="share clearfix">
   </div>
 
 </div>
@@ -145,19 +137,11 @@ rankreward(ranktype,id,time,rewards)">
 	
 <nav class="article-nav clearfix">
  
- <div class="prev" >
- <a href="/2015/07/06/gencdkey/" title="cdkey和激活码的生成">
-  <strong>PREVIOUS:</strong><br/>
-  <span>
-  cdkey和激活码的生成</span>
-</a>
-</div>
-
 
 <div class="next">
-<a href="/2015/06/21/rankdesign/"  title="排行榜设计">
+<a href="/2016/03/07/linuxadddisk/"  title="linux添加新硬盘">
  <strong>NEXT:</strong><br/> 
- <span>排行榜设计
+ <span>linux添加新硬盘
 </span>
 </a>
 </div>
@@ -167,7 +151,7 @@ rankreward(ranktype,id,time,rewards)">
 	
 <section class="comment">
 	
-	<div class="ds-thread" data-title="排行榜奖励发放" data-thread-key="rankreward" data-author-key="叶子与桔子" data-url="http://sstask.github.io/post/rankreward"></div>
+	<div class="ds-thread" data-title="go相关" data-thread-key="goabout" data-author-key="叶子与桔子" data-url="http://sstask.github.io/post/goabout"></div>
 	
 </section>
 
@@ -177,7 +161,7 @@ rankreward(ranktype,id,time,rewards)">
 
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目錄</strong>
-  
+  <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-array"><span class="toc-number">1.</span> <span class="toc-text">1.array</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-slice"><span class="toc-number">2.</span> <span class="toc-text">2.slice</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-map_chan"><span class="toc-number">3.</span> <span class="toc-text">3.map chan</span></a></li></ol>
   </div>
 
 <div id="asidepart">
