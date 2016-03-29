@@ -87,7 +87,7 @@
     </p>
   <p class="article-time">
     <time datetime="2016-03-18T08:36:26.000Z" itemprop="datePublished">Mar 18</time>
-    更新日期:<time datetime="2016-03-18T09:39:17.650Z" itemprop="dateModified">Mar 18</time>
+    更新日期:<time datetime="2016-03-29T04:44:06.532Z" itemprop="dateModified">Mar 29</time>
     
   </p>
 </header>
@@ -96,19 +96,26 @@
 		
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目錄</strong>
-		<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-array"><span class="toc-number">1.</span> <span class="toc-text">1.array</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-slice"><span class="toc-number">2.</span> <span class="toc-text">2.slice</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-map_chan"><span class="toc-number">3.</span> <span class="toc-text">3.map chan</span></a></li></ol>
+		<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-array"><span class="toc-number">1.</span> <span class="toc-text">1.array</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-slice"><span class="toc-number">2.</span> <span class="toc-text">2.slice</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-map_chan"><span class="toc-number">3.</span> <span class="toc-text">3.map chan</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-struct"><span class="toc-number">4.</span> <span class="toc-text">4.struct</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-interface"><span class="toc-number">5.</span> <span class="toc-text">5.interface</span></a></li></ol>
 		</div>
 		
 		<p>这几天研究了一下go语言，顺便记录下一些重点或者感觉不太好理解的地方（与c++相比）。</p>
 <h3 id="1-array">1.array</h3><p>数组的声明方式 var a [10]int<br>数组是多个相同类型数组的集合，不同于c++在go里<strong>array更像一个结构体或者vector</strong>，如果b=a这样赋值的话就直接把a的内容拷贝给了b,而且go中数组的长度是不可变的。</p>
 <h3 id="2-slice">2.slice</h3><p>slice的声明方式 var a []int或者b:=make([]int,3,10)或者c:=[]int{1,2,3}<br><strong>与array声明方式的区别在于[]中有木有长度值</strong><br>slice的长度是可变的，可以通过append增加元素。<br><strong>slice更像一个结构体</strong>，它包含三个成员:pointer(指向数组) len（数组长度） cap（数组容量），所以当对slice进行互相赋值的时候也只是把这三个值给重置了而已，这样反倒更像C++中的数组了。</p>
-<h3 id="3-map_chan">3.map chan</h3><p><strong>map chan好像c++中的指针</strong>，例如m:=map[int]string{1:”a”,2:”b”} m只是一个指针，它指向了一个map，如果把m赋值给另外一个map n，这时候m和n指向的地址相同，所以他们的成员也自然是一样的了。如果想把m的内容赋值给n需要遍历插入。chan也是一样的原理。</p>
+<h3 id="3-map_chan">3.map chan</h3><p><strong>map chan好像c++中的指针</strong>，例如m:=map[int]string{1:”a”,2:”b”} m只是一个指针，它指向了一个map，如果把m赋值给另外一个map n，这时候m和n指向的地址相同，所以他们的成员也自然是一样的了。如果想把m的内容赋值给n需要遍历插入。chan也是一样的原理。<br><strong>map里面的元素不可寻址</strong>，所以不可直接修改map元素的成员的值（map元素为指针则可修改），只可以修改元素值</p>
 <blockquote>
 <ul>
 <li><strong>go里面所有的变量或者参数传递都是值传递，只是有些类型在底层实现上和指针类似才造成了引用传递的错觉(例如slice map chan)。（特别的，闭包里对外部变量的记录是引用）</strong></li>
 <li><strong>go里可以定义一个变量的指针，这里的指针具有C++里指针和引用的优点，它可以像指针一样多次赋值和传递，又可以像引用一样使用(操作成员不需要额外操作符)</strong></li>
 </ul>
 </blockquote>
+<h3 id="4-struct">4.struct</h3><p>假设T是struct，那么Go里面遵循下面几个原则：</p>
+<ul>
+<li>T的方法集仅拥有 T Receiver 方法，即func (self T)xxx(){}</li>
+<li>*T 方法集则包含全部方法 (T + *T)，即func (self T)xxx(){}和func (self *T)xxx(){}</li>
+<li>如果结构的实例x是“可被寻址的”，且&amp;x的方法集中包含方法m，则x.m()为(&amp;x).m()的速记</li>
+</ul>
+<h3 id="5-interface">5.interface</h3><p>interface{}可以存储任意值，同样是值传递，即传递的是对象实例则存储对象，传递的是对象指针则存储指针。当用switch inter.(type) case做判断时要注意对象和指针的类型区别。</p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -161,7 +168,7 @@
 
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目錄</strong>
-  <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-array"><span class="toc-number">1.</span> <span class="toc-text">1.array</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-slice"><span class="toc-number">2.</span> <span class="toc-text">2.slice</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-map_chan"><span class="toc-number">3.</span> <span class="toc-text">3.map chan</span></a></li></ol>
+  <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-array"><span class="toc-number">1.</span> <span class="toc-text">1.array</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-slice"><span class="toc-number">2.</span> <span class="toc-text">2.slice</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-map_chan"><span class="toc-number">3.</span> <span class="toc-text">3.map chan</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-struct"><span class="toc-number">4.</span> <span class="toc-text">4.struct</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-interface"><span class="toc-number">5.</span> <span class="toc-text">5.interface</span></a></li></ol>
   </div>
 
 <div id="asidepart">
