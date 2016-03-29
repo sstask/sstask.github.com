@@ -87,7 +87,7 @@
     </p>
   <p class="article-time">
     <time datetime="2016-03-18T08:36:26.000Z" itemprop="datePublished">Mar 18</time>
-    更新日期:<time datetime="2016-03-29T04:44:06.532Z" itemprop="dateModified">Mar 29</time>
+    更新日期:<time datetime="2016-03-29T05:07:38.801Z" itemprop="dateModified">Mar 29</time>
     
   </p>
 </header>
@@ -115,7 +115,7 @@
 <li>*T 方法集则包含全部方法 (T + *T)，即func (self T)xxx(){}和func (self *T)xxx(){}</li>
 <li>如果结构的实例x是“可被寻址的”，且&amp;x的方法集中包含方法m，则x.m()为(&amp;x).m()的速记</li>
 </ul>
-<h3 id="5-interface">5.interface</h3><p>interface{}可以存储任意值，同样是值传递，即传递的是对象实例则存储对象，传递的是对象指针则存储指针。当用switch inter.(type) case做判断时要注意对象和指针的类型区别。</p>
+<h3 id="5-interface">5.interface</h3><p>interface{}可以存储任意值，同样是值传递，即传递的是对象实例则存储对象，传递的是对象指针则存储指针。当用switch inter.(type) case做判断时要注意对象和指针的类型区别。<br><strong>通过interface引用的变量也是不可寻址的（同map的元素）</strong><br><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">type myStruct <span class="keyword">struct</span> &#123;</span><br><span class="line">	text     <span class="keyword">string</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> <span class="keyword">in</span> <span class="keyword">interface</span>&#123;&#125; = &amp;myStruct&#123;<span class="string">"test"</span>&#125;</span><br><span class="line"><span class="keyword">in</span>.(*myStruct).text = <span class="string">"111"</span> <span class="comment">//正确</span></span><br><span class="line"><span class="keyword">var</span> in1 <span class="keyword">interface</span>&#123;&#125; = myStruct&#123;<span class="string">"test"</span>&#125;</span><br><span class="line">in1.(myStruct).text = <span class="string">"111"</span> <span class="comment">//cannot assign to in.(myStruct).text</span></span><br></pre></td></tr></table></figure></p>
   
 	</div>
 		<footer class="article-footer clearfix">
