@@ -7,14 +7,13 @@
   <meta name="360-site-verification" content="67fbcc5a67f4c65c057315b28fa0b2c8" />
 <meta name="google-site-verification" content="2GzxQ0VtXwTSUdmGm6DzcmhTzM_I9QmzCb_pzpMzD88" />
   
-    <title>linux常用命令 | 叶子的博客</title>
+    <title>rsync同步文件 | 叶子的博客</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
     
     <meta name="author" content="叶子与桔子">
     
-    <meta name="description" content="在linux下工作总是要用到不少命令，下面记录下常用的命令，以免忘了。
-文件相关
-ls 列出当前目录下所以文件和目录 加参数-a可以列出隐藏文件(.开头)        ll 详细列表        rm 删除文件 -r循环删除 -f强制删除        cat 输出文件到屏幕        less 查看文件        tail 查看文件末尾N行 tail -f xx持续打印文件新内容直至ctrl+c">
+    <meta name="description" content="工作中有不少情况会遇到需要同步文件的情况，这里就记录下同步的方法。例如我们要把A机器（192.168.0.101）/home/xxx/test目录下所有文件和目录同步到B机器（192.168.0.102）/home/xxx/test目录下：
+1.ssh无密码登陆首先要实现A机器到B机器的无密码登陆，">
     
     
     
@@ -80,15 +79,15 @@ ls 列出当前目录下所以文件和目录 加参数-a可以列出隐藏文�
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2015/07/20/linuxcmd/" title="linux常用命令" itemprop="url">linux常用命令</a>
+      <a href="/2016/04/07/rsyncfile/" title="rsync同步文件" itemprop="url">rsync同步文件</a>
   </h1>
   <p class="article-author">By
     
       <a href="http://sstask.github.io" title="叶子与桔子">叶子与桔子</a>
     </p>
   <p class="article-time">
-    <time datetime="2015-07-20T12:34:32.000Z" itemprop="datePublished">Jul 20</time>
-    更新日期:<time datetime="2016-02-18T07:07:13.515Z" itemprop="dateModified">Feb 18</time>
+    <time datetime="2016-04-07T11:02:07.000Z" itemprop="datePublished">Apr 7</time>
+    更新日期:<time datetime="2016-04-07T11:32:33.328Z" itemprop="dateModified">Apr 7</time>
     
   </p>
 </header>
@@ -97,46 +96,25 @@ ls 列出当前目录下所以文件和目录 加参数-a可以列出隐藏文�
 		
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目錄</strong>
-		<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#文件相关"><span class="toc-number">1.</span> <span class="toc-text">文件相关</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#恢复被删文件（被进程打开）"><span class="toc-number">2.</span> <span class="toc-text">恢复被删文件（被进程打开）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#查找相关"><span class="toc-number">3.</span> <span class="toc-text">查找相关</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#网络相关"><span class="toc-number">4.</span> <span class="toc-text">网络相关</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#时间相关"><span class="toc-number">5.</span> <span class="toc-text">时间相关</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#内存相关"><span class="toc-number">6.</span> <span class="toc-text">内存相关</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#杂"><span class="toc-number">7.</span> <span class="toc-text">杂</span></a></li></ol>
+		<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-ssh无密码登陆"><span class="toc-number">1.</span> <span class="toc-text">1.ssh无密码登陆</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-安装rsync"><span class="toc-number">2.</span> <span class="toc-text">2.安装rsync</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-rsync同步"><span class="toc-number">3.</span> <span class="toc-text">3.rsync同步</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-安装inotify-tools"><span class="toc-number">4.</span> <span class="toc-text">4.安装inotify-tools</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-inotifywait+rsync实现脚本实时同步"><span class="toc-number">5.</span> <span class="toc-text">5.inotifywait+rsync实现脚本实时同步</span></a></li></ol>
 		</div>
 		
-		<p>在linux下工作总是要用到不少命令，下面记录下常用的命令，以免忘了。</p>
-<h3 id="文件相关">文件相关</h3><blockquote>
-<p><strong>ls</strong> 列出当前目录下所以文件和目录 加参数-a可以列出隐藏文件(.开头)<br>        <strong>ll</strong> 详细列表<br>        <strong>rm</strong> 删除文件 -r循环删除 -f强制删除<br>        <strong>cat</strong> 输出文件到屏幕<br>        <strong>less</strong> 查看文件<br>        <strong>tail</strong> 查看文件末尾N行 tail -f xx持续打印文件新内容直至ctrl+c<br><a id="more"></a></p>
-<p><strong>vim</strong> 编辑或新建文件<br>        <strong>mv</strong> 移动或重命名文件<br>        <strong>mkdir</strong> 创建目录<br>        <strong>cp</strong> 复制<br>        <strong>scp</strong> 远程复制 scp xx root@192.168.0.102:/home/root/<br>        <strong>chmod +x</strong> 赋予文件可执行权限<br>        <strong>tar -zcvf</strong> name.tar.gz dir 压缩<br>        <strong>tar -zxvf</strong> name.tar.gz dir 解压<br>        <strong>file</strong> 查看文件类型和编码信息等，也可看出core文件属于哪个程序<br>        <strong>wc</strong> 统计文件行数字数字节数等，wc -l file 行数 -c字节数 -w字数 -m字符数<br>        进程相关<br>        <strong>ps</strong> 列出当前运行的进程 ps x当前用户所有进程 ps ux带用户等信息 ps aux所有用户进程<br>        <strong>kill</strong> 杀死进程 kill -9 强制杀死 kill -USR1 给进程发信号<br>                <strong>pgrep</strong> 根据程序名查找进程 pgrep -l xx <em>pgrep xx|xargs kill -9 &gt; /dev/null</em></p>
-</blockquote>
-<h3 id="恢复被删文件（被进程打开）">恢复被删文件（被进程打开）</h3><blockquote>
-<p>lsof|grep delete<br><em>t  15546  cplus  1w  REG   202,1 10275086336  661231 /home/cplus/test/nohup.out (deleted)</em><br>ls -l /proc/15546/<br><em>l-wx—— 1 cplus work 64 Oct 20 14:47 0 -&gt; /dev/null<br>l-wx—— 1 cplus work 64 Oct 20 14:47 1 -&gt; /home/cplus/test/nohup.out (deleted)</em><br>cp /proc/15546/fd/1 nohup.out.save</p>
-</blockquote>
-<h3 id="查找相关">查找相关</h3><blockquote>
-<p><strong>find</strong> 查找文件 <em>find [path] [option] [action]       find / -name mysql</em><br><strong>grep</strong> 在文本中查找字符串 <em>grep [string] [files]       grep “xx” log</em><br><strong>awk</strong> 文本分析处理 </p>
-<ul>
-<li><em>awk ‘{pattern + print}’ {files}</em></li>
-<li><em>last -n 5 | awk ‘{print \$1}’</em> 显示最近登录的5个账户的名字</li>
-<li><em>svn diff |grep Index|awk ‘\$2 ~/(cpp)|(h)\$/{print \$2}’</em> 打印改动的cpp、h文件名，~是匹配操作符，表示找第二列匹配后面模式的行</li>
-<li><em>svn diff|grep ‘h\$|cpp\$’|awk ‘{print \$2}’|sort|uniq</em> 查找以cpp或h结尾的行，打印第二<br>列，排序去重复</li>
-<li><em>ps -A -o stat,ppid,pid,cmd | grep -e ‘^[Zz]’ | awk ‘{print \$2}’ | xargs kill -9</em> 杀死&gt;僵尸进程</li>
-</ul>
-</blockquote>
-<h3 id="网络相关">网络相关</h3><blockquote>
-<p><strong>ifconfig</strong> 查看ip地址等信息<br>        <strong>netstat</strong> 查看网络连接 netstat -atp（a显示所有选项，默认不显示listen相关，t显示tcp，p显示连接关联的程序<br>）</p>
-</blockquote>
-<h3 id="时间相关">时间相关</h3><blockquote>
-<p><strong>date</strong> 查看当前时间<br><strong>date -s “2008-08-08 08:08:08”</strong>设置时间 date -s 2008-08-08 date -s 08:08:08<br><strong>date +%s</strong>获取当前时间戳<br><strong>date -d 2008-08-08 +%s</strong>获取指定时间戳<br><strong>date -d @1442107727</strong>通过时间戳得到时间</p>
-</blockquote>
-<h3 id="内存相关">内存相关</h3><blockquote>
-<p><strong>free</strong> 查看内存使用情况 free -m 显示单位M free -g 显示单位G<br>        <em>ps aux | awk ‘{mem += $6} END {print mem/1024}’</em>  统计所以程序所占用内存M （rss程序占用内存）</p>
-</blockquote>
-<h3 id="杂">杂</h3><blockquote>
-<p><strong>chkconfig iptables on</strong> 服务开机运行<br><strong>watch xxx</strong> 重复运行xxx命令并显示每次的结果<br><strong>lsof</strong> 查看打开的文件<br><strong>rpm -qa | grep</strong> mysql 查看是否安装mysql<br>                      <strong>rpm -e</strong> mysql 卸载  rpm -e –nodeps mysql 强力卸载<br>        <strong>service iptables start</strong> 启动防火墙 service iptables stop 关闭service iptables restart 重启<br><strong>lsb_release -a</strong>  查看操作系统版本<br>        <strong>chkconfig mysqld on</strong> 设置开机启动 chkconfig –list | grep mysqld 查看启动设置<br>        . 代表当前目录 ~当前用户根目录即/home/xx  /表示系统根目录 vim /etc/my.cnf<br>        <strong>vim ~/.vimrc</strong> 修改当前用户的vim配置<br>                              如加入 syntax on<br>                                           set ts=4<br>                                           set expandtab<br>                                           set number<br>        <strong>vim ~/.bash_profile</strong> 可设置环境变量，执行命令等，该文件只在登录的时候执行一次<br>                             如加入 ulimit -c  unlimited<br>                                          export SVN_RES=”<a href="http://192.168.0.101/repos/trunk" target="_blank" rel="external">http://192.168.0.101/repos/trunk</a>“</p>
-</blockquote>
+		<p>工作中有不少情况会遇到需要同步文件的情况，这里就记录下同步的方法。<br>例如我们要把A机器（192.168.0.101）/home/xxx/test目录下所有文件和目录同步到B机器（192.168.0.102）/home/xxx/test目录下：</p>
+<h3 id="1-ssh无密码登陆">1.ssh无密码登陆</h3><p>首先要实现A机器到B机器的无密码登陆，在A机器上执行：<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa</span><br><span class="line">ssh-copy-id -<span class="tag">i</span> ~/.ssh/id_rsa<span class="class">.pub</span> xxx@<span class="number">192.168</span>.<span class="number">0.102</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="2-安装rsync">2.安装rsync</h3><p>A机器安装rsync，可直接执行yum install rsync安装。</p>
+<h3 id="3-rsync同步">3.rsync同步</h3><figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rsync -ravz --delete --progress --<span class="keyword">include</span>=<span class="string">"*.h"</span> --<span class="keyword">include</span>=<span class="string">"*.cpp"</span> --<span class="keyword">include</span>=<span class="string">"*.proto"</span> --exclude=<span class="string">"*.*"</span> --exclude=<span class="string">"bin/*"</span> --exclude=<span class="string">"Makefile*"</span> -e ssh /home/xxx/test/ xxx<span class="variable">@192</span>.<span class="number">168.0</span>.<span class="number">102</span><span class="symbol">:/home/xxx/test/</span></span><br></pre></td></tr></table></figure>
+<p>–exclude=”*.*“表示过滤掉所有带后缀的文件 –exclude=”bin/*“表示过滤掉bin目录下的所有文件和目录 –exclude=”Makefile*“表示过滤掉所有Makefile开头的文件和目录<br>–include=”*.h” –include=”*.cpp” –include=”*.proto” 表示只同步以.h .cpp .proto为后缀的文件<br>这样就把A test目录下及其所有的子目录下的所有.h .cpp .proto为后缀的文件同步到了B机器上。</p>
+<h3 id="4-安装inotify-tools">4.安装inotify-tools</h3><p>如果想实现文件的实时同步需要安装inotify-tools，它可以监控文件的变化，<br><figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">git clone http<span class="variable">s:</span>//github.<span class="keyword">com</span>/rvoicilas/inotify-tools.git</span><br><span class="line"><span class="keyword">cd</span> inotify-tools</span><br><span class="line">./autogen.<span class="keyword">sh</span></span><br><span class="line">#yum install autoconf automake libtool</span><br><span class="line">./configure</span><br><span class="line"><span class="keyword">make</span>&amp;&amp;<span class="keyword">make</span> install</span><br></pre></td></tr></table></figure></p>
+<p>然后可运行以下命令监控目录：<br><figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">inotifywait -mrq --timefmt '%Y%<span class="keyword">m</span>%<span class="keyword">d</span>%<span class="keyword">H</span>%<span class="keyword">M</span>%S' --<span class="keyword">format</span> '%T,%w%f,%<span class="keyword">e</span>' -<span class="keyword">e</span> modify,delete,create,attrib /home/xxx/<span class="keyword">test</span>/</span><br></pre></td></tr></table></figure></p>
+<h3 id="5-inotifywait+rsync实现脚本实时同步">5.inotifywait+rsync实现脚本实时同步</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="shebang">#!/bin/bash</span></span><br><span class="line">inotifywait -mrq --timefmt <span class="string">'%Y%m%d%H%M%S'</span> --format <span class="string">'%T,%w%f,%e'</span> <span class="operator">-e</span> modify,delete,create,attrib /home/xxx/<span class="built_in">test</span> | <span class="keyword">while</span> <span class="built_in">read</span> Filex</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$Filex</span></span><br><span class="line">rsync -ravz --delete --progress --include=<span class="string">"*.h"</span> --include=<span class="string">"*.cpp"</span> --include=<span class="string">"*.proto"</span> --exclude=<span class="string">"*.*"</span> --exclude=<span class="string">"bin/*"</span> --exclude=<span class="string">"Makefile*"</span> <span class="operator">-e</span> ssh /home/xxx/<span class="built_in">test</span>/ xxx@<span class="number">192.168</span>.<span class="number">0.102</span>:/home/xxx/<span class="built_in">test</span>/</span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure>
+<p>执行这个脚本就可以实时把文件从A机器同步到B机器了。</p>
   
 	</div>
 		<footer class="article-footer clearfix">
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/linux/">linux</a><a href="/tags/shell/">shell</a>
+  <span></span> <a href="/tags/rsync/">rsync</a>
   </div>
 
 
@@ -149,7 +127,7 @@ ls 列出当前目录下所以文件和目录 加参数-a可以列出隐藏文�
 
 <div class="article-share" id="share">
 
-  <div data-url="http://sstask.github.io/2015/07/20/linuxcmd/" data-title="linux常用命令 | 叶子的博客" data-tsina="null" class="share clearfix">
+  <div data-url="http://sstask.github.io/2016/04/07/rsyncfile/" data-title="rsync同步文件 | 叶子的博客" data-tsina="null" class="share clearfix">
   </div>
 
 </div>
@@ -158,19 +136,11 @@ ls 列出当前目录下所以文件和目录 加参数-a可以列出隐藏文�
 	
 <nav class="article-nav clearfix">
  
- <div class="prev" >
- <a href="/2015/07/23/sqlcmds/" title="一些mysql语句">
-  <strong>PREVIOUS:</strong><br/>
-  <span>
-  一些mysql语句</span>
-</a>
-</div>
-
 
 <div class="next">
-<a href="/2015/07/16/innodbbuffer/"  title="mysql Innodb缓存命中率">
+<a href="/2016/03/18/goabout/"  title="go相关">
  <strong>NEXT:</strong><br/> 
- <span>mysql Innodb缓存命中率
+ <span>go相关
 </span>
 </a>
 </div>
@@ -180,7 +150,7 @@ ls 列出当前目录下所以文件和目录 加参数-a可以列出隐藏文�
 	
 <section class="comment">
 	
-	<div class="ds-thread" data-title="linux常用命令" data-thread-key="linuxcmd" data-author-key="叶子与桔子" data-url="http://sstask.github.io/post/linuxcmd"></div>
+	<div class="ds-thread" data-title="rsync同步文件" data-thread-key="rsyncfile" data-author-key="叶子与桔子" data-url="http://sstask.github.io/post/rsyncfile"></div>
 	
 </section>
 
@@ -190,7 +160,7 @@ ls 列出当前目录下所以文件和目录 加参数-a可以列出隐藏文�
 
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目錄</strong>
-  <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#文件相关"><span class="toc-number">1.</span> <span class="toc-text">文件相关</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#恢复被删文件（被进程打开）"><span class="toc-number">2.</span> <span class="toc-text">恢复被删文件（被进程打开）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#查找相关"><span class="toc-number">3.</span> <span class="toc-text">查找相关</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#网络相关"><span class="toc-number">4.</span> <span class="toc-text">网络相关</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#时间相关"><span class="toc-number">5.</span> <span class="toc-text">时间相关</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#内存相关"><span class="toc-number">6.</span> <span class="toc-text">内存相关</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#杂"><span class="toc-number">7.</span> <span class="toc-text">杂</span></a></li></ol>
+  <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-ssh无密码登陆"><span class="toc-number">1.</span> <span class="toc-text">1.ssh无密码登陆</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-安装rsync"><span class="toc-number">2.</span> <span class="toc-text">2.安装rsync</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-rsync同步"><span class="toc-number">3.</span> <span class="toc-text">3.rsync同步</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-安装inotify-tools"><span class="toc-number">4.</span> <span class="toc-text">4.安装inotify-tools</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-inotifywait+rsync实现脚本实时同步"><span class="toc-number">5.</span> <span class="toc-text">5.inotifywait+rsync实现脚本实时同步</span></a></li></ol>
   </div>
 
 <div id="asidepart">
