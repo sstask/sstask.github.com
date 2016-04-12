@@ -7,15 +7,12 @@
   <meta name="360-site-verification" content="67fbcc5a67f4c65c057315b28fa0b2c8" />
 <meta name="google-site-verification" content="2GzxQ0VtXwTSUdmGm6DzcmhTzM_I9QmzCb_pzpMzD88" />
   
-    <title>判断两个时间是不是同一天 | 叶子的博客</title>
+    <title>go之chan | 叶子的博客</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
     
     <meta name="author" content="叶子与桔子">
     
-    <meta name="description" content="在项目中很多时候需要判断两个时间是否是同一天，例如用户每天都能领某种福利一次且只能领取一次，这时候当用户领取福利的时就需要判断用户上次领取的时间与当前时间是不是同一天，不是同一天的话可以领取，否则不能领取。
-一般来讲我会用time(NULL)来获取用户当前领取时间，它返回的是一个整数，代表从CUT（Coordinated Universal Time 格林威治时间）时间1970年1月1日00:00:00到当前时刻的秒数，正因为它是一个整数所以这样便于存储和比较。假如两个时间分别是oldtime和newtime，他们都是用time(NULL)得到的整数时间，我们想判断他们是否是同一天只需要分别求得他们的天数，然后判断是不是相等即可，即这样：
-
-IsANewDay gettimeofday">
+    <meta name="description" content="go语言中的chan非常关键，通过它go线程才能方面的进行通讯和数据交换。chan很像linux系统中的pipe管道，多线程可以同时向里面写信息和读取信息，而且不用加锁(向pipe中一次性写入数据大于一定量时还是要加锁的，而chan不需要)。使用chan也很方便：123ch:=make(chan i">
     
     
     
@@ -81,15 +78,15 @@ IsANewDay gettimeofday">
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2015/07/12/isanewday/" title="判断两个时间是不是同一天" itemprop="url">判断两个时间是不是同一天</a>
+      <a href="/2016/04/11/gochan/" title="go之chan" itemprop="url">go之chan</a>
   </h1>
   <p class="article-author">By
     
       <a href="http://sstask.github.io" title="叶子与桔子">叶子与桔子</a>
     </p>
   <p class="article-time">
-    <time datetime="2015-07-12T02:35:38.000Z" itemprop="datePublished">Jul 12</time>
-    更新日期:<time datetime="2015-10-29T02:10:34.084Z" itemprop="dateModified">Oct 29</time>
+    <time datetime="2016-04-11T12:41:41.000Z" itemprop="datePublished">Apr 11</time>
+    更新日期:<time datetime="2016-04-12T07:58:57.723Z" itemprop="dateModified">Apr 12</time>
     
   </p>
 </header>
@@ -98,88 +95,43 @@ IsANewDay gettimeofday">
 		
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目錄</strong>
-		
+		<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#这里有个问题：线程如何知道chan是否已经关闭了，从而要结束自己的读写工作？"><span class="toc-number">1.</span> <span class="toc-text">这里有个问题：线程如何知道chan是否已经关闭了，从而要结束自己的读写工作？</span></a></li></ol>
 		</div>
 		
-		<p>在项目中很多时候需要判断两个时间是否是同一天，例如用户每天都能领某种福利一次且只能领取一次，这时候当用户领取福利的时就需要判断用户上次领取的时间与当前时间是不是同一天，不是同一天的话可以领取，否则不能领取。</p>
-<p>一般来讲我会用time(NULL)来获取用户当前领取时间，它返回的是一个整数，代表从CUT（Coordinated Universal Time 格林威治时间）时间1970年1月1日00:00:00到当前时刻的秒数，正因为它是一个整数所以这样便于存储和比较。假如两个时间分别是oldtime和newtime，他们都是用time(NULL)得到的整数时间，我们想判断他们是否是同一天只需要分别求得他们的天数，然后判断是不是相等即可，即这样：</p>
+		<p>go语言中的chan非常关键，通过它go线程才能方面的进行通讯和数据交换。chan很像linux系统中的pipe管道，多线程可以同时向里面写信息和读取信息，而且不用加锁(向pipe中一次性写入数据大于一定量时还是要加锁的，而chan不需要)。<br>使用chan也很方便：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ch:=make(chan <span class="keyword">int</span>,<span class="number">5</span>) <span class="comment">//创建一个缓冲等于5的chan</span></span><br><span class="line">ch&lt;-<span class="number">1</span><span class="comment">//向chan中写入1</span></span><br><span class="line">n,ok&lt;-ch<span class="comment">//从chan中读取一个int到n，ok表示ch是否关闭</span></span><br></pre></td></tr></table></figure></p>
+<p>可以把对chan的读写放在多个不同的线程里执行，如果没有数据可以读或者写线程则阻塞，直到收到可读写信号开始继续执行。</p>
+<h3 id="这里有个问题：线程如何知道chan是否已经关闭了，从而要结束自己的读写工作？">这里有个问题：线程如何知道chan是否已经关闭了，从而要结束自己的读写工作？</h3><p><strong>对于读线程很简单，就如上面的语句n,ok&lt;-ch ok==false表示线程关闭</strong><br>但是写线程应该怎么做呢？在go里，<strong>如果向已经关闭的chan里写数据直接会造成panic错误</strong>，简单的讲就是宕机了。而我们又不能向读取那样去判断chan是否关闭，因为这样做的话很可能直接从chan中把内容读取了出来，但是我们是写线程，不期望在chan中取内容。所以不禁要问go为什么不提供向读取那样的接口，如果向chan中写内容不成功的话直接返回失败，这样就省了很多事了。但是没有这样的接口，于是只有曲线救国了。<br>1.首先想到的就是在chan关闭的时候记一个变量，每次在写chan的时候判断下这个变量就好了<br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">ch:=<span class="built_in">make</span>(<span class="keyword">chan</span> <span class="typename">int</span>)</span><br><span class="line">isclose:=<span class="constant">false</span></span><br><span class="line"><span class="keyword">go</span> <span class="keyword">func</span>(ch <span class="keyword">chan</span> <span class="typename">int</span>)&#123;</span><br><span class="line">  <span class="keyword">for</span>&#123;</span><br><span class="line"><span class="comment">//lock</span></span><br><span class="line">   <span class="keyword">if</span> isclose&#123;</span><br><span class="line">     <span class="keyword">break</span></span><br><span class="line">   &#125;</span><br><span class="line">   ch&lt;-<span class="number">1</span></span><br><span class="line"><span class="comment">//unlock</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">go</span> <span class="keyword">func</span>(ch <span class="keyword">chan</span> <span class="typename">int</span>)&#123;</span><br><span class="line">   <span class="keyword">for</span>&#123;</span><br><span class="line">    _,ok:=ch&lt;-ch</span><br><span class="line">    <span class="keyword">if</span> !ok&#123;</span><br><span class="line">      <span class="keyword">break</span></span><br><span class="line">    &#125;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line">time.Sleep(<span class="number">10</span>*time.Second)</span><br><span class="line"><span class="comment">//lock</span></span><br><span class="line">isclose=<span class="constant">true</span></span><br><span class="line"><span class="built_in">close</span>(ch)</span><br><span class="line"><span class="comment">//unlock</span></span><br></pre></td></tr></table></figure></p>
 <blockquote>
-<p>IsANewDay gettimeofday<br><a id="more"></a></p>
+<p>仔细想想会发现这样也是有问题的，因为判断chan是否关闭和向chan写入是两条语句，在多线程并发时就又可能发生：判断时chan还没关闭，但是开始写入的时候chan已经被其他线程关闭了，这样还是避免不了宕机。所以这样的话还必须在chan关闭时 还有（判断+写入）时加锁，上例里面要在写入线程的for循环里加锁和最后两句加锁。</p>
 </blockquote>
-<pre><code class="c++"><span class="preprocessor">#<span class="keyword">define</span> SECONDSOFONEDAY (<span class="number">24</span>*<span class="number">60</span>*<span class="number">60</span>)  </span>
-<span class="function"><span class="keyword">bool</span> <span class="title">IsANewDay</span><span class="params">(time_t tOldTime,  time_t tNewTime)</span>  
-</span>{  
-    <span class="keyword">int</span> iDayOld = <span class="keyword">static_cast</span>&lt;<span class="keyword">int</span>&gt;(tOldTime/SECONDSOFONEDAY);  
-    <span class="keyword">int</span> iDayNew = <span class="keyword">static_cast</span>&lt;<span class="keyword">int</span>&gt;(tNewTime/SECONDSOFONEDAY);  
-    <span class="keyword">if</span>(iDayNew &gt; iDayOld)  
-    {  
-        <span class="keyword">return</span> <span class="literal">true</span>;  
-    }  
-    <span class="keyword">else</span>  
-    {  
-        <span class="keyword">return</span> <span class="literal">false</span>;  
-    }  
-}
-</code></pre>
-<p>理论上来讲这样判断就可以了，但是仔细分析会发现这样的判断是以格林威治时间为标准的，也就是说计算的是从格林威治时间1970年1月1日00:00:00以来的第几天，但是我们实际需要计算的是对于我们当前时区来讲的第几天，所以直接用上述算法是有问题的。例如我们当前时区的时间是零点，正好是新的一天，但格林威治时间却还没到零点，这就差了一天，所以要修改算法，以当前时区来计算：</p>
-<pre><code class="c++"><span class="preprocessor">#<span class="keyword">define</span> SECONDSOFONEDAY (<span class="number">24</span>*<span class="number">60</span>*<span class="number">60</span>)  </span>
-<span class="function"><span class="keyword">bool</span> <span class="title">IsANewDay</span><span class="params">(time_t tOldTime,  time_t tNewTime)</span>  
-</span>{  
-    <span class="keyword">struct</span> timezone tvTimeZone;  
-    gettimeofday(<span class="literal">NULL</span>, &amp;tvTimeZone);  
-    <span class="keyword">int</span> iTimeZoneSeconds = (-tvTimeZone.tz_minuteswest*<span class="number">60</span>);  
-    <span class="keyword">int</span> iDayOld = <span class="keyword">static_cast</span>&lt;<span class="keyword">int</span>&gt;((tOldTime+iTimeZoneSeconds)/SECONDSOFONEDAY);  
-    <span class="keyword">int</span> iDayNew = <span class="keyword">static_cast</span>&lt;<span class="keyword">int</span>&gt;((tNewTime+iTimeZoneSeconds)/SECONDSOFONEDAY);  
-    <span class="keyword">if</span>(iDayNew &gt; iDayOld)  
-    {  
-        <span class="keyword">return</span> <span class="literal">true</span>;  
-    }  
-    <span class="keyword">else</span>  
-    {  
-        <span class="keyword">return</span> <span class="literal">false</span>;  
-    }  
-}
-</code></pre>
-<p>tvTimeZone.tz_minuteswest返回的是当前时区时间与格林威治时间时间差了多少分钟，所以用之前得到的秒数减去与格林威治时间相差的秒数就得到了当前时区对应的秒数，这样再除以一天的秒数就得到了正确的天数。其实有不少情况我们不想以零点来判断是否是新的一天，好比我们把凌晨5点当做分割线，凌晨5点之前是昨天，之后是新的一天，这时候再判断两个时间是不是新的一天又不一样了。其实改动也很小，只需要在原算法中加个偏移量就好了：</p>
-<pre><code class="c++"><span class="preprocessor">#<span class="keyword">define</span> SECONDSOFONEDAY (<span class="number">24</span>*<span class="number">60</span>*<span class="number">60</span>)  </span>
-<span class="function"><span class="keyword">bool</span> <span class="title">IsANewDay</span><span class="params">(time_t tOldTime,  time_t tNewTime, <span class="keyword">int</span> iOffSetTime)</span>  
-</span>{  
-    <span class="keyword">struct</span> timezone tvTimeZone;  
-    gettimeofday(<span class="literal">NULL</span>, &amp;tvTimeZone);  
-    <span class="keyword">int</span> iTimeZoneSeconds = (-tvTimeZone.tz_minuteswest*<span class="number">60</span>);  
-    <span class="keyword">int</span> iDayOld = <span class="keyword">static_cast</span>&lt;<span class="keyword">int</span>&gt;((tOldTime+iTimeZoneSeconds-iOffSetTime)/SECONDSOFONEDAY);  
-    <span class="keyword">int</span> iDayNew = <span class="keyword">static_cast</span>&lt;<span class="keyword">int</span>&gt;((tNewTime+iTimeZoneSeconds-iOffSetTime)/SECONDSOFONEDAY);  
-    <span class="keyword">if</span>(iDayNew &gt; iDayOld)  
-    {  
-        <span class="keyword">return</span> <span class="literal">true</span>;  
-    }  
-    <span class="keyword">else</span>  
-    {  
-        <span class="keyword">return</span> <span class="literal">false</span>;  
-    }  
-}
-</code></pre>
-<p>例如，IsANewDay(oldtime, newtime, 5<em>60</em>60)即返回相对于凌晨五点来讲oldtime和newtime是不是新的一天，我们得到的时间本来是相对于格林威治时间1970年1月1日00:00:00的秒数(相对于零点)，如果想以凌晨5点为标准的话，我们只需要计算相对于格林威治时间1970年1月1日05:00:00的秒数即可，所以把时间减去offsettime(5<em>60</em>60)就好了。</p>
+<p>2.使用waitgroup</p>
+<blockquote>
+<p>在线程写入前waitgroup.add(1) 写入后waitgroup.done()，同时在isclose=true和close(ch)之间调用waitgroup.wait()<br>这样也能实现chan的安全读写，但本质上也是加锁。</p>
+</blockquote>
+<p>3.使用chan和select<br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">ch:=<span class="built_in">make</span>(<span class="keyword">chan</span> <span class="typename">int</span>)</span><br><span class="line">isclose:=<span class="built_in">make</span>(<span class="keyword">chan</span> <span class="typename">int</span>)</span><br><span class="line"><span class="keyword">go</span> <span class="keyword">func</span>(ch <span class="keyword">chan</span> <span class="typename">int</span>)&#123;</span><br><span class="line">  <span class="keyword">for</span>&#123;</span><br><span class="line">        <span class="keyword">select</span> &#123;</span><br><span class="line">	<span class="keyword">case</span> &lt;-isclose:</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	<span class="keyword">case</span> ch&lt;-<span class="number">1</span>:</span><br><span class="line">		<span class="keyword">continue</span></span><br><span class="line">	&#125;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">go</span> <span class="keyword">func</span>(ch <span class="keyword">chan</span> <span class="typename">int</span>)&#123;</span><br><span class="line">  <span class="keyword">for</span>&#123;</span><br><span class="line">        <span class="keyword">select</span> &#123;</span><br><span class="line">	<span class="keyword">case</span> &lt;-isclose:</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	<span class="keyword">case</span> n&lt;-ch:</span><br><span class="line">		fmt.Println(n)</span><br><span class="line">	&#125;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line">time.Sleep(<span class="number">10</span>*time.Second)</span><br><span class="line"><span class="built_in">close</span>(isclose)</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>上面通过另外一个chan和select实现了对chan的安全读写，但是chan本身并没有被关闭，要等待gc回收……<br>其实select和chan操作本身也都是有锁的，只是锁的粒度不同</p>
+</blockquote>
   
 	</div>
 		<footer class="article-footer clearfix">
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/game/">game</a><a href="/tags/gettimeofday/">gettimeofday</a><a href="/tags/newday/">newday</a>
+  <span></span> <a href="/tags/chan/">chan</a>
   </div>
 
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/game/">game</a>
+  <a class="article-category-link" href="/categories/script/">script</a>
 </div>
 
 
 
 <div class="article-share" id="share">
 
-  <div data-url="http://sstask.github.io/2015/07/12/isanewday/" data-title="判断两个时间是不是同一天 | 叶子的博客" data-tsina="null" class="share clearfix">
+  <div data-url="http://sstask.github.io/2016/04/11/gochan/" data-title="go之chan | 叶子的博客" data-tsina="null" class="share clearfix">
   </div>
 
 </div>
@@ -188,19 +140,11 @@ IsANewDay gettimeofday">
 	
 <nav class="article-nav clearfix">
  
- <div class="prev" >
- <a href="/2015/07/16/innodbbuffer/" title="mysql Innodb缓存命中率">
-  <strong>PREVIOUS:</strong><br/>
-  <span>
-  mysql Innodb缓存命中率</span>
-</a>
-</div>
-
 
 <div class="next">
-<a href="/2015/07/06/gencdkey/"  title="cdkey和激活码的生成">
+<a href="/2016/04/07/rsyncfile/"  title="rsync同步文件">
  <strong>NEXT:</strong><br/> 
- <span>cdkey和激活码的生成
+ <span>rsync同步文件
 </span>
 </a>
 </div>
@@ -210,7 +154,7 @@ IsANewDay gettimeofday">
 	
 <section class="comment">
 	
-	<div class="ds-thread" data-title="判断两个时间是不是同一天" data-thread-key="isanewday" data-author-key="叶子与桔子" data-url="http://sstask.github.io/post/isanewday"></div>
+	<div class="ds-thread" data-title="go之chan" data-thread-key="gochan" data-author-key="叶子与桔子" data-url="http://sstask.github.io/post/gochan"></div>
 	
 </section>
 
@@ -220,7 +164,7 @@ IsANewDay gettimeofday">
 
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目錄</strong>
-  
+  <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#这里有个问题：线程如何知道chan是否已经关闭了，从而要结束自己的读写工作？"><span class="toc-number">1.</span> <span class="toc-text">这里有个问题：线程如何知道chan是否已经关闭了，从而要结束自己的读写工作？</span></a></li></ol>
   </div>
 
 <div id="asidepart">
