@@ -86,7 +86,7 @@
     </p>
   <p class="article-time">
     <time datetime="2016-04-11T12:41:41.000Z" itemprop="datePublished">Apr 11</time>
-    更新日期:<time datetime="2016-04-12T07:58:57.723Z" itemprop="dateModified">Apr 12</time>
+    更新日期:<time datetime="2016-04-13T02:50:36.777Z" itemprop="dateModified">Apr 13</time>
     
   </p>
 </header>
@@ -99,6 +99,7 @@
 		</div>
 		
 		<p>go语言中的chan非常关键，通过它go线程才能方面的进行通讯和数据交换。chan很像linux系统中的pipe管道，多线程可以同时向里面写信息和读取信息，而且不用加锁(向pipe中一次性写入数据大于一定量时还是要加锁的，而chan不需要)。<br>使用chan也很方便：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ch:=make(chan <span class="keyword">int</span>,<span class="number">5</span>) <span class="comment">//创建一个缓冲等于5的chan</span></span><br><span class="line">ch&lt;-<span class="number">1</span><span class="comment">//向chan中写入1</span></span><br><span class="line">n,ok&lt;-ch<span class="comment">//从chan中读取一个int到n，ok表示ch是否关闭</span></span><br></pre></td></tr></table></figure></p>
+<p>注意：<br><strong>1.已关闭的chan不会阻塞，向关闭的chan写入会panic，从关闭的chan读取会直接返回</strong><br><strong>2.等于nil的chan永远阻塞(读写操作都会阻塞)，但是select操作会忽略==nil的chan</strong></p>
 <p>可以把对chan的读写放在多个不同的线程里执行，如果没有数据可以读或者写线程则阻塞，直到收到可读写信号开始继续执行。</p>
 <h3 id="这里有个问题：线程如何知道chan是否已经关闭了，从而要结束自己的读写工作？">这里有个问题：线程如何知道chan是否已经关闭了，从而要结束自己的读写工作？</h3><p><strong>对于读线程很简单，就如上面的语句n,ok&lt;-ch ok==false表示线程关闭</strong><br>但是写线程应该怎么做呢？在go里，<strong>如果向已经关闭的chan里写数据直接会造成panic错误</strong>，简单的讲就是宕机了。而我们又不能向读取那样去判断chan是否关闭，因为这样做的话很可能直接从chan中把内容读取了出来，但是我们是写线程，不期望在chan中取内容。所以不禁要问go为什么不提供向读取那样的接口，如果向chan中写内容不成功的话直接返回失败，这样就省了很多事了。但是没有这样的接口，于是只有曲线救国了。<br>1.首先想到的就是在chan关闭的时候记一个变量，每次在写chan的时候判断下这个变量就好了<br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">ch:=<span class="built_in">make</span>(<span class="keyword">chan</span> <span class="typename">int</span>)</span><br><span class="line">isclose:=<span class="constant">false</span></span><br><span class="line"><span class="keyword">go</span> <span class="keyword">func</span>(ch <span class="keyword">chan</span> <span class="typename">int</span>)&#123;</span><br><span class="line">  <span class="keyword">for</span>&#123;</span><br><span class="line"><span class="comment">//lock</span></span><br><span class="line">   <span class="keyword">if</span> isclose&#123;</span><br><span class="line">     <span class="keyword">break</span></span><br><span class="line">   &#125;</span><br><span class="line">   ch&lt;-<span class="number">1</span></span><br><span class="line"><span class="comment">//unlock</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">go</span> <span class="keyword">func</span>(ch <span class="keyword">chan</span> <span class="typename">int</span>)&#123;</span><br><span class="line">   <span class="keyword">for</span>&#123;</span><br><span class="line">    _,ok:=ch&lt;-ch</span><br><span class="line">    <span class="keyword">if</span> !ok&#123;</span><br><span class="line">      <span class="keyword">break</span></span><br><span class="line">    &#125;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line">time.Sleep(<span class="number">10</span>*time.Second)</span><br><span class="line"><span class="comment">//lock</span></span><br><span class="line">isclose=<span class="constant">true</span></span><br><span class="line"><span class="built_in">close</span>(ch)</span><br><span class="line"><span class="comment">//unlock</span></span><br></pre></td></tr></table></figure></p>
 <blockquote>
@@ -112,6 +113,7 @@
 <blockquote>
 <p>上面通过另外一个chan和select实现了对chan的安全读写，但是chan本身并没有被关闭，要等待gc回收……<br>其实select和chan操作本身也都是有锁的，只是锁的粒度不同</p>
 </blockquote>
+<p>4.利用nil和select</p>
   
 	</div>
 		<footer class="article-footer clearfix">
