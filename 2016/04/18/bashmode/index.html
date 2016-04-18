@@ -7,12 +7,13 @@
   <meta name="360-site-verification" content="67fbcc5a67f4c65c057315b28fa0b2c8" />
 <meta name="google-site-verification" content="2GzxQ0VtXwTSUdmGm6DzcmhTzM_I9QmzCb_pzpMzD88" />
   
-    <title>linux添加新硬盘 | 叶子的博客</title>
+    <title>bash的四种模式 | 叶子的博客</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
     
     <meta name="author" content="叶子与桔子">
     
-    <meta name="description" content="在简化的linux系统中新加的硬盘不会被识别，要手动进行不些设置才能够使用，下面记录下设置方法。当你添加一块新硬盘后使用fdisk -l查看123456789101112131415161718192021Disk /dev/sda: 31.5 GB, 31457280000 bytes255 he">
+    <meta name="description" content="bash也是一种shell，根据interactive和login进行划分，它有四种模式：
+1. interactive-login shell 交互式登录shellinteractive即交互，用户可以输入命令与shell进行交互login即登录，简单来说就是需要输入用户名密码(或者其他凭证)的登">
     
     
     
@@ -78,15 +79,15 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2016/03/07/linuxadddisk/" title="linux添加新硬盘" itemprop="url">linux添加新硬盘</a>
+      <a href="/2016/04/18/bashmode/" title="bash的四种模式" itemprop="url">bash的四种模式</a>
   </h1>
   <p class="article-author">By
     
       <a href="http://sstask.github.io" title="叶子与桔子">叶子与桔子</a>
     </p>
   <p class="article-time">
-    <time datetime="2016-03-07T11:40:28.000Z" itemprop="datePublished">Mar 7</time>
-    更新日期:<time datetime="2016-03-07T12:38:10.972Z" itemprop="dateModified">Mar 7</time>
+    <time datetime="2016-04-18T11:59:26.000Z" itemprop="datePublished">Apr 18</time>
+    更新日期:<time datetime="2016-04-18T10:26:49.952Z" itemprop="dateModified">Apr 18</time>
     
   </p>
 </header>
@@ -95,25 +96,59 @@
 		
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目錄</strong>
-		
+		<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-_interactive-login_shell_交互式登录shell"><span class="toc-number">1.</span> <span class="toc-text">1. interactive-login shell 交互式登录shell</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-_non_interactive-login_shell_非交互式登录shell"><span class="toc-number">2.</span> <span class="toc-text">2. non_interactive-login shell 非交互式登录shell</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-_interactive-non_login_shell_交互式非登录shell"><span class="toc-number">3.</span> <span class="toc-text">3. interactive-non_login shell 交互式非登录shell</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-_non_interactive-non_login_shell_非交互式非登录shell"><span class="toc-number">4.</span> <span class="toc-text">4. non_interactive-non_login shell 非交互式非登录shell</span></a></li></ol>
 		</div>
 		
-		<p>在简化的linux系统中新加的硬盘不会被识别，要手动进行不些设置才能够使用，下面记录下设置方法。<br>当你添加一块新硬盘后使用<strong>fdisk -l</strong>查看<br><figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="label">Disk</span> /dev/sda: <span class="number">31</span>.<span class="number">5</span> GB, <span class="number">31457280000</span> <span class="keyword">bytes</span><br><span class="line"></span><span class="number">255</span> heads, <span class="number">63</span> sectors/track, <span class="number">3824</span> cylinders</span><br><span class="line"><span class="label">Units</span> = cylinders of <span class="number">16065</span> * <span class="number">512</span> = <span class="number">8225280</span> <span class="keyword">bytes</span><br><span class="line"></span><span class="label">Sector</span> size (logical/physical): <span class="number">512</span> <span class="keyword">bytes </span>/ <span class="number">512</span> <span class="keyword">bytes</span><br><span class="line"></span>I/O size (minimum/optimal): <span class="number">512</span> <span class="keyword">bytes </span>/ <span class="number">512</span> <span class="keyword">bytes</span><br><span class="line"></span><span class="label">Disk</span> identifier: <span class="number">0x000e00a8</span></span><br><span class="line"></span><br><span class="line">   Device <span class="keyword">Boot </span>     Start         <span class="preprocessor">End</span>      <span class="keyword">Blocks </span>  Id  System</span><br><span class="line">/dev/sda1   *           <span class="number">1</span>          <span class="number">64</span>      <span class="number">512000</span>   <span class="number">83</span>  Linux</span><br><span class="line"><span class="label">Partition</span> <span class="number">1</span> does not <span class="preprocessor">end</span> on cylinder <span class="keyword">boundary.</span><br><span class="line"></span>/dev/sda2              <span class="number">64</span>        <span class="number">1045</span>     <span class="number">7875584</span>   <span class="number">8</span>e  Linux LVM</span><br><span class="line">/dev/sda3            <span class="number">1045</span>        <span class="number">3824</span>    <span class="number">22327672</span>   <span class="number">83</span>  Linux</span><br><span class="line"></span><br><span class="line"><span class="label">Disk</span> /dev/sdb: <span class="number">137</span>.<span class="number">4</span> GB, <span class="number">137438953472</span> <span class="keyword">bytes</span><br><span class="line"></span><span class="number">255</span> heads, <span class="number">63</span> sectors/track, <span class="number">16709</span> cylinders</span><br><span class="line"><span class="label">Units</span> = cylinders of <span class="number">16065</span> * <span class="number">512</span> = <span class="number">8225280</span> <span class="keyword">bytes</span><br><span class="line"></span><span class="label">Sector</span> size (logical/physical): <span class="number">512</span> <span class="keyword">bytes </span>/ <span class="number">512</span> <span class="keyword">bytes</span><br><span class="line"></span>I/O size (minimum/optimal): <span class="number">512</span> <span class="keyword">bytes </span>/ <span class="number">512</span> <span class="keyword">bytes</span><br><span class="line"></span><span class="label">Disk</span> identifier: <span class="number">0x00000000</span></span><br><span class="line"></span><br><span class="line"><span class="label">Disk</span> /dev/sdb doesn<span class="string">'t contain a valid partition table</span></span><br></pre></td></tr></table></figure></p>
-<p><strong>Disk /dev/sdb</strong>这个就是我新加的硬盘，它后面会显示<em>doesn’t contain a valid partition table</em>错误，因为该盘尚未分区和挂载。<br>然后用<strong>fdisk /dev/sdb</strong>命令来进行分区，</p>
+		<p>bash也是一种shell，根据interactive和login进行划分，它有四种模式：</p>
+<h3 id="1-_interactive-login_shell_交互式登录shell">1. interactive-login shell 交互式登录shell</h3><p>interactive即交互，用户可以输入命令与shell进行交互<br>login即登录，简单来说就是需要输入用户名密码(或者其他凭证)的登录方式<br>这种模式的例子：</p>
 <blockquote>
-<p>1.输入n 创建一个新分区<br>2.输入p 代表主分区<br>3.输入1 表示1块<br>4.后面是大小，可以回车用默认的<br>5.输入w 保存</p>
+<ul>
+<li>用户直接登录机器获得的第一个shell</li>
+<li>ssh user@remot 获得的shell</li>
+</ul>
 </blockquote>
-<p>这时候用<strong>fdisk -l</strong>就能看见新的分区了<br><figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="label">Disk</span> /dev/sdb: <span class="number">137</span>.<span class="number">4</span> GB, <span class="number">137438953472</span> <span class="keyword">bytes</span><br><span class="line"></span><span class="number">255</span> heads, <span class="number">63</span> sectors/track, <span class="number">16709</span> cylinders</span><br><span class="line"><span class="label">Units</span> = cylinders of <span class="number">16065</span> * <span class="number">512</span> = <span class="number">8225280</span> <span class="keyword">bytes</span><br><span class="line"></span><span class="label">Sector</span> size (logical/physical): <span class="number">512</span> <span class="keyword">bytes </span>/ <span class="number">512</span> <span class="keyword">bytes</span><br><span class="line"></span>I/O size (minimum/optimal): <span class="number">512</span> <span class="keyword">bytes </span>/ <span class="number">512</span> <span class="keyword">bytes</span><br><span class="line"></span><span class="label">Disk</span> identifier: <span class="number">0xd06cae49</span></span><br><span class="line"></span><br><span class="line">   Device <span class="keyword">Boot </span>     Start         <span class="preprocessor">End</span>      <span class="keyword">Blocks </span>  Id  System</span><br><span class="line">/dev/sdb1               <span class="number">1</span>       <span class="number">16709</span>   <span class="number">134215011</span>   <span class="number">83</span>  Linux</span><br></pre></td></tr></table></figure></p>
-<p>分区之后开始格式化<strong> mkfs -t ext3 /dev/sdb1</strong><br>格式化之后我们需要把该盘挂载到一个目录下面，<strong>mount /dev/sdb1 /work</strong><br>挂载之后修改/etc/fstab文件完成开机自动挂载，即在文件中添加<br><strong>/dev/sdb1 /work      ext3    defaults        1 2</strong></p>
-<p>但是这块盘现在只有root用户有写权限，如果要让其他用户也可以读写则需要修改权限，<br><strong>chown -R user: /work改变所属者</strong>或者<strong>chmod -R 777 /work所有用户可读写</strong></p>
-<p>这样用着可能也不是很方便，因为你工作时需要使用新的目录/work，这时可以使用<strong>ln -s</strong>命令把新的硬盘目录软连接到你想放在的目录里面，<br>例如<strong>ln -s /work /home/xxx</strong>，这样就可以在自己熟悉的地方使用新的硬盘了</p>
+<p>这种模式下加载配置文件的顺序</p>
+<ol>
+<li>/etc/profile 加载系统配置</li>
+<li>~/.bash_profile ~/.bash_login ~/.profile 按顺序查找这三个个人配置文件，如果执行成功其中一个则返回(三个中只会有一个被执行)</li>
+</ol>
+<h3 id="2-_non_interactive-login_shell_非交互式登录shell">2. non_interactive-login shell 非交互式登录shell</h3><p>这种模式不常见<br>一个例子：</p>
+<blockquote>
+<p>bash -l script.sh<br>-l表示将shell作为一个登录shell启动</p>
+</blockquote>
+<p>配置文件加载顺序同1</p>
+<h3 id="3-_interactive-non_login_shell_交互式非登录shell">3. interactive-non_login shell 交互式非登录shell</h3><p>在登录shell中再打开一个shell就属于这种模式,例子</p>
+<blockquote>
+<ul>
+<li>shell命令行执行bash<ul>
+<li>在图形化界面中打开terminal</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<p>这种模式下加载配置文件的顺序</p>
+<ol>
+<li>/etc/bash.bashrc</li>
+<li>~/.bashrc</li>
+</ol>
+<h3 id="4-_non_interactive-non_login_shell_非交互式非登录shell">4. non_interactive-non_login shell 非交互式非登录shell</h3><p>这种模式挺常见的，例子：</p>
+<blockquote>
+<ul>
+<li>bash script.sh</li>
+<li>ssh user@remote command</li>
+</ul>
+</blockquote>
+<p>这种模式它会寻找变量<strong>BASH_ENV</strong>，将变量的值作为文件名进行查找，如果找到便加载它。<br><figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="label">export</span> <span class="keyword">BASH_ENV=~/.bashrc</span><br><span class="line"></span><span class="keyword">bash </span>script.sh</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p><strong>我们时常远程执行脚本或者使用非登录用户执行脚本时会遇到缺少环境变量的问题，其实就是因为我们使用的是非交互式非登录shell，这种模式下配置文件都没有加载，所以我们要在执行脚本命令之前先加载配置，即在脚本最上面添加</strong><br><figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">source</span> <span class="regexp">/etc/</span>profile</span><br><span class="line"><span class="keyword">source</span> ~<span class="regexp">/.bash_profile</span></span><br></pre></td></tr></table></figure></p>
+</blockquote>
   
 	</div>
 		<footer class="article-footer clearfix">
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/mount/">mount</a>
+  <span></span> <a href="/tags/bash/">bash</a>
   </div>
 
 
@@ -126,7 +161,7 @@
 
 <div class="article-share" id="share">
 
-  <div data-url="http://sstask.github.io/2016/03/07/linuxadddisk/" data-title="linux添加新硬盘 | 叶子的博客" data-tsina="null" class="share clearfix">
+  <div data-url="http://sstask.github.io/2016/04/18/bashmode/" data-title="bash的四种模式 | 叶子的博客" data-tsina="null" class="share clearfix">
   </div>
 
 </div>
@@ -135,19 +170,11 @@
 	
 <nav class="article-nav clearfix">
  
- <div class="prev" >
- <a href="/2016/03/18/goabout/" title="go相关">
-  <strong>PREVIOUS:</strong><br/>
-  <span>
-  go相关</span>
-</a>
-</div>
-
 
 <div class="next">
-<a href="/2016/02/21/installmysql/"  title="mysql主从服务器安装脚本">
+<a href="/2016/04/14/goreflect/"  title="go之reflect">
  <strong>NEXT:</strong><br/> 
- <span>mysql主从服务器安装脚本
+ <span>go之reflect
 </span>
 </a>
 </div>
@@ -157,7 +184,7 @@
 	
 <section class="comment">
 	
-	<div class="ds-thread" data-title="linux添加新硬盘" data-thread-key="linuxadddisk" data-author-key="叶子与桔子" data-url="http://sstask.github.io/post/linuxadddisk"></div>
+	<div class="ds-thread" data-title="bash的四种模式" data-thread-key="bashmode" data-author-key="叶子与桔子" data-url="http://sstask.github.io/post/bashmode"></div>
 	
 </section>
 
@@ -167,7 +194,7 @@
 
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目錄</strong>
-  
+  <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-_interactive-login_shell_交互式登录shell"><span class="toc-number">1.</span> <span class="toc-text">1. interactive-login shell 交互式登录shell</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-_non_interactive-login_shell_非交互式登录shell"><span class="toc-number">2.</span> <span class="toc-text">2. non_interactive-login shell 非交互式登录shell</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-_interactive-non_login_shell_交互式非登录shell"><span class="toc-number">3.</span> <span class="toc-text">3. interactive-non_login shell 交互式非登录shell</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-_non_interactive-non_login_shell_非交互式非登录shell"><span class="toc-number">4.</span> <span class="toc-text">4. non_interactive-non_login shell 非交互式非登录shell</span></a></li></ol>
   </div>
 
 <div id="asidepart">
