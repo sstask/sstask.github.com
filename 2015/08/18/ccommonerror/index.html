@@ -87,7 +87,7 @@
     </p>
   <p class="article-time">
     <time datetime="2015-08-18T11:31:43.000Z" itemprop="datePublished">Aug 18</time>
-    更新日期:<time datetime="2016-01-14T11:48:03.661Z" itemprop="dateModified">Jan 14</time>
+    更新日期:<time datetime="2016-04-21T09:52:15.100Z" itemprop="dateModified">Apr 21</time>
     
   </p>
 </header>
@@ -131,6 +131,10 @@
 <p>作为函数参数const string&amp;是兼容const char*的，所以一般情况下使用const string&amp;就好了(虽然相比效率可能低那么一点)，但是有时候也不好使。<br><figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span>&#123;</span></span><br><span class="line"><span class="symbol">public:</span></span><br><span class="line"><span class="constant">A</span>(const string&amp;);</span><br><span class="line">&#125;;</span><br><span class="line">void <span class="function"><span class="keyword">fun</span>(<span class="title">const</span></span> <span class="constant">A</span>&amp; a)&#123;&#125;</span><br></pre></td></tr></table></figure></p>
 </blockquote>
 <p>此时调用fun(“xx”);失败，如果添加构造函数A(const char*);则会调用成功。或者调用fun(A(“xx”));</p>
+<p><strong>8.类成员初始化</strong></p>
+<blockquote>
+<p>用初始化列表进行类成员初始化的时候，初始化列表中成员变量的顺序要和类定义里面成员变量的顺序保持一致，否则将有警告产生。</p>
+</blockquote>
   
 	</div>
 		<footer class="article-footer clearfix">
