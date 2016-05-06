@@ -7,18 +7,12 @@
   <meta name="360-site-verification" content="67fbcc5a67f4c65c057315b28fa0b2c8" />
 <meta name="google-site-verification" content="2GzxQ0VtXwTSUdmGm6DzcmhTzM_I9QmzCb_pzpMzD88" />
   
-    <title>python相关 | 叶子的博客</title>
+    <title>go指针 | 叶子的博客</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
     
     <meta name="author" content="叶子与桔子">
     
-    <meta name="description" content="python安装
-
-yum install python
-
-pip安装
-
-wget https://bootstrap.pypa.io/get-pip.pypython get-pip.py">
+    <meta name="description" content="go语言里虽然也有指针的概念，但他的指针不能像C++的那样进行指针加减运算、不同类型指针赋值等操作，他只能在相同类型间赋值。这样做的好处是安全，因为你除了能把这个指针指向其他同类型的值之外你不能对它进行任何改变。但这样同时也失去了指针的灵活性，少了很多操作的空间。所以packet unsafe提供了">
     
     
     
@@ -84,15 +78,15 @@ wget https://bootstrap.pypa.io/get-pip.pypython get-pip.py">
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2015/12/26/aboutpython/" title="python相关" itemprop="url">python相关</a>
+      <a href="/2016/05/06/gounsafe/" title="go指针" itemprop="url">go指针</a>
   </h1>
   <p class="article-author">By
     
       <a href="http://sstask.github.io" title="叶子与桔子">叶子与桔子</a>
     </p>
   <p class="article-time">
-    <time datetime="2015-12-26T07:52:44.000Z" itemprop="datePublished">Dec 26</time>
-    更新日期:<time datetime="2016-01-06T12:44:55.664Z" itemprop="dateModified">Jan 6</time>
+    <time datetime="2016-05-06T05:09:56.000Z" itemprop="datePublished">May 6</time>
+    更新日期:<time datetime="2016-05-06T05:31:34.928Z" itemprop="dateModified">May 6</time>
     
   </p>
 </header>
@@ -104,17 +98,18 @@ wget https://bootstrap.pypa.io/get-pip.pypython get-pip.py">
 		
 		</div>
 		
-		<p><strong>python安装</strong></p>
+		<p>go语言里虽然也有指针的概念，但他的指针不能像C++的那样进行指针加减运算、不同类型指针赋值等操作，他只能在相同类型间赋值。这样做的好处是安全，因为你除了能把这个指针指向其他同类型的值之外你不能对它进行任何改变。但这样同时也失去了指针的灵活性，少了很多操作的空间。<br>所以packet unsafe提供了这种机制，让你更自由的去操作指针。</p>
 <blockquote>
-<p>yum install python</p>
+<p><strong>unsafe.Pointer就像c++里面的void*，你可以把任意类型的指针转换成unsafe.Pointer，同时也可以把unsafe.Pointer转换成任意的类型。</strong></p>
 </blockquote>
-<p><strong>pip安装</strong></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">"unsafe"</span></span><br><span class="line">)</span><br><span class="line"><span class="keyword">type</span> test <span class="keyword">struct</span> &#123;</span><br><span class="line">	I <span class="typename">int</span></span><br><span class="line">        J <span class="typename">int</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">func</span> main() &#123;</span><br><span class="line">    a := test&#123;<span class="number">1</span>&#125;</span><br><span class="line">    <span class="keyword">var</span> i *<span class="typename">int</span> = (*<span class="typename">int</span>)(unsafe.Pointer(&amp;a))</span><br><span class="line">    *i = <span class="number">6</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>但是unsafe.Pointer是不能做算术运算的，它的功能就是实现各种类型之间的转换。</p>
 <blockquote>
-<p>wget <a href="https://bootstrap.pypa.io/get-pip.py" target="_blank" rel="external">https://bootstrap.pypa.io/get-pip.py</a><br>python get-pip.py<br><a id="more"></a></p>
+<p><strong>uintptr可以进行算术运行，它的底层类型是int，关键是它可以和unsafe.Pointer相互转换。</strong></p>
 </blockquote>
-<p><strong>执行外部命令</strong></p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">import (</span><br><span class="line">    <span class="string">"unsafe"</span></span><br><span class="line">)</span><br><span class="line">type test <span class="keyword">struct</span> &#123;</span><br><span class="line">	I <span class="keyword">int</span></span><br><span class="line">        J <span class="keyword">int</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function">func <span class="title">main</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    a := test&#123;<span class="number">1</span>&#125;</span><br><span class="line">    <span class="keyword">var</span> i *<span class="keyword">int</span> = (*<span class="keyword">int</span>)(<span class="keyword">unsafe</span>.Pointer(&amp;a))</span><br><span class="line">    *i = <span class="number">6</span></span><br><span class="line">    <span class="keyword">var</span> j *<span class="keyword">int</span> = (*<span class="keyword">int</span>)(<span class="keyword">unsafe</span>.Pointer(uintptr(&amp;a) + <span class="keyword">unsafe</span>.Offsetof(a.J)))</span><br><span class="line">    *j = <span class="number">8</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <blockquote>
-<p>import commands<br>status, output = commands.getstatusoutput(“ls”)<br>print status, output</p>
+<p>unsafe文档里的说明：<br><strong>A pointer value of any type can be converted to a Pointer.<br>A Pointer can be converted to a pointer value of any type.<br>A uintptr can be converted to a Pointer.<br>A Pointer can be converted to a uintptr.</strong></p>
 </blockquote>
   
 	</div>
@@ -122,7 +117,7 @@ wget https://bootstrap.pypa.io/get-pip.pypython get-pip.py">
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/pip/">pip</a><a href="/tags/python/">python</a>
+  <span></span> <a href="/tags/go/">go</a><a href="/tags/pointer/">pointer</a><a href="/tags/unsafe/">unsafe</a>
   </div>
 
 
@@ -135,7 +130,7 @@ wget https://bootstrap.pypa.io/get-pip.pypython get-pip.py">
 
 <div class="article-share" id="share">
 
-  <div data-url="http://sstask.github.io/2015/12/26/aboutpython/" data-title="python相关 | 叶子的博客" data-tsina="null" class="share clearfix">
+  <div data-url="http://sstask.github.io/2016/05/06/gounsafe/" data-title="go指针 | 叶子的博客" data-tsina="null" class="share clearfix">
   </div>
 
 </div>
@@ -144,19 +139,11 @@ wget https://bootstrap.pypa.io/get-pip.pypython get-pip.py">
 	
 <nav class="article-nav clearfix">
  
- <div class="prev" >
- <a href="/2016/01/06/aboutlua/" title="lua相关">
-  <strong>PREVIOUS:</strong><br/>
-  <span>
-  lua相关</span>
-</a>
-</div>
-
 
 <div class="next">
-<a href="/2015/12/26/linuxoperations/"  title="linux运维相关">
+<a href="/2016/04/18/bashmode/"  title="bash的四种模式">
  <strong>NEXT:</strong><br/> 
- <span>linux运维相关
+ <span>bash的四种模式
 </span>
 </a>
 </div>
@@ -166,7 +153,7 @@ wget https://bootstrap.pypa.io/get-pip.pypython get-pip.py">
 	
 <section class="comment">
 	
-	<div class="ds-thread" data-title="python相关" data-thread-key="aboutpython" data-author-key="叶子与桔子" data-url="http://sstask.github.io/post/aboutpython"></div>
+	<div class="ds-thread" data-title="go指针" data-thread-key="gounsafe" data-author-key="叶子与桔子" data-url="http://sstask.github.io/post/gounsafe"></div>
 	
 </section>
 
