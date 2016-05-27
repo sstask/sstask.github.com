@@ -7,16 +7,12 @@
   <meta name="360-site-verification" content="67fbcc5a67f4c65c057315b28fa0b2c8" />
 <meta name="google-site-verification" content="2GzxQ0VtXwTSUdmGm6DzcmhTzM_I9QmzCb_pzpMzD88" />
   
-    <title>php之文件操作 | 叶子的博客</title>
+    <title>go之value、Type小记 | 叶子的博客</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
     
     <meta name="author" content="叶子与桔子">
     
-    <meta name="description" content="前面说了为了能够方便的通过网页对博客进行修改，我想用php搭个平台，实现对博客的修改发布等等。我的博客有个独立的用户hexo，博客的所有文件都在这个用户下，hexo的环境也在这个用户下，所以基本上就是对hexo这个用户文件的操作。php默认只能对其本目录文件进行操作，即/var/www/html/目录，对其他目录没有访问权限，所以要想操作hexo用户的文件，必须就行权限设置。文件操作之权限设置
-
-php之所以不能操作hexo用户下的文件，是因为httpd是通过用户Apache来运行的，Apache并没有权限去访问用户hexo的文件。简单起见我直接把httpd改成以hexo用户权限来运行就好了，这样httpd即php就有了hexo用户的所有权限，即：vim /etc/httpd/conf/httpd.conf 修改User Group选项
-
-123456#  don&#39;t use Group #-1 on these systems!#User  hexo Group work ### Section 2: &#39;Main&#39; server configuration">
+    <meta name="description" content="go语言里面没有类似template的东西，也没有函数重载和函数默认参数，所以要实现一些功能时需要借助interface{}和reflect，下面记录一些用法。1.interface{} 实现要接纳多种类型的参数，好似templateinterface{}能够接纳所以类型，但是用的时候要判断实际的类">
     
     
     
@@ -82,15 +78,15 @@ php之所以不能操作hexo用户下的文件，是因为httpd是通过用户Ap
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2015/10/31/phpfile/" title="php之文件操作" itemprop="url">php之文件操作</a>
+      <a href="/2016/05/26/govalue/" title="go之value、Type小记" itemprop="url">go之value、Type小记</a>
   </h1>
   <p class="article-author">By
     
       <a href="http://sstask.github.io" title="叶子与桔子">叶子与桔子</a>
     </p>
   <p class="article-time">
-    <time datetime="2015-10-31T10:13:06.000Z" itemprop="datePublished">Oct 31</time>
-    更新日期:<time datetime="2015-11-01T15:02:16.668Z" itemprop="dateModified">Nov 1</time>
+    <time datetime="2016-05-26T11:53:00.000Z" itemprop="datePublished">May 26</time>
+    更新日期:<time datetime="2016-05-27T01:52:02.445Z" itemprop="dateModified">May 27</time>
     
   </p>
 </header>
@@ -102,42 +98,38 @@ php之所以不能操作hexo用户下的文件，是因为httpd是通过用户Ap
 		
 		</div>
 		
-		<p>前面说了为了能够方便的通过网页对博客进行修改，我想用php搭个平台，实现对博客的修改发布等等。<br>我的博客有个独立的用户hexo，博客的所有文件都在这个用户下，hexo的环境也在这个用户下，所以基本上就是对hexo这个用户文件的操作。php默认只能对其本目录文件进行操作，即/var/www/html/目录，对其他目录没有访问权限，所以要想操作hexo用户的文件，必须就行权限设置。<br><strong>文件操作之权限设置</strong></p>
-<blockquote>
-<p>php之所以不能操作hexo用户下的文件，是因为httpd是通过用户Apache来运行的，Apache并没有权限去访问用户hexo的文件。<br>简单起见我直接把httpd改成以hexo用户权限来运行就好了，这样httpd即php就有了hexo用户的所有权限，即：<br>vim /etc/httpd/conf/httpd.conf 修改User Group选项</p>
-</blockquote>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#  don't <span class="operator"><span class="keyword">use</span> <span class="keyword">Group</span> #-<span class="number">1</span> <span class="keyword">on</span> these systems!</span><br><span class="line">#</span><br><span class="line"><span class="keyword">User</span>  hexo </span><br><span class="line"><span class="keyword">Group</span> <span class="keyword">work</span> </span><br><span class="line"></span><br><span class="line">### <span class="keyword">Section</span> <span class="number">2</span>: <span class="string">'Main'</span> <span class="keyword">server</span> configuration</span></span><br></pre></td></tr></table></figure>
-<a id="more"></a>
-<blockquote>
-<p>我的php文件也都是在hexo用户下编写的，然后复制到/var/www/html/目录下，为了方便操作直接把/var/www/html/目录设置成hexo用户的，即<br>chown -R hexo: /var/www/html/<br>而且注意php session存放的目录也要改成hexo用户权限，即<br>chown -R hexo: /var/lib/php/session</p>
-</blockquote>
-<p><strong>文件操作之目录遍历</strong><br><figure class="highlight xquery"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php </span><br><span class="line"><span class="variable">$path</span>=<span class="string">"/home/hexo/blog/source/_posts/"</span>;</span><br><span class="line"><span class="variable">$files</span>=scandir(<span class="variable">$path</span>); </span><br><span class="line"><span class="keyword">function</span> dirfilt(<span class="variable">$file</span>)&#123;</span><br><span class="line">   return !is_dir(<span class="variable">$file</span>);</span><br><span class="line">&#125;   </span><br><span class="line"><span class="variable">$files</span>=array_filter(<span class="variable">$files</span>,<span class="string">"dirfilt"</span>); </span><br><span class="line">echo count(<span class="variable">$files</span>); ?&gt;</span><br></pre></td></tr></table></figure></p>
-<p><strong>文件操作之读文件</strong><br><figure class="highlight xquery"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"><span class="variable">$path</span>=<span class="string">"/home/hexo/blog/source/_posts/"</span>;</span><br><span class="line"><span class="variable">$p</span>=strpos($_SERVER[<span class="string">'REQUEST_URI'</span>], <span class="string">'filename='</span>);</span><br><span class="line"><span class="variable">$fileName</span> = substr($_SERVER[<span class="string">'REQUEST_URI'</span>],<span class="variable">$p</span>+<span class="number">9</span>);</span><br><span class="line"><span class="keyword">if</span>(!file_exists(<span class="variable">$path</span>.<span class="variable">$fileName</span>))&#123;</span><br><span class="line">    <span class="variable">$cmd</span>=<span class="string">"cd /home/hexo/blog &amp;&amp; hexo new "</span>.<span class="variable">$fileName</span>;</span><br><span class="line">    exec(<span class="variable">$cmd</span>);</span><br><span class="line">    <span class="variable">$fileName</span>=<span class="variable">$fileName</span>.<span class="string">".md"</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="variable">$handle</span> = fopen(<span class="variable">$path</span>.<span class="variable">$fileName</span>, <span class="string">"r"</span>);</span><br><span class="line"><span class="keyword">while</span> (!feof(<span class="variable">$handle</span>))&#123;</span><br><span class="line">    <span class="variable">$text</span> = fgets(<span class="variable">$handle</span>);</span><br><span class="line">    echo <span class="variable">$text</span>;</span><br><span class="line">&#125;</span><br><span class="line">fclose(<span class="variable">$handle</span>);</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure></p>
-<p><strong>文件操作之写文件</strong><br><figure class="highlight xquery"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">    <span class="variable">$path</span>=<span class="string">"/home/hexo/blog/source/_posts/"</span>;</span><br><span class="line">    <span class="variable">$handle</span>=fopen(<span class="variable">$path</span>.$_POST[<span class="string">'file_name'</span>], <span class="string">"w"</span>);</span><br><span class="line">    <span class="variable">$text</span>=$_POST[<span class="string">'file_contents'</span>];</span><br><span class="line">    fwrite(<span class="variable">$handle</span>,<span class="variable">$text</span>);</span><br><span class="line">    fclose(<span class="variable">$handle</span>);</span><br><span class="line">    echo <span class="string">"end write......&lt;br/&gt;\n"</span>;</span><br><span class="line">    header(<span class="string">"refresh:3;url=file.php"</span>);</span><br><span class="line">    print(<span class="string">'处理完成，请稍等...&lt;br&gt;3秒后自动跳转。'</span>);</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure></p>
-<p><strong>文件操作之执行脚本</strong><br><figure class="highlight xquery"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"><span class="variable">$cmd</span>=<span class="string">"cd /home/hexo/blog &amp;&amp; /home/hexo/blog/hexo.py b"</span>;</span><br><span class="line"><span class="variable">$handle</span> = popen(<span class="variable">$cmd</span>, <span class="string">'r'</span>);</span><br><span class="line"><span class="keyword">while</span>(!feof(<span class="variable">$handle</span>)) &#123;</span><br><span class="line">   <span class="variable">$buffer</span> = fgets(<span class="variable">$handle</span>);</span><br><span class="line">   echo <span class="string">"$buffer&lt;br/&gt;\n"</span>;</span><br><span class="line">   ob_flush();</span><br><span class="line">   flush();</span><br><span class="line">&#125;   </span><br><span class="line">pclose(<span class="variable">$handle</span>);</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure></p>
-<blockquote>
-<p>这里需要注意，php的执行环境与用户直接登录的环境是不同的，用户登录是有shell打开的，php运行环境似乎没有；<br>在我调用第三方程序或脚本的时候/usr/local/bin目录下的程序必须用绝对路径调用，相对路径找不到程序，这是因为\$path里并没有包含路径/usr/local/bin，所以找不到命令，但用户直接登录时\$path包含了该路径，可以直接运行;<br>alias命令好像也没法执行，好比ll命令要换成ls -l命令才可以正确执行。</p>
-</blockquote>
+		<p>go语言里面没有类似template的东西，也没有函数重载和函数默认参数，所以要实现一些功能时需要借助interface{}和reflect，下面记录一些用法。<br>1.interface{} 实现要接纳多种类型的参数，好似template<br>interface{}能够接纳所以类型，但是用的时候要判断实际的类型进行不同的处理，一般用switch .(type)来判断，例如：<br><figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">func Test(i <span class="keyword">interface</span>&#123;&#125;) &#123;</span><br><span class="line">	<span class="keyword">switch</span> v := i.(type) &#123;</span><br><span class="line">	<span class="keyword">case</span> <span class="keyword">int</span>:</span><br><span class="line">		fmt.<span class="keyword">Println</span>(<span class="string">"int"</span>, v)</span><br><span class="line">	<span class="keyword">case</span> *<span class="keyword">int</span>:</span><br><span class="line">		fmt.<span class="keyword">Println</span>(<span class="string">"*int"</span>, v)</span><br><span class="line">	<span class="keyword">case</span> []<span class="keyword">byte</span>:</span><br><span class="line">		fmt.<span class="keyword">Println</span>(<span class="string">"[]byte"</span>, v)</span><br><span class="line">	<span class="keyword">default</span>:</span><br><span class="line">		fmt.<span class="keyword">Println</span>(<span class="string">"unkown"</span>)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>也可以利用refect.TypeOf来判断，例如：<br><figure class="highlight autoit"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Test1</span><span class="params">(i interface&#123;&#125;)</span> &#123;</span></span><br><span class="line">	ityp := reflect.TypeOf(i)</span><br><span class="line">	<span class="keyword">if</span> ityp.Kind() == reflect.<span class="built_in">Int</span> &#123;</span><br><span class="line">		fmt.Println(<span class="string">"int"</span>, i.(<span class="built_in">int</span>))</span><br><span class="line">	&#125; <span class="keyword">else</span> <span class="keyword">if</span> ityp.Kind() == reflect.<span class="built_in">Ptr</span> &amp;&amp; ityp.Elem().Kind() == reflect.<span class="built_in">Int</span> &#123;</span><br><span class="line">		fmt.Println(<span class="string">"*int"</span>, i.(*<span class="built_in">int</span>))</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>2.根据Type创建新值<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ityp := reflect.<span class="function"><span class="title">TypeOf</span><span class="params">(i)</span></span></span><br><span class="line">val := reflect.<span class="function"><span class="title">New</span><span class="params">(ityp )</span></span>.<span class="function"><span class="title">Interface</span><span class="params">()</span></span></span><br></pre></td></tr></table></figure></p>
+<p>3.获取Struct成员地址<br><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="rule"><span class="attribute">i</span>:<span class="value">=&amp;Struct&#123;XXX&#125;</span><br><span class="line">vals:=reflect.<span class="function">ValueOf</span>(i).<span class="function">Elem</span>()</span><br><span class="line">ptr:=vals.<span class="function">FieldByName</span>(<span class="string">"x"</span>).<span class="function">Addr</span>().<span class="function">Interface</span>()</span></span></span><br></pre></td></tr></table></figure></p>
+<p>4.遍历interface{}参数slice<br><figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">func InterfaceSlice(slice inteface&#123;&#125;) []<span class="class"><span class="keyword">interface</span>&#123;</span>&#125; &#123;</span><br><span class="line">    <span class="string">s :</span>= reflect.ValueOf(slice)</span><br><span class="line">    <span class="keyword">if</span> s.Kind() != reflect.Slice &#123;</span><br><span class="line">        panic(<span class="string">"InterfaceSlice() given a non-slice type"</span>)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="string">ret :</span>= make([]<span class="class"><span class="keyword">interface</span>&#123;</span>&#125;, s.Len())</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> <span class="string">i:</span>=<span class="number">0</span>; i&lt;s.Len(); i++ &#123;</span><br><span class="line">        ret[i] = s.Index(i).Interface()</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> ret</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>5.赋值<br><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">func</span> <span class="tag">Test</span>(<span class="tag">i</span> <span class="tag">interface</span><span class="rules">&#123;&#125;</span>, <span class="tag">j</span> <span class="tag">interface</span><span class="rules">&#123;&#125;</span>) <span class="rules">&#123;</span><br><span class="line">	<span class="rule"><span class="attribute">iv </span>:<span class="value">= reflect.<span class="function">ValueOf</span>(i)</span><br><span class="line">	jv := reflect.<span class="function">ValueOf</span>(j)</span><br><span class="line">	if iv.<span class="function">Kind</span>() != reflect.Ptr || jv.<span class="function">Kind</span>() != reflect.Ptr &#123;</span><br><span class="line">		<span class="function">panic</span>(<span class="string">"should be a pointer"</span>)</span><br><span class="line">	&#125;</span><br><span class="line">	iv.<span class="function">Elem</span>().<span class="function">Set</span>(jv.<span class="function">Elem</span>())</span><br><span class="line">&#125;</span></span></span></span><br></pre></td></tr></table></figure></p>
+<p>6.杂</p>
+<ul>
+<li>i:=[]interface{}如果想获得i里面元素的类型，reflect.TypeOf(i).Elem()这样是不行的，它会返回interface{}，需使用reflect.TypeOf(reflect.ValueOf(i).Index(0).Interface())</li>
+<li>// Elem returns a type’s element type.<br>  // It panics if the type’s Kind is not Array, Chan, Map, Ptr, or Slice.<br>  Elem() Type</li>
+<li>// Elem returns the value that the interface v contains<br>// or that the pointer v points to.<br>// It panics if v’s Kind is not Interface or Ptr.<br>// It returns the zero Value if v is nil.<br>Elem() Value</li>
+</ul>
   
 	</div>
 		<footer class="article-footer clearfix">
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/file/">file</a><a href="/tags/php/">php</a>
+  <span></span> <a href="/tags/go/">go</a><a href="/tags/reflect/">reflect</a>
   </div>
 
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/杂/">杂</a>
+  <a class="article-category-link" href="/categories/script/">script</a>
 </div>
 
 
 
 <div class="article-share" id="share">
 
-  <div data-url="http://sstask.github.io/2015/10/31/phpfile/" data-title="php之文件操作 | 叶子的博客" data-tsina="null" class="share clearfix">
+  <div data-url="http://sstask.github.io/2016/05/26/govalue/" data-title="go之value、Type小记 | 叶子的博客" data-tsina="null" class="share clearfix">
   </div>
 
 </div>
@@ -146,19 +138,11 @@ php之所以不能操作hexo用户下的文件，是因为httpd是通过用户Ap
 	
 <nav class="article-nav clearfix">
  
- <div class="prev" >
- <a href="/2015/11/03/mysqlbackup/" title="mysql多实例主从备份">
-  <strong>PREVIOUS:</strong><br/>
-  <span>
-  mysql多实例主从备份</span>
-</a>
-</div>
-
 
 <div class="next">
-<a href="/2015/10/29/simplephp/"  title="php之访问控制">
+<a href="/2016/05/06/gounsafe/"  title="go指针">
  <strong>NEXT:</strong><br/> 
- <span>php之访问控制
+ <span>go指针
 </span>
 </a>
 </div>
@@ -168,7 +152,7 @@ php之所以不能操作hexo用户下的文件，是因为httpd是通过用户Ap
 	
 <section class="comment">
 	
-	<div class="ds-thread" data-title="php之文件操作" data-thread-key="phpfile" data-author-key="叶子与桔子" data-url="http://sstask.github.io/post/phpfile"></div>
+	<div class="ds-thread" data-title="go之value、Type小记" data-thread-key="govalue" data-author-key="叶子与桔子" data-url="http://sstask.github.io/post/govalue"></div>
 	
 </section>
 
