@@ -7,14 +7,15 @@
   <meta name="360-site-verification" content="67fbcc5a67f4c65c057315b28fa0b2c8" />
 <meta name="google-site-verification" content="2GzxQ0VtXwTSUdmGm6DzcmhTzM_I9QmzCb_pzpMzD88" />
   
-    <title>一些mysql语句 | 叶子的博客</title>
+    <title>shell简记 | 叶子的博客</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
     
     <meta name="author" content="叶子与桔子">
     
-    <meta name="description" content="创建新表
+    <meta name="description" content="1. 判断条件1234if [ expr ]; thenelif [ expr ]; thenelsefi
 
-CREATE TABLE IF NOT EXISTS TAB(    id INT(10) UNSIGNED NOT NULL,    name VARCHAR(255),    grade INT(10) UNSIGNED NOT NULL,    PRIMARY KEY id) ENGINE=InnoDB DEFAULT CHARSET=utf8;">
+字符串判断
+[ str1 = str2 ]　　　　　　当两个串有相同内容、长度时为真[ str1 != str2 ]　　　　　  当串str1和str2不等时为真[ -n str1 ]　　　">
     
     
     
@@ -80,15 +81,15 @@ CREATE TABLE IF NOT EXISTS TAB(    id INT(10) UNSIGNED NOT NULL,    name VARCHAR
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2015/07/23/sqlcmds/" title="一些mysql语句" itemprop="url">一些mysql语句</a>
+      <a href="/2016/05/30/simpleshell/" title="shell简记" itemprop="url">shell简记</a>
   </h1>
   <p class="article-author">By
     
       <a href="http://sstask.github.io" title="叶子与桔子">叶子与桔子</a>
     </p>
   <p class="article-time">
-    <time datetime="2015-07-23T12:13:01.000Z" itemprop="datePublished">Jul 23</time>
-    更新日期:<time datetime="2015-10-29T02:14:31.871Z" itemprop="dateModified">Oct 29</time>
+    <time datetime="2016-05-30T11:35:54.000Z" itemprop="datePublished">May 30</time>
+    更新日期:<time datetime="2016-05-30T07:12:15.794Z" itemprop="dateModified">May 30</time>
     
   </p>
 </header>
@@ -97,60 +98,49 @@ CREATE TABLE IF NOT EXISTS TAB(    id INT(10) UNSIGNED NOT NULL,    name VARCHAR
 		
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目錄</strong>
-		
+		<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-_判断条件"><span class="toc-number">1.</span> <span class="toc-text">1. 判断条件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-_字符串操作"><span class="toc-number">2.</span> <span class="toc-text">2. 字符串操作</span></a></li></ol>
 		</div>
 		
-		<p>创建新表</p>
-<blockquote>
-<p>CREATE TABLE IF NOT EXISTS TAB(<br>    id INT(10) UNSIGNED NOT NULL,<br>    name VARCHAR(255),<br>    grade INT(10) UNSIGNED NOT NULL,<br>    PRIMARY KEY id<br>) ENGINE=InnoDB DEFAULT CHARSET=utf8;  </p>
+		<h3 id="1-_判断条件">1. 判断条件</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> [ expr ]; <span class="keyword">then</span></span><br><span class="line"><span class="keyword">elif</span> [ expr ]; <span class="keyword">then</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>字符串判断<blockquote>
+<p>[ str1 = str2 ]　　　　　　当两个串有相同内容、长度时为真<br>[ str1 != str2 ]　　　　　  当串str1和str2不等时为真<br>[ -n str1 ]　　　　　　　   当串的长度大于0时为真(串非空)<br>[ -z str1 ]　　　　　　　   当串的长度为0时为真(空串)<br>[ str1 ]　　　　　　　　    当串str1为非空时为真</p>
 </blockquote>
-<a id="more"></a>
-<p>清空表</p>
-<blockquote>
-<p>delete from A;  </p>
+</li>
+<li>数字判断<blockquote>
+<p>[ a -eq b ]　　　　两数相等为真<br>[ a -ne b ]　　　　两数不等为真<br>[ a -gt b ]　　　　a大于b为真<br>[ a -ge b ]　　　　a大于等于b为真<br>[ a -lt b ]　　　　a小于b为真<br>[ a -le b ]　　　　a小于等于b为真</p>
 </blockquote>
-<p>从一张表中选择数据插入另一张表中（id重复的数据不插入）</p>
-<blockquote>
-<p>insert into A(id,name) (SELECT bid,bname FROM B as b where not exists(select * from A as a where a.id=b.bid));  </p>
+</li>
+<li>文件判断<blockquote>
+<p>[ -a FILE ]　　　　FILE 存在则为真。<br>[ -b FILE ]　　　　FILE 存在且是一个块特殊文件则为真。<br>[ -c FILE ]　　　　FILE 存在且是一个字特殊文件则为真。<br>[ -d FILE ]　　　　FILE 存在且是一个目录则为真。<br>[ -e FILE ]　　　　FILE 存在则为真。<br>[ -f FILE ]　　　　FILE 存在且是一个普通文件则为真。<br>[ -g FILE ]　　　　FILE 存在且已经设置了SGID则为真。<br>[ -h FILE ]　　　　FILE 存在且是一个符号连接则为真。<br>[ -k FILE ]　　　　FILE 存在且已经设置了粘制位则为真。<br>[ -p FILE ]　　　　FILE 存在且是一个名字管道(F如果O)则为真。<br>[ -r FILE ]　　　　FILE 存在且是可读的则为真。<br>[ -s FILE ]　　　　FILE 存在且大小不为0则为真。<br>[ -t FD ]　　　　文件描述符 FD 打开且指向一个终端则为真。<br>[ -u FILE ]　　　　FILE 存在且设置了SUID (set user ID)则为真。<br>[ -w FILE ]　　　　FILE 如果 FILE 存在且是可写的则为真。<br>[ -x FILE ]　　　　FILE 存在且是可执行的则为真。<br>[ -O FILE ]　　　　FILE 存在且属有效用户ID则为真。<br>[ -G FILE ]　　　　FILE 存在且属有效用户组则为真。<br>[ -L FILE ]　　　　FILE 存在且是一个符号连接则为真。<br>[ -N FILE ]　　　　FILE 存在 and has been mod如果ied since it was last read则为真。<br>[ -S FILE ]　　　　FILE 存在且是一个套接字则为真。<br>[ FILE1 -nt FILE2 ]　　　　FILE1 has been changed more recently than FILE2, or 如果 FILE1 exists and FILE2 does not则为真。<br>[ FILE1 -ot FILE2 ]　　　　FILE1 比 FILE2 要老, 或者 FILE2 存在且 FILE1 不存在则为真。<br>[ FILE1 -ef FILE2 ]　　　　FILE1 和 FILE2 指向相同的设备和节点号则为真。</p>
 </blockquote>
-<p>用一张表中的数据更新另一张表中的数据</p>
-<blockquote>
-<p>update A as a,B as b set a.name=b.bname where a.id=b.bid;  </p>
+</li>
+<li>逻辑判断<blockquote>
+<p>-a 　 　　　　　 与<br>-o　　　　　　　 或<br>!　　　　　　　　非</p>
 </blockquote>
-<p>根据一张表的信息生成一张排名表</p>
-<blockquote>
-<p>set @x:=0;insert into Order(rank,id,grade) select @x:=@x+1 as rownum,id,grade from User order by grade desc;  </p>
-</blockquote>
-<p><em>exists not exists</em></p>
-<blockquote>
-<p>SELECT ID,NAME FROM A WHERE EXISTS (SELECT * FROM B WHERE A.ID=B.AID)</p>
-</blockquote>
-<p>复制一条数据</p>
-<blockquote>
-<p>alter table A drop primary key;<br>insert into A select * from A where id=110;<br>update A set id=111 where id=110 limit 1;<br>alter table A add primary key(id);  </p>
-</blockquote>
-<p>导出数据<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysqldump -h$mysql_host -P$mysql_port -u$mysql_user -p$mysql_pwd $mysql_db $mysql_table -t -c --skip-lock-tables  &gt; $file_name  </span><br><span class="line">mysqldump -h$mysql_host -P$mysql_port -u$mysql_user -p$mysql_pwd $mysql_db &gt; $file_name</span><br></pre></td></tr></table></figure></p>
-<p>创建临时表更新原有表数据<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator"><span class="keyword">set</span> @x:=<span class="number">0</span>;</span><span class="operator"><span class="keyword">create</span> <span class="keyword">table</span> charactertemp <span class="keyword">select</span> @x:=@x+<span class="number">1</span> <span class="keyword">as</span> <span class="keyword">rownum</span>,charid,pkvalue <span class="keyword">from</span> <span class="built_in">character</span> <span class="keyword">order</span> <span class="keyword">by</span> pkvalue <span class="keyword">desc</span> <span class="keyword">where</span> charid&lt;<span class="number">100</span>;</span>  </span><br><span class="line"><span class="operator"><span class="keyword">set</span> @y:=(<span class="keyword">select</span> <span class="keyword">max</span>(charid) <span class="keyword">from</span> <span class="built_in">character</span>);</span>  </span><br><span class="line"><span class="operator"><span class="keyword">update</span> <span class="built_in">character</span>  <span class="keyword">set</span> charid=charid+@y <span class="keyword">and</span> charid&lt;<span class="number">100</span>;</span>  </span><br><span class="line"><span class="operator"><span class="keyword">update</span> <span class="built_in">character</span> <span class="keyword">as</span> a,charactertemp  <span class="keyword">as</span> b <span class="keyword">set</span> a.charid=b.<span class="keyword">rownum</span> <span class="keyword">where</span> a.charid=b.charid+@y <span class="keyword">and</span> a.charid&gt;@y;</span>  </span><br><span class="line"><span class="operator"><span class="keyword">drop</span> <span class="keyword">table</span> charactertemp;</span></span><br></pre></td></tr></table></figure></p>
+</li>
+</ul>
+<h3 id="2-_字符串操作">2. 字符串操作</h3><figure class="highlight xquery"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">$&#123;#string&#125; <span class="variable">$string</span>的长度</span><br><span class="line">$&#123;string:position&#125; 在<span class="variable">$string</span>中, 从位置<span class="variable">$position</span>开始提取子串</span><br><span class="line">$&#123;string:position:length&#125; 在<span class="variable">$string</span>中, 从位置<span class="variable">$position</span>开始提取长度为<span class="variable">$length</span>的子串</span><br><span class="line">$&#123;string#substring&#125; 从变量<span class="variable">$string</span>的开头, 删除最短匹配<span class="variable">$substring</span>的子串</span><br><span class="line">$&#123;string##substring&#125; 从变量<span class="variable">$string</span>的开头, 删除最长匹配<span class="variable">$substring</span>的子串</span><br><span class="line">$&#123;string<span class="decorator">%substring</span>&#125; 从变量<span class="variable">$string</span>的结尾, 删除最短匹配<span class="variable">$substring</span>的子串</span><br><span class="line">$&#123;string%<span class="decorator">%substring</span>&#125; 从变量<span class="variable">$string</span>的结尾, 删除最长匹配<span class="variable">$substring</span>的子串</span><br><span class="line">$&#123;string/substring/replacement&#125; 使用<span class="variable">$replacement</span>, 来代替第一个匹配的<span class="variable">$substring</span></span><br><span class="line">$&#123;string//substring/replacement&#125; 使用<span class="variable">$replacement</span>, 代替所有匹配的<span class="variable">$substring</span></span><br><span class="line">$&#123;string/#substring/replacement&#125; 如果<span class="variable">$string</span>的前缀匹配<span class="variable">$substring</span>, 那么就用<span class="variable">$replacement</span>来代替匹配到的<span class="variable">$substring</span></span><br><span class="line">$&#123;string/<span class="decorator">%substring</span>/replacement&#125; 如果<span class="variable">$string</span>的后缀匹配<span class="variable">$substring</span>, 那么就用<span class="variable">$replacement</span>来代替匹配到的<span class="variable">$substring</span></span><br></pre></td></tr></table></figure>
   
 	</div>
 		<footer class="article-footer clearfix">
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/mysql/">mysql</a>
+  <span></span> <a href="/tags/shell/">shell</a>
   </div>
 
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/mysql/">mysql</a>
+  <a class="article-category-link" href="/categories/linux/">linux</a>
 </div>
 
 
 
 <div class="article-share" id="share">
 
-  <div data-url="http://sstask.github.io/2015/07/23/sqlcmds/" data-title="一些mysql语句 | 叶子的博客" data-tsina="null" class="share clearfix">
+  <div data-url="http://sstask.github.io/2016/05/30/simpleshell/" data-title="shell简记 | 叶子的博客" data-tsina="null" class="share clearfix">
   </div>
 
 </div>
@@ -159,19 +149,11 @@ CREATE TABLE IF NOT EXISTS TAB(    id INT(10) UNSIGNED NOT NULL,    name VARCHAR
 	
 <nav class="article-nav clearfix">
  
- <div class="prev" >
- <a href="/2015/07/29/simplepython/" title="python基本语法">
-  <strong>PREVIOUS:</strong><br/>
-  <span>
-  python基本语法</span>
-</a>
-</div>
-
 
 <div class="next">
-<a href="/2015/07/20/linuxcmd/"  title="linux常用命令">
+<a href="/2016/05/26/govalue/"  title="go之value、Type小记">
  <strong>NEXT:</strong><br/> 
- <span>linux常用命令
+ <span>go之value、Type小记
 </span>
 </a>
 </div>
@@ -181,7 +163,7 @@ CREATE TABLE IF NOT EXISTS TAB(    id INT(10) UNSIGNED NOT NULL,    name VARCHAR
 	
 <section class="comment">
 	
-	<div class="ds-thread" data-title="一些mysql语句" data-thread-key="sqlcmds" data-author-key="叶子与桔子" data-url="http://sstask.github.io/post/sqlcmds"></div>
+	<div class="ds-thread" data-title="shell简记" data-thread-key="simpleshell" data-author-key="叶子与桔子" data-url="http://sstask.github.io/post/simpleshell"></div>
 	
 </section>
 
@@ -191,7 +173,7 @@ CREATE TABLE IF NOT EXISTS TAB(    id INT(10) UNSIGNED NOT NULL,    name VARCHAR
 
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目錄</strong>
-  
+  <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-_判断条件"><span class="toc-number">1.</span> <span class="toc-text">1. 判断条件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-_字符串操作"><span class="toc-number">2.</span> <span class="toc-text">2. 字符串操作</span></a></li></ol>
   </div>
 
 <div id="asidepart">
