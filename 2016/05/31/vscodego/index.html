@@ -7,16 +7,12 @@
   <meta name="360-site-verification" content="67fbcc5a67f4c65c057315b28fa0b2c8" />
 <meta name="google-site-verification" content="2GzxQ0VtXwTSUdmGm6DzcmhTzM_I9QmzCb_pzpMzD88" />
   
-    <title>linux动态链接 | 叶子的博客</title>
+    <title>Visual Studio Code | 叶子的博客</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
     
     <meta name="author" content="叶子与桔子">
     
-    <meta name="description" content="在程序中总会用到各式各样的库，有两种使用方式：静态链接库和动态链接库，在windows下分别对应.lib文件和.dll文件，使用静态库时需要包含对应的头文件并引用lib文件，使用动态库则需要手动通过函数加载dll中的函数。linux下使用方法则有所不同，linux下.a文件.so文件分别对应静态和动态链接库。
-静态链接库
-ar rcs libmylib.a mylib.o 生成.a静态库gcc -o hello main.c  -L. -lmylib 生成可执行文件hello；gcc会在mylib之前自动添加lib，即找文件libmylib.a./hello 执行
-
-可以发现即使删除libmylib.a文件，hello也可以执行。">
+    <meta name="description" content="今天无意在网上发现了一个靠谱的golang编辑器，并且它可以调试go程序，下载地址https://code.visualstudio.com/Download安装后CTRL+SHIFT+P，输入Install Extension，搜索go安装golang插件。最后要装一堆工具1234567go ge">
     
     
     
@@ -82,15 +78,15 @@ ar rcs libmylib.a mylib.o 生成.a静态库gcc -o hello main.c  -L. -lmylib 生�
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2015/09/29/linuxdynamiclink/" title="linux动态链接" itemprop="url">linux动态链接</a>
+      <a href="/2016/05/31/vscodego/" title="Visual Studio Code" itemprop="url">Visual Studio Code</a>
   </h1>
   <p class="article-author">By
     
       <a href="http://sstask.github.io" title="叶子与桔子">叶子与桔子</a>
     </p>
   <p class="article-time">
-    <time datetime="2015-09-29T12:34:08.000Z" itemprop="datePublished">Sep 29</time>
-    更新日期:<time datetime="2015-12-25T07:58:35.766Z" itemprop="dateModified">Dec 25</time>
+    <time datetime="2016-05-31T12:36:57.000Z" itemprop="datePublished">May 31</time>
+    更新日期:<time datetime="2016-05-31T12:49:45.522Z" itemprop="dateModified">May 31</time>
     
   </p>
 </header>
@@ -99,68 +95,34 @@ ar rcs libmylib.a mylib.o 生成.a静态库gcc -o hello main.c  -L. -lmylib 生�
 		
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目錄</strong>
-		<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#静态链接库"><span class="toc-number">1.</span> <span class="toc-text">静态链接库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#动态链接库"><span class="toc-number">2.</span> <span class="toc-text">动态链接库</span></a></li></ol>
+		
 		</div>
 		
-		<p>在程序中总会用到各式各样的库，有两种使用方式：<em>静态链接库和动态链接库</em>，在windows下分别对应.lib文件和.dll文件，使用静态库时需要包含对应的头文件并引用lib文件，使用动态库则需要手动通过函数加载dll中的函数。<br>linux下使用方法则有所不同，linux下.a文件.so文件分别对应静态和动态链接库。</p>
-<h3 id="静态链接库"><strong>静态链接库</strong></h3><blockquote>
-<p>ar rcs libmylib.a mylib.o <em>生成.a静态库</em><br>gcc -o hello main.c  -L. -lmylib <em>生成可执行文件hello；gcc会在mylib之前自动添加lib，即找文件libmylib.a</em><br>./hello <em>执行</em></p>
-</blockquote>
-<p>可以发现即使删除libmylib.a文件，hello也可以执行。<br><a id="more"></a></p>
-<h3 id="动态链接库"><strong>动态链接库</strong></h3><blockquote>
-<p>gcc -fPIC -shared -o libmylib.so mylib.c <em>生成.so动态库</em><br>gcc -o hello main.c  -L. -lmylib <em>生成可执行文件hello；gcc会在mylib之前自动添加lib，即找文件libmylib.so</em><br>./hello <em>执行</em><br><strong>./hello: error while loading shared libraries: libmylib.so: cannot open shared object file: No such file or directory</strong></p>
-</blockquote>
-<p>可以发现此时hello执行出错，<em>gcc编译时优先链接动态库文件，但程序执行时并没有找到动态链接库</em>。<br>在linux下程序搜索动态链接库是按照如下顺序的：</p>
-<ul>
-<li>ELF可执行文件中动态段中DT_RPATH所指定的路径，编译时gcc加入链接参数“-Wl,-rpath”指定该动态库搜索路径</li>
-<li>环境变量<strong>LD_LIBRARY_PATH</strong>指定的动态库搜索路径</li>
-<li>配置文档/etc/ld.so.conf中指定的动态库搜索路径</li>
-<li>默认的动态库搜索路径/lib</li>
-<li>默认的动态库搜索路径/usr/lib</li>
-</ul>
-<p>按照第一种方法解决，</p>
+		<p>今天无意在网上发现了一个靠谱的golang编辑器，并且它可以调试go程序，下载地址<br><a href="https://code.visualstudio.com/Download" target="_blank" rel="external">https://code.visualstudio.com/Download</a><br>安装后CTRL+SHIFT+P，输入Install Extension，搜索go安装golang插件。<br>最后要装一堆工具<br><figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">go</span> <span class="built_in">get</span> -<span class="keyword">u</span> -<span class="keyword">v</span> github.<span class="keyword">com</span>/nsf/gocode</span><br><span class="line"><span class="keyword">go</span> <span class="built_in">get</span> -<span class="keyword">u</span> -<span class="keyword">v</span> github.<span class="keyword">com</span>/rogpeppe/godef</span><br><span class="line"><span class="keyword">go</span> <span class="built_in">get</span> -<span class="keyword">u</span> -<span class="keyword">v</span> github.<span class="keyword">com</span>/golang/lint/golint</span><br><span class="line"><span class="keyword">go</span> <span class="built_in">get</span> -<span class="keyword">u</span> -<span class="keyword">v</span> github.<span class="keyword">com</span>/lukehoban/<span class="keyword">go</span>-<span class="keyword">find</span>-references</span><br><span class="line"><span class="keyword">go</span> <span class="built_in">get</span> -<span class="keyword">u</span> -<span class="keyword">v</span> github.<span class="keyword">com</span>/sqs/goreturns</span><br><span class="line"><span class="keyword">go</span> <span class="built_in">get</span> -<span class="keyword">u</span> -<span class="keyword">v</span> golang.org/<span class="keyword">x</span>/tools/cmd/gorename</span><br><span class="line"><span class="keyword">go</span> <span class="built_in">get</span> -<span class="keyword">u</span> -<span class="keyword">v</span> github.<span class="keyword">com</span>/derekparker/delve/cmd/dlv</span><br></pre></td></tr></table></figure></p>
+<p>其实安装过程很简单，但是由于一些网站在国内被墙了，所以无法安装，例如golint<br>这里主要介绍下这种情况下怎么安装<br>安装golint时会提示golang.org/x/tools/go/gcimporter15无法下载，因为golang.org网站被墙了，<br>其实这些源码在github上也都有，所以我们可以从github上获取。<br>1.gopath目录下创建文件夹golang.org/x<br>2.切换到上面的目录并且git clone <a href="https://github.com/golang/tools.git" target="_blank" rel="external">https://github.com/golang/tools.git</a><br>3.gopath目录下创建文件夹github.com/golang<br>4.切换到上面的目录并且git clone <a href="https://github.com/golang/lint.git" target="_blank" rel="external">https://github.com/golang/lint.git</a></p>
 <blockquote>
-<p>gcc -o hello main.c  -L. -lmylib <strong>-Wl,-rpath=. </strong>   <em>参数-Wl,-rpath=. 指定当前路径为动态库搜索路径</em><br>./hello <em>可执行</em></p>
+<p>总之一句话，下载不了的东西手动从github上clone</p>
 </blockquote>
-<p>按照第二种方法解决，</p>
-<blockquote>
-<p>export LD_LIBRARY_PATH=.<br>./hello <em>可执行</em></p>
-</blockquote>
-<p>使用命令 <strong>readelf -d hello</strong>可见其搜索路径 Library rpath: [.]<br><figure class="highlight dns"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Dynamic section at offset 0x7b0 contains 22 entries:</span><br><span class="line">  Tag        Type                         Name/Value</span><br><span class="line"> <span class="number">0x00000000</span><span class="number">00000001</span> (NEEDED)             Shared library: [libmyhello.so]</span><br><span class="line"> <span class="number">0x00000000</span><span class="number">00000001</span> (NEEDED)             Shared library: [libc.so.6]</span><br><span class="line"> <span class="number">0x00000000</span><span class="number">0000000</span>f (RPATH)              Library rpath: [.]</span><br><span class="line"> <span class="number">0x00000000</span><span class="number">0000000</span>c (INIT)               <span class="number">0x400490</span></span><br><span class="line"> <span class="number">0x00000000</span><span class="number">0000000</span>d (FINI)               <span class="number">0x4006b8</span></span><br><span class="line"> <span class="number">0x00000000</span>6ffffef5 (GNU_HASH)           <span class="number">0x400260</span></span><br></pre></td></tr></table></figure></p>
-<p>第三种方法，</p>
-<blockquote>
-<p>把当前路径写入/etc/ld.so.conf，并执行ldconfig重新加载</p>
-</blockquote>
-<p>第四种方法，</p>
-<blockquote>
-<p>把libmylib.so文件拷贝到/lib中</p>
-</blockquote>
-<p>第五种方法，</p>
-<blockquote>
-<p>把libmylib.so文件拷贝到/usr/lib中</p>
-</blockquote>
-<p>在实际使用中第一和第二种方法最经常被采纳，但是使用变量LD_LIBRARY_PATH时要注意，一旦LD_LIBRARY_PATH变量被设置之后，该变量生效范围内的所有程序执行时都会先查找该变量所指定的搜索目录，这样势必会造成一些浪费。</p>
-<p>参考<a href="http://www.eefocus.com/book/09-04/716171276059628.html" target="_blank" rel="external">http://www.eefocus.com/book/09-04/716171276059628.html</a><br><a href="http://blog.chinaunix.net/uid-23592843-id-223539.html" target="_blank" rel="external">http://blog.chinaunix.net/uid-23592843-id-223539.html</a></p>
   
 	</div>
 		<footer class="article-footer clearfix">
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/dynamiclink/">dynamiclink</a><a href="/tags/linux/">linux</a><a href="/tags/staticlink/">staticlink</a>
+  <span></span> <a href="/tags/go/">go</a>
   </div>
 
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/linux/">linux</a>
+  <a class="article-category-link" href="/categories/script/">script</a>
 </div>
 
 
 
 <div class="article-share" id="share">
 
-  <div data-url="http://sstask.github.io/2015/09/29/linuxdynamiclink/" data-title="linux动态链接 | 叶子的博客" data-tsina="null" class="share clearfix">
+  <div data-url="http://sstask.github.io/2016/05/31/vscodego/" data-title="Visual Studio Code | 叶子的博客" data-tsina="null" class="share clearfix">
   </div>
 
 </div>
@@ -169,19 +131,11 @@ ar rcs libmylib.a mylib.o 生成.a静态库gcc -o hello main.c  -L. -lmylib 生�
 	
 <nav class="article-nav clearfix">
  
- <div class="prev" >
- <a href="/2015/09/30/gitcmds/" title="git命令">
-  <strong>PREVIOUS:</strong><br/>
-  <span>
-  git命令</span>
-</a>
-</div>
-
 
 <div class="next">
-<a href="/2015/09/28/cmakesimple/"  title="cmake简用">
+<a href="/2016/05/30/simpleshell/"  title="shell简记">
  <strong>NEXT:</strong><br/> 
- <span>cmake简用
+ <span>shell简记
 </span>
 </a>
 </div>
@@ -191,7 +145,7 @@ ar rcs libmylib.a mylib.o 生成.a静态库gcc -o hello main.c  -L. -lmylib 生�
 	
 <section class="comment">
 	
-	<div class="ds-thread" data-title="linux动态链接" data-thread-key="linuxdynamiclink" data-author-key="叶子与桔子" data-url="http://sstask.github.io/post/linuxdynamiclink"></div>
+	<div class="ds-thread" data-title="Visual Studio Code" data-thread-key="vscodego" data-author-key="叶子与桔子" data-url="http://sstask.github.io/post/vscodego"></div>
 	
 </section>
 
@@ -201,7 +155,7 @@ ar rcs libmylib.a mylib.o 生成.a静态库gcc -o hello main.c  -L. -lmylib 生�
 
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目錄</strong>
-  <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#静态链接库"><span class="toc-number">1.</span> <span class="toc-text">静态链接库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#动态链接库"><span class="toc-number">2.</span> <span class="toc-text">动态链接库</span></a></li></ol>
+  
   </div>
 
 <div id="asidepart">
