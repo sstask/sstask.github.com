@@ -7,14 +7,12 @@
   <meta name="360-site-verification" content="67fbcc5a67f4c65c057315b28fa0b2c8" />
 <meta name="google-site-verification" content="2GzxQ0VtXwTSUdmGm6DzcmhTzM_I9QmzCb_pzpMzD88" />
   
-    <title>mysql主从服务器安装脚本 | 叶子的博客</title>
+    <title>go遍历目标 | 叶子的博客</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
     
     <meta name="author" content="叶子与桔子">
     
-    <meta name="description" content="mysql主服务器的安装1.yum -y install mysql2.yum -y install mysql-server3.yum -y install mysql-devel4.按需求修改mysql配置/etc/my.cnf
-
-如修改数据库文件存放位置datadir = $mysql_dat">
+    <meta name="description" content="go里面遍历目标很简单，直接上代码：123456789101112131415161718192021var dirList = make([]string, 0)var fileList = make([]string, 0)func getFilelist(path string) error ">
     
     
     
@@ -80,15 +78,15 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2016/02/21/installmysql/" title="mysql主从服务器安装脚本" itemprop="url">mysql主从服务器安装脚本</a>
+      <a href="/2016/06/14/gofilewalk/" title="go遍历目标" itemprop="url">go遍历目标</a>
   </h1>
   <p class="article-author">By
     
       <a href="http://sstask.github.io" title="叶子与桔子">叶子与桔子</a>
     </p>
   <p class="article-time">
-    <time datetime="2016-02-20T17:18:46.000Z" itemprop="datePublished">Feb 21</time>
-    更新日期:<time datetime="2016-02-24T12:16:22.757Z" itemprop="dateModified">Feb 24</time>
+    <time datetime="2016-06-14T11:53:32.000Z" itemprop="datePublished">Jun 14</time>
+    更新日期:<time datetime="2016-06-14T12:08:59.855Z" itemprop="dateModified">Jun 14</time>
     
   </p>
 </header>
@@ -97,21 +95,13 @@
 		
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目錄</strong>
-		<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#mysql主服务器的安装"><span class="toc-number">1.</span> <span class="toc-text">mysql主服务器的安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#mysql从服务器安装"><span class="toc-number">2.</span> <span class="toc-text">mysql从服务器安装</span></a></li></ol>
+		
 		</div>
 		
-		<h3 id="mysql主服务器的安装">mysql主服务器的安装</h3><p>1.yum -y install mysql<br>2.yum -y install mysql-server<br>3.yum -y install mysql-devel<br>4.按需求修改mysql配置/etc/my.cnf</p>
+		<p>go里面遍历目标很简单，直接上代码：<br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> dirList = <span class="built_in">make</span>([]<span class="typename">string</span>, <span class="number">0</span>)</span><br><span class="line"><span class="keyword">var</span> fileList = <span class="built_in">make</span>([]<span class="typename">string</span>, <span class="number">0</span>)</span><br><span class="line"><span class="keyword">func</span> getFilelist(path <span class="typename">string</span>) error &#123;</span><br><span class="line">	err := filepath.Walk(path, <span class="keyword">func</span>(path <span class="typename">string</span>, f os.FileInfo, err error) error &#123;</span><br><span class="line">		<span class="keyword">if</span> f == <span class="constant">nil</span> &#123;</span><br><span class="line">			<span class="keyword">return</span> err</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span> !isVaild(path) &#123;</span><br><span class="line">			<span class="keyword">return</span> filepath.SkipDir</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span> f.IsDir() &#123;</span><br><span class="line">			dirList = <span class="built_in">append</span>(dirList, path)</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			fileList = <span class="built_in">append</span>(fileList, path)</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> <span class="constant">nil</span></span><br><span class="line">	&#125;)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="constant">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> err</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>通过filepath.Walk可以遍历出path下的所有目录和文件，包括所有的子目录。<br>下面要说的才是关键</p>
 <blockquote>
-<p>如修改数据库文件存放位置datadir = $mysql_data_dir<br>修改日志文件位置log_bin = mysql_log_dir/mysql-bin.log log-error = mysql_log_dir/mysqld.log</p>
-</blockquote>
-<p>5.自启动chkconfig mysqld on<br>6.设置root密码 /usr/bin/mysqladmin -u root password “root_pwd”<br>7.添加用户GRANT all privileges on <em>.</em> to ‘username’@’%’ identified by ‘pwd’ WITH GRANT OPTION;flush privileges;</p>
-<blockquote>
-<p><a href="https://github.com/sstask/usefulscripts/blob/master/mysqlmaster.sh" target="_blank" rel="external">脚本在此</a></p>
-</blockquote>
-<h3 id="mysql从服务器安装">mysql从服务器安装</h3><p>1.yum -y install mysql<br>2.yum -y install mysql-server<br>3.yum -y install mysql-devel<br>4.修改mysql配置/etc/my.cnf<br><figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="title">[mysqld_multi]</span></span><br><span class="line"><span class="setting">mysqld = <span class="value">/usr/bin/mysqld_safe</span></span></span><br><span class="line"><span class="setting">mysqladmin = <span class="value">/usr/bin/mysqladmin</span></span></span><br><span class="line"><span class="title"></span><br><span class="line">[mysqld3307]</span></span><br><span class="line"><span class="setting">port = <span class="value"><span class="number">3307</span></span></span></span><br><span class="line"><span class="setting">datadir = <span class="value">/mysql/<span class="number">3307</span>/data</span></span></span><br><span class="line"><span class="setting">socket = <span class="value">/mysql/<span class="number">3307</span>/mysql.sock</span></span></span><br><span class="line"><span class="setting">pid-file = <span class="value">/mysql/<span class="number">3307</span>/mysqld.pid</span></span></span><br><span class="line"><span class="setting">log-error = <span class="value">/mysql/<span class="number">3307</span>/mysqld.log</span></span></span><br><span class="line"><span class="setting">user = <span class="value">mysql</span></span></span><br><span class="line"><span class="setting">server-id = <span class="value"><span class="number">3307</span></span></span></span><br><span class="line"><span class="setting">read-only = <span class="value"><span class="number">1</span></span></span></span><br><span class="line"><span class="setting">replicate-ignore-db = <span class="value">mysql</span></span></span><br></pre></td></tr></table></figure></p>
-<p>5.启动<br>/usr/bin/mysql_install_db –datadir=/mysql/3307/data –user=mysql<br>/usr/bin/mysqld_multi start 3307<br>6.设置root密码 /usr/bin/mysqladmin -uroot password “root_pwd” -S /mysql/3307/data/mysql.sock<br>7.在主mysql服务器中添加slave账号，记录bin日志位置<br>8.change master to master_host=……</p>
-<blockquote>
-<p><a href="https://github.com/sstask/usefulscripts/blob/master/mysqlslave.sh" target="_blank" rel="external">脚本在此</a></p>
+<p><strong>filepath.Walk是递归遍历既定路径下的所有目录及子目录的，如果想跳过某个目标不遍历，可在WalkFunc里直接return filepath.SkipDir</strong></p>
 </blockquote>
   
 	</div>
@@ -119,20 +109,20 @@
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/mysql/">mysql</a><a href="/tags/script/">script</a>
+  <span></span> <a href="/tags/go/">go</a><a href="/tags/walk/">walk</a>
   </div>
 
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/mysql/">mysql</a>
+  <a class="article-category-link" href="/categories/scirpt/">scirpt</a>
 </div>
 
 
 
 <div class="article-share" id="share">
 
-  <div data-url="http://sstask.github.io/2016/02/21/installmysql/" data-title="mysql主从服务器安装脚本 | 叶子的博客" data-tsina="null" class="share clearfix">
+  <div data-url="http://sstask.github.io/2016/06/14/gofilewalk/" data-title="go遍历目标 | 叶子的博客" data-tsina="null" class="share clearfix">
   </div>
 
 </div>
@@ -141,19 +131,11 @@
 	
 <nav class="article-nav clearfix">
  
- <div class="prev" >
- <a href="/2016/03/07/linuxadddisk/" title="linux添加新硬盘">
-  <strong>PREVIOUS:</strong><br/>
-  <span>
-  linux添加新硬盘</span>
-</a>
-</div>
-
 
 <div class="next">
-<a href="/2016/01/31/gamedrop/"  title="掉落">
+<a href="/2016/05/31/vscodego/"  title="Visual Studio Code">
  <strong>NEXT:</strong><br/> 
- <span>掉落
+ <span>Visual Studio Code
 </span>
 </a>
 </div>
@@ -163,7 +145,7 @@
 	
 <section class="comment">
 	
-	<div class="ds-thread" data-title="mysql主从服务器安装脚本" data-thread-key="installmysql" data-author-key="叶子与桔子" data-url="http://sstask.github.io/post/installmysql"></div>
+	<div class="ds-thread" data-title="go遍历目标" data-thread-key="gofilewalk" data-author-key="叶子与桔子" data-url="http://sstask.github.io/post/gofilewalk"></div>
 	
 </section>
 
@@ -173,7 +155,7 @@
 
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目錄</strong>
-  <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#mysql主服务器的安装"><span class="toc-number">1.</span> <span class="toc-text">mysql主服务器的安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#mysql从服务器安装"><span class="toc-number">2.</span> <span class="toc-text">mysql从服务器安装</span></a></li></ol>
+  
   </div>
 
 <div id="asidepart">
