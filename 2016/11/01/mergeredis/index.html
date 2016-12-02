@@ -1,0 +1,510 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  <meta name="baidu_union_verify" content="d1952c66cf48912e21c18c7c581f382a">
+  <meta name="360-site-verification" content="67fbcc5a67f4c65c057315b28fa0b2c8" />
+<meta name="google-site-verification" content="2GzxQ0VtXwTSUdmGm6DzcmhTzM_I9QmzCb_pzpMzD88" />
+  
+    <title>merge redis | 叶子的博客</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
+    
+    <meta name="author" content="叶子与桔子">
+    
+    <meta name="description" content="记录一下合并redis数据库的步骤：1.安装redis-dumpyum install ruby rubygems ruby-develyum install gccgem install redis-dump -V
+2.导出数据redis-dump -u 127.0.0.1:6379 &amp;gt;te">
+    
+    
+    
+    
+    <link rel="alternate" href="atom.xml" title="叶子的博客" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+    
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            var _bdId ='391982416296a0d54221f59fe35250d4';
+             hm.src = "//hm.baidu.com/hm.js?" + _bdId;
+             var s = document.getElementsByTagName("script")[0]; 
+             s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+     
+</head>
+
+  <body>
+    <header>
+      <div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="叶子的博客">叶子的博客</a></h1>
+				<a class="blog-motto">面朝大海，春暖花开</a>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜單">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">首页</a></li>
+					
+						<li><a href="/archives">归档</a></li>
+					
+						<li><a href="/about">关于</a></li>
+					
+						<li><a href="/link">Link</a></li>
+					
+					<li>
+					
+                                            <form class="search" action=http://zhannei.baidu.com/cse/search target="_blank">
+                                            <label>Search</label>
+                                        <input name="s" type="hidden" value= null ><input type="text" name="q" size="30" placeholder="搜索"><br>
+					
+					</li>
+				</ul>
+                            </nav>			
+</div>
+
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2016/11/01/mergeredis/" title="merge redis" itemprop="url">merge redis</a>
+  </h1>
+  <p class="article-author">By
+    
+      <a href="http://sstask.github.io" title="叶子与桔子">叶子与桔子</a>
+    </p>
+  <p class="article-time">
+    <time datetime="2016-11-01T07:18:55.000Z" itemprop="datePublished">Nov 1</time>
+    更新日期:<time datetime="2016-11-01T07:22:50.665Z" itemprop="dateModified">Nov 1</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目錄</strong>
+		
+		</div>
+		
+		<p>记录一下合并redis数据库的步骤：<br>1.安装redis-dump<br>yum install ruby rubygems ruby-devel<br>yum install gcc<br>gem install redis-dump -V</p>
+<p>2.导出数据<br>redis-dump -u 127.0.0.1:6379 &gt;test.json</p>
+<p>3.导入数据<br>export REDIS_URI=127.0.0.1:6378<br>&lt; test.json redis-load -n</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/db/">db</a><a href="/tags/redis/">redis</a>
+  </div>
+
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/db/">db</a>
+</div>
+
+
+
+<div class="article-share" id="share">
+
+  <div data-url="http://sstask.github.io/2016/11/01/mergeredis/" data-title="merge redis | 叶子的博客" data-tsina="null" class="share clearfix">
+  </div>
+
+</div>
+</footer>   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2016/11/15/cplusmap/" title="记一次c++ map bug">
+  <strong>PREVIOUS:</strong><br/>
+  <span>
+  记一次c++ map bug</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2016/06/14/gofilewalk/"  title="go遍历目标">
+ <strong>NEXT:</strong><br/> 
+ <span>go遍历目标
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section class="comment">
+	
+	<div class="ds-thread" data-title="merge redis" data-thread-key="mergeredis" data-author-key="叶子与桔子" data-url="http://sstask.github.io/post/mergeredis"></div>
+	
+</section>
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="顯示側邊欄"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目錄</strong>
+  
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隱藏側邊欄"></a></div>
+<aside class="clearfix">
+<div id="authorInfo">
+	
+		<div class="author-logo"></div>		
+	
+	<div class="social-list" class="clearfix">
+		
+		
+		
+		<a href="https://github.com/sstask" target="_blank" title="github"></a>
+		
+		
+		
+	</div>
+</div>
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分類</p>
+		<ul>
+		
+			<li><a href="/categories/C/" title="C++">C++<sup>2</sup></a></li>
+		
+			<li><a href="/categories/c/" title="c++">c++<sup>3</sup></a></li>
+		
+			<li><a href="/categories/db/" title="db">db<sup>1</sup></a></li>
+		
+			<li><a href="/categories/game/" title="game">game<sup>8</sup></a></li>
+		
+			<li><a href="/categories/linux/" title="linux">linux<sup>13</sup></a></li>
+		
+			<li><a href="/categories/mysql/" title="mysql">mysql<sup>5</sup></a></li>
+		
+			<li><a href="/categories/protocol-buffer/" title="protocol buffer">protocol buffer<sup>7</sup></a></li>
+		
+			<li><a href="/categories/redis/" title="redis">redis<sup>1</sup></a></li>
+		
+			<li><a href="/categories/scirpt/" title="scirpt">scirpt<sup>1</sup></a></li>
+		
+			<li><a href="/categories/script/" title="script">script<sup>10</sup></a></li>
+		
+			<li><a href="/categories/杂/" title="杂">杂<sup>5</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">標簽</p>
+		<ul class="clearfix">
+		
+			<li><a href="/tags/C/" title="C++">C++<sup>2</sup></a></li>
+		
+			<li><a href="/tags/addr2line/" title="addr2line">addr2line<sup>1</sup></a></li>
+		
+			<li><a href="/tags/awk/" title="awk">awk<sup>1</sup></a></li>
+		
+			<li><a href="/tags/backup/" title="backup">backup<sup>1</sup></a></li>
+		
+			<li><a href="/tags/bash/" title="bash">bash<sup>1</sup></a></li>
+		
+			<li><a href="/tags/blog/" title="blog">blog<sup>3</sup></a></li>
+		
+			<li><a href="/tags/c/" title="c++">c++<sup>2</sup></a></li>
+		
+			<li><a href="/tags/cdkey/" title="cdkey">cdkey<sup>1</sup></a></li>
+		
+			<li><a href="/tags/chan/" title="chan">chan<sup>1</sup></a></li>
+		
+			<li><a href="/tags/cmake/" title="cmake">cmake<sup>1</sup></a></li>
+		
+			<li><a href="/tags/db/" title="db">db<sup>1</sup></a></li>
+		
+			<li><a href="/tags/dmesg/" title="dmesg">dmesg<sup>1</sup></a></li>
+		
+			<li><a href="/tags/drop/" title="drop">drop<sup>1</sup></a></li>
+		
+			<li><a href="/tags/dynamic/" title="dynamic">dynamic<sup>1</sup></a></li>
+		
+			<li><a href="/tags/dynamiclink/" title="dynamiclink">dynamiclink<sup>1</sup></a></li>
+		
+			<li><a href="/tags/encode/" title="encode">encode<sup>1</sup></a></li>
+		
+			<li><a href="/tags/error/" title="error">error<sup>2</sup></a></li>
+		
+			<li><a href="/tags/file/" title="file">file<sup>1</sup></a></li>
+		
+			<li><a href="/tags/game/" title="game">game<sup>4</sup></a></li>
+		
+			<li><a href="/tags/game-mysql/" title="game,mysql">game,mysql<sup>1</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情鏈接</p>
+    <ul>
+      <li><a href="http://hexo.io" target="_blank" title="Hexo">Hexo</a></li>
+      <li><a href="http://gengbiao.me" target="_blank" title="coney">coney's Blog</a></li>
+    </ul>
+</div>
+
+
+  <div class="rsspart">
+	<a href="atom.xml" target="_blank" title="rss">RSS 訂閱</a>
+</div>
+
+  
+  <div class="tagcloudlist">
+    <p class="asidetitle">標簽雲</p>
+    <div class="tagcloudlist clearfix">
+       <a href="/tags/C/" style="font-size: 11.67px;">C++</a> <a href="/tags/addr2line/" style="font-size: 10px;">addr2line</a> <a href="/tags/awk/" style="font-size: 10px;">awk</a> <a href="/tags/backup/" style="font-size: 10px;">backup</a> <a href="/tags/bash/" style="font-size: 10px;">bash</a> <a href="/tags/blog/" style="font-size: 13.33px;">blog</a> <a href="/tags/c/" style="font-size: 11.67px;">c++</a> <a href="/tags/cdkey/" style="font-size: 10px;">cdkey</a> <a href="/tags/chan/" style="font-size: 10px;">chan</a> <a href="/tags/cmake/" style="font-size: 10px;">cmake</a> <a href="/tags/db/" style="font-size: 10px;">db</a> <a href="/tags/dmesg/" style="font-size: 10px;">dmesg</a> <a href="/tags/drop/" style="font-size: 10px;">drop</a> <a href="/tags/dynamic/" style="font-size: 10px;">dynamic</a> <a href="/tags/dynamiclink/" style="font-size: 10px;">dynamiclink</a> <a href="/tags/encode/" style="font-size: 10px;">encode</a> <a href="/tags/error/" style="font-size: 11.67px;">error</a> <a href="/tags/file/" style="font-size: 10px;">file</a> <a href="/tags/game/" style="font-size: 15px;">game</a> <a href="/tags/game-mysql/" style="font-size: 10px;">game,mysql</a> <a href="/tags/gettimeofday/" style="font-size: 10px;">gettimeofday</a> <a href="/tags/git/" style="font-size: 11.67px;">git</a> <a href="/tags/github/" style="font-size: 11.67px;">github</a> <a href="/tags/go/" style="font-size: 16.67px;">go</a> <a href="/tags/hexo/" style="font-size: 11.67px;">hexo</a> <a href="/tags/innodb-buffer/" style="font-size: 10px;">innodb buffer</a> <a href="/tags/interface/" style="font-size: 10px;">interface</a> <a href="/tags/iptables/" style="font-size: 10px;">iptables</a> <a href="/tags/key-buffer-size/" style="font-size: 10px;">key_buffer_size</a> <a href="/tags/linux/" style="font-size: 20px;">linux</a> <a href="/tags/lua/" style="font-size: 10px;">lua</a> <a href="/tags/mail/" style="font-size: 10px;">mail</a> <a href="/tags/map/" style="font-size: 10px;">map</a> <a href="/tags/md5/" style="font-size: 10px;">md5</a> <a href="/tags/mount/" style="font-size: 10px;">mount</a> <a href="/tags/mysql/" style="font-size: 18.33px;">mysql</a> <a href="/tags/mysqld-multi/" style="font-size: 10px;">mysqld_multi</a> <a href="/tags/newday/" style="font-size: 10px;">newday</a> <a href="/tags/operations/" style="font-size: 10px;">operations</a> <a href="/tags/php/" style="font-size: 11.67px;">php</a> <a href="/tags/pip/" style="font-size: 10px;">pip</a> <a href="/tags/pointer/" style="font-size: 10px;">pointer</a> <a href="/tags/protocol-buffer/" style="font-size: 16.67px;">protocol buffer</a> <a href="/tags/python/" style="font-size: 11.67px;">python</a> <a href="/tags/rank/" style="font-size: 11.67px;">rank</a> <a href="/tags/redis/" style="font-size: 11.67px;">redis</a> <a href="/tags/reflect/" style="font-size: 11.67px;">reflect</a> <a href="/tags/repeated/" style="font-size: 10px;">repeated</a> <a href="/tags/rsync/" style="font-size: 10px;">rsync</a> <a href="/tags/script/" style="font-size: 11.67px;">script</a> <a href="/tags/sed/" style="font-size: 10px;">sed</a> <a href="/tags/shell/" style="font-size: 13.33px;">shell</a> <a href="/tags/slk/" style="font-size: 10px;">slk</a> <a href="/tags/staticlink/" style="font-size: 10px;">staticlink</a> <a href="/tags/table-open-cache/" style="font-size: 10px;">table_open_cache</a> <a href="/tags/template/" style="font-size: 10px;">template</a> <a href="/tags/unsafe/" style="font-size: 10px;">unsafe</a> <a href="/tags/vim/" style="font-size: 10px;">vim</a> <a href="/tags/walk/" style="font-size: 10px;">walk</a> <a href="/tags/动态解析/" style="font-size: 11.67px;">动态解析</a>
+    </div>
+  </div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+    
+            <p class="copyright"> © 2016 
+		
+		<a href="http://sstask.github.io" target="_blank" title="叶子与桔子">叶子与桔子</a>
+		
+            && Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> && Theme by <a href="http://gengbiao.me" target="_blank" title="coney">coney</a> && 沪ICP备15036834号-1
+            </div>
+</footer>
+    <script src="/js/jquery-2.1.0.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else
+    {
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      h  = $('article h2')
+      ah = $('article h2'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  if(ah.length==0){
+    t.css('display','none');
+  }else{
+    c.click(function(){
+      ta.css('display', 'block').addClass('fadeIn');
+    });
+    o.click(function(){
+      ta.css('display', 'none');
+    });
+    $(window).scroll(function(){
+      ta.css("top",Math.max(140,320-$(this).scrollTop()));
+    });
+  };
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina');
+  var html = [
+  '<a href="#" class="overlay" id="qrcode"></a>',
+  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#share"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
+  '<a href="#textlogo" class="article-back-to-top" title="Top"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="QRcode"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="Weibo"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+  $('.article-share-qrcode').click(function(){
+    var imgSrc = $('#qrcode-pic').attr('data-src');
+    $('#qrcode-pic').attr('src', imgSrc);
+    $('#qrcode-pic').load(function(){
+        $('.qrcode strong').text(' ');
+    });
+  });
+});     
+</script>
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"sstask"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+
+<script>
+    
+        var _bdImg = '4';
+    
+    window._bd_share_config={
+        "common":{
+            "bdSnsKey":{
+
+            },
+            "bdText":"",
+            "bdMini":"2",
+            "bdMiniList":[
+                "qzone",
+                "tsina",
+                "weixin",
+                "renren",
+                "tqq",
+                "tieba",
+                "douban",
+                "sqq",
+                "diandian",
+                "huaban",
+                "youdao",
+                "mail",
+                "ty",
+                "fbook",
+                "twi",
+                "linkedin",
+                "copy",
+                "print"
+            ],
+            "bdPic":"",
+            "bdStyle":"0",
+            "bdSize":"16"
+        },
+        "slide":{
+            "type":"slide",
+            "bdImg":_bdImg,
+            "bdPos":"right",
+            "bdTop":"350"
+        },
+        "image":{
+            "viewList":[
+                "weixin",
+                "qzone",
+                "tsina",
+                "renren",
+                "douban",
+                "tqq"
+            ],
+            "viewText":"分享：",
+            "viewSize":"16"
+        },
+        "selectShare":{
+            "bdContainerClass":null,
+            "bdSelectMiniList":[
+                "weixin",
+                "qzone",
+                "tsina",
+                "renren",
+                "douban",
+                "tqq"
+            ]
+        }
+    };
+    with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+
+
+
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'null', 'null');  
+ga('send', 'pageview');
+</script>
+
+
+  </body>
+</html>
+

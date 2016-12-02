@@ -76,6 +76,79 @@
 
   <section class="post" itemscope itemprop="blogPost">
   
+    <a href="/2016/11/17/cplustime/" title="c++类型转换的坑" itemprop="url">
+  
+      <time datetime="2016-11-17T12:56:12.000Z" itemprop="datePublished">Nov 17</time>
+    <h1 itemprop="name">c++类型转换的坑</h1>
+    
+     
+           <p itemprop="description" >直接上代码123uint32_t uiNow = 1479365677;uint64_t uiMs = uiNow * 1000;//1896927176uint64_t uiMsEx = (uint64_t)uiNow * 1000;//1479365677</p>
+        
+    
+  </a>
+</section>
+
+  <section class="post" itemscope itemprop="blogPost">
+  
+    <a href="/2016/11/15/rediskeng/" title="redis里的一些坑" itemprop="url">
+  
+      <time datetime="2016-11-15T15:20:23.000Z" itemprop="datePublished">Nov 15</time>
+    <h1 itemprop="name">redis里的一些坑</h1>
+    
+     
+           <p itemprop="description" >redis访问速度虽然很快，但是网络io操作比较慢，所以进行redis操作时尽量不要用同步的方式，这样会被io卡住。可以异步处理，先发出请求，然后去处理其他事件，当redis返回时再进行相应。
+
+非集群redis中，如果要取多个key，尽量使用getBatch操作。</p>
+        
+    
+  </a>
+</section>
+
+  <section class="post" itemscope itemprop="blogPost">
+  
+    <a href="/2016/11/15/dmesg-addr2line/" title="dmesg_addr2line找dump" itemprop="url">
+  
+      <time datetime="2016-11-15T15:12:33.000Z" itemprop="datePublished">Nov 15</time>
+    <h1 itemprop="name">dmesg_addr2line找dump</h1>
+    
+     
+           <p itemprop="description" >有时候程序宕机了，但是没有core文件，可以通过dmesg,addr2line来查找一些信息。12dmesg | grep AppNameaddr2line -e AppName 000000000044123f -f</p>
+        
+    
+  </a>
+</section>
+
+  <section class="post" itemscope itemprop="blogPost">
+  
+    <a href="/2016/11/15/cplusmap/" title="记一次c++ map bug" itemprop="url">
+  
+      <time datetime="2016-11-15T15:05:47.000Z" itemprop="datePublished">Nov 15</time>
+    <h1 itemprop="name">记一次c++ map bug</h1>
+    
+     
+           <p itemprop="description" >在项目中出现了一次bug，而且费心找了半天才找到，所以记录一下12345678910struct Test&amp;#123;    int A;&amp;#125;map&amp;lt;int, Test&amp;gt; mapTest;map&amp;lt;int, Test&amp;gt;::iterator itr =</p>
+        
+    
+  </a>
+</section>
+
+  <section class="post" itemscope itemprop="blogPost">
+  
+    <a href="/2016/11/01/mergeredis/" title="merge redis" itemprop="url">
+  
+      <time datetime="2016-11-01T07:18:55.000Z" itemprop="datePublished">Nov 1</time>
+    <h1 itemprop="name">merge redis</h1>
+    
+     
+           <p itemprop="description" >记录一下合并redis数据库的步骤：1.安装redis-dumpyum install ruby rubygems ruby-develyum install gccgem install redis-dump -V
+2.导出数据redis-dump -u 127.0.0.1:6</p>
+        
+    
+  </a>
+</section>
+
+  <section class="post" itemscope itemprop="blogPost">
+  
     <a href="/2016/06/14/gofilewalk/" title="go遍历目标" itemprop="url">
   
       <time datetime="2016-06-14T11:53:32.000Z" itemprop="datePublished">Jun 14</time>
@@ -119,77 +192,6 @@
   </a>
 </section>
 
-  <section class="post" itemscope itemprop="blogPost">
-  
-    <a href="/2016/05/26/govalue/" title="go之value、Type小记" itemprop="url">
-  
-      <time datetime="2016-05-26T11:53:00.000Z" itemprop="datePublished">May 26</time>
-    <h1 itemprop="name">go之value、Type小记</h1>
-    
-     
-           <p itemprop="description" >go语言里面没有类似template的东西，也没有函数重载和函数默认参数，所以要实现一些功能时需要借助interface{}和reflect，下面记录一些用法。1.interface{} 实现要接纳多种类型的参数，好似templateinterface{}能够接纳所以类型，但是用</p>
-        
-    
-  </a>
-</section>
-
-  <section class="post" itemscope itemprop="blogPost">
-  
-    <a href="/2016/05/06/gounsafe/" title="go指针" itemprop="url">
-  
-      <time datetime="2016-05-06T05:09:56.000Z" itemprop="datePublished">May 6</time>
-    <h1 itemprop="name">go指针</h1>
-    
-     
-           <p itemprop="description" >go语言里虽然也有指针的概念，但他的指针不能像C++的那样进行指针加减运算、不同类型指针赋值等操作，他只能在相同类型间赋值。这样做的好处是安全，因为你除了能把这个指针指向其他同类型的值之外你不能对它进行任何改变。但这样同时也失去了指针的灵活性，少了很多操作的空间。所以packet</p>
-        
-    
-  </a>
-</section>
-
-  <section class="post" itemscope itemprop="blogPost">
-  
-    <a href="/2016/04/18/bashmode/" title="bash的四种模式" itemprop="url">
-  
-      <time datetime="2016-04-18T11:59:26.000Z" itemprop="datePublished">Apr 18</time>
-    <h1 itemprop="name">bash的四种模式</h1>
-    
-     
-           <p itemprop="description" >bash也是一种shell，根据interactive和login进行划分，它有四种模式：
-1. interactive-login shell 交互式登录shellinteractive即交互，用户可以输入命令与shell进行交互login即登录，简单来说就是需要输入用户名密码</p>
-        
-    
-  </a>
-</section>
-
-  <section class="post" itemscope itemprop="blogPost">
-  
-    <a href="/2016/04/14/goreflect/" title="go之reflect" itemprop="url">
-  
-      <time datetime="2016-04-14T12:48:49.000Z" itemprop="datePublished">Apr 14</time>
-    <h1 itemprop="name">go之reflect</h1>
-    
-     
-           <p itemprop="description" >reflect中主要包含TypeOf和ValueOf两个函数：123456789101112131415161718192021222324252627282930313233343536// TypeOf returns the reflection Type that rep</p>
-        
-    
-  </a>
-</section>
-
-  <section class="post" itemscope itemprop="blogPost">
-  
-    <a href="/2016/04/14/gointerface/" title="go之interface" itemprop="url">
-  
-      <time datetime="2016-04-14T12:24:40.000Z" itemprop="datePublished">Apr 14</time>
-    <h1 itemprop="name">go之interface</h1>
-    
-     
-           <p itemprop="description" >在go中interface本质上是一个struct：12345678910111213141516171819type interface struct&amp;#123;	typ    *rtype          //in reflect	data   unsafe.Pointer</p>
-        
-    
-  </a>
-</section>
-
 
   <nav id="page-nav" class="clearfix">
     <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
@@ -223,6 +225,10 @@
 		
 			<li><a href="/categories/C/" title="C++">C++<sup>2</sup></a></li>
 		
+			<li><a href="/categories/c/" title="c++">c++<sup>3</sup></a></li>
+		
+			<li><a href="/categories/db/" title="db">db<sup>1</sup></a></li>
+		
 			<li><a href="/categories/game/" title="game">game<sup>8</sup></a></li>
 		
 			<li><a href="/categories/linux/" title="linux">linux<sup>13</sup></a></li>
@@ -230,6 +236,8 @@
 			<li><a href="/categories/mysql/" title="mysql">mysql<sup>5</sup></a></li>
 		
 			<li><a href="/categories/protocol-buffer/" title="protocol buffer">protocol buffer<sup>7</sup></a></li>
+		
+			<li><a href="/categories/redis/" title="redis">redis<sup>1</sup></a></li>
 		
 			<li><a href="/categories/scirpt/" title="scirpt">scirpt<sup>1</sup></a></li>
 		
@@ -248,6 +256,8 @@
 		
 			<li><a href="/tags/C/" title="C++">C++<sup>2</sup></a></li>
 		
+			<li><a href="/tags/addr2line/" title="addr2line">addr2line<sup>1</sup></a></li>
+		
 			<li><a href="/tags/awk/" title="awk">awk<sup>1</sup></a></li>
 		
 			<li><a href="/tags/backup/" title="backup">backup<sup>1</sup></a></li>
@@ -256,11 +266,17 @@
 		
 			<li><a href="/tags/blog/" title="blog">blog<sup>3</sup></a></li>
 		
+			<li><a href="/tags/c/" title="c++">c++<sup>2</sup></a></li>
+		
 			<li><a href="/tags/cdkey/" title="cdkey">cdkey<sup>1</sup></a></li>
 		
 			<li><a href="/tags/chan/" title="chan">chan<sup>1</sup></a></li>
 		
 			<li><a href="/tags/cmake/" title="cmake">cmake<sup>1</sup></a></li>
+		
+			<li><a href="/tags/db/" title="db">db<sup>1</sup></a></li>
+		
+			<li><a href="/tags/dmesg/" title="dmesg">dmesg<sup>1</sup></a></li>
 		
 			<li><a href="/tags/drop/" title="drop">drop<sup>1</sup></a></li>
 		
@@ -277,14 +293,6 @@
 			<li><a href="/tags/game/" title="game">game<sup>4</sup></a></li>
 		
 			<li><a href="/tags/game-mysql/" title="game,mysql">game,mysql<sup>1</sup></a></li>
-		
-			<li><a href="/tags/gettimeofday/" title="gettimeofday">gettimeofday<sup>1</sup></a></li>
-		
-			<li><a href="/tags/git/" title="git">git<sup>2</sup></a></li>
-		
-			<li><a href="/tags/github/" title="github">github<sup>2</sup></a></li>
-		
-			<li><a href="/tags/go/" title="go">go<sup>7</sup></a></li>
 		
 		</ul>
 </div>
@@ -307,7 +315,7 @@
   <div class="tagcloudlist">
     <p class="asidetitle">標簽雲</p>
     <div class="tagcloudlist clearfix">
-       <a href="/tags/C/" style="font-size: 11.67px;">C++</a> <a href="/tags/awk/" style="font-size: 10px;">awk</a> <a href="/tags/backup/" style="font-size: 10px;">backup</a> <a href="/tags/bash/" style="font-size: 10px;">bash</a> <a href="/tags/blog/" style="font-size: 13.33px;">blog</a> <a href="/tags/cdkey/" style="font-size: 10px;">cdkey</a> <a href="/tags/chan/" style="font-size: 10px;">chan</a> <a href="/tags/cmake/" style="font-size: 10px;">cmake</a> <a href="/tags/drop/" style="font-size: 10px;">drop</a> <a href="/tags/dynamic/" style="font-size: 10px;">dynamic</a> <a href="/tags/dynamiclink/" style="font-size: 10px;">dynamiclink</a> <a href="/tags/encode/" style="font-size: 10px;">encode</a> <a href="/tags/error/" style="font-size: 11.67px;">error</a> <a href="/tags/file/" style="font-size: 10px;">file</a> <a href="/tags/game/" style="font-size: 15px;">game</a> <a href="/tags/game-mysql/" style="font-size: 10px;">game,mysql</a> <a href="/tags/gettimeofday/" style="font-size: 10px;">gettimeofday</a> <a href="/tags/git/" style="font-size: 11.67px;">git</a> <a href="/tags/github/" style="font-size: 11.67px;">github</a> <a href="/tags/go/" style="font-size: 16.67px;">go</a> <a href="/tags/hexo/" style="font-size: 11.67px;">hexo</a> <a href="/tags/innodb-buffer/" style="font-size: 10px;">innodb buffer</a> <a href="/tags/interface/" style="font-size: 10px;">interface</a> <a href="/tags/iptables/" style="font-size: 10px;">iptables</a> <a href="/tags/key-buffer-size/" style="font-size: 10px;">key_buffer_size</a> <a href="/tags/linux/" style="font-size: 20px;">linux</a> <a href="/tags/lua/" style="font-size: 10px;">lua</a> <a href="/tags/mail/" style="font-size: 10px;">mail</a> <a href="/tags/md5/" style="font-size: 10px;">md5</a> <a href="/tags/mount/" style="font-size: 10px;">mount</a> <a href="/tags/mysql/" style="font-size: 18.33px;">mysql</a> <a href="/tags/mysqld-multi/" style="font-size: 10px;">mysqld_multi</a> <a href="/tags/newday/" style="font-size: 10px;">newday</a> <a href="/tags/operations/" style="font-size: 10px;">operations</a> <a href="/tags/php/" style="font-size: 11.67px;">php</a> <a href="/tags/pip/" style="font-size: 10px;">pip</a> <a href="/tags/pointer/" style="font-size: 10px;">pointer</a> <a href="/tags/protocol-buffer/" style="font-size: 16.67px;">protocol buffer</a> <a href="/tags/python/" style="font-size: 11.67px;">python</a> <a href="/tags/rank/" style="font-size: 11.67px;">rank</a> <a href="/tags/reflect/" style="font-size: 11.67px;">reflect</a> <a href="/tags/repeated/" style="font-size: 10px;">repeated</a> <a href="/tags/rsync/" style="font-size: 10px;">rsync</a> <a href="/tags/script/" style="font-size: 11.67px;">script</a> <a href="/tags/sed/" style="font-size: 10px;">sed</a> <a href="/tags/shell/" style="font-size: 13.33px;">shell</a> <a href="/tags/slk/" style="font-size: 10px;">slk</a> <a href="/tags/staticlink/" style="font-size: 10px;">staticlink</a> <a href="/tags/table-open-cache/" style="font-size: 10px;">table_open_cache</a> <a href="/tags/template/" style="font-size: 10px;">template</a> <a href="/tags/unsafe/" style="font-size: 10px;">unsafe</a> <a href="/tags/vim/" style="font-size: 10px;">vim</a> <a href="/tags/walk/" style="font-size: 10px;">walk</a> <a href="/tags/动态解析/" style="font-size: 11.67px;">动态解析</a>
+       <a href="/tags/C/" style="font-size: 11.67px;">C++</a> <a href="/tags/addr2line/" style="font-size: 10px;">addr2line</a> <a href="/tags/awk/" style="font-size: 10px;">awk</a> <a href="/tags/backup/" style="font-size: 10px;">backup</a> <a href="/tags/bash/" style="font-size: 10px;">bash</a> <a href="/tags/blog/" style="font-size: 13.33px;">blog</a> <a href="/tags/c/" style="font-size: 11.67px;">c++</a> <a href="/tags/cdkey/" style="font-size: 10px;">cdkey</a> <a href="/tags/chan/" style="font-size: 10px;">chan</a> <a href="/tags/cmake/" style="font-size: 10px;">cmake</a> <a href="/tags/db/" style="font-size: 10px;">db</a> <a href="/tags/dmesg/" style="font-size: 10px;">dmesg</a> <a href="/tags/drop/" style="font-size: 10px;">drop</a> <a href="/tags/dynamic/" style="font-size: 10px;">dynamic</a> <a href="/tags/dynamiclink/" style="font-size: 10px;">dynamiclink</a> <a href="/tags/encode/" style="font-size: 10px;">encode</a> <a href="/tags/error/" style="font-size: 11.67px;">error</a> <a href="/tags/file/" style="font-size: 10px;">file</a> <a href="/tags/game/" style="font-size: 15px;">game</a> <a href="/tags/game-mysql/" style="font-size: 10px;">game,mysql</a> <a href="/tags/gettimeofday/" style="font-size: 10px;">gettimeofday</a> <a href="/tags/git/" style="font-size: 11.67px;">git</a> <a href="/tags/github/" style="font-size: 11.67px;">github</a> <a href="/tags/go/" style="font-size: 16.67px;">go</a> <a href="/tags/hexo/" style="font-size: 11.67px;">hexo</a> <a href="/tags/innodb-buffer/" style="font-size: 10px;">innodb buffer</a> <a href="/tags/interface/" style="font-size: 10px;">interface</a> <a href="/tags/iptables/" style="font-size: 10px;">iptables</a> <a href="/tags/key-buffer-size/" style="font-size: 10px;">key_buffer_size</a> <a href="/tags/linux/" style="font-size: 20px;">linux</a> <a href="/tags/lua/" style="font-size: 10px;">lua</a> <a href="/tags/mail/" style="font-size: 10px;">mail</a> <a href="/tags/map/" style="font-size: 10px;">map</a> <a href="/tags/md5/" style="font-size: 10px;">md5</a> <a href="/tags/mount/" style="font-size: 10px;">mount</a> <a href="/tags/mysql/" style="font-size: 18.33px;">mysql</a> <a href="/tags/mysqld-multi/" style="font-size: 10px;">mysqld_multi</a> <a href="/tags/newday/" style="font-size: 10px;">newday</a> <a href="/tags/operations/" style="font-size: 10px;">operations</a> <a href="/tags/php/" style="font-size: 11.67px;">php</a> <a href="/tags/pip/" style="font-size: 10px;">pip</a> <a href="/tags/pointer/" style="font-size: 10px;">pointer</a> <a href="/tags/protocol-buffer/" style="font-size: 16.67px;">protocol buffer</a> <a href="/tags/python/" style="font-size: 11.67px;">python</a> <a href="/tags/rank/" style="font-size: 11.67px;">rank</a> <a href="/tags/redis/" style="font-size: 11.67px;">redis</a> <a href="/tags/reflect/" style="font-size: 11.67px;">reflect</a> <a href="/tags/repeated/" style="font-size: 10px;">repeated</a> <a href="/tags/rsync/" style="font-size: 10px;">rsync</a> <a href="/tags/script/" style="font-size: 11.67px;">script</a> <a href="/tags/sed/" style="font-size: 10px;">sed</a> <a href="/tags/shell/" style="font-size: 13.33px;">shell</a> <a href="/tags/slk/" style="font-size: 10px;">slk</a> <a href="/tags/staticlink/" style="font-size: 10px;">staticlink</a> <a href="/tags/table-open-cache/" style="font-size: 10px;">table_open_cache</a> <a href="/tags/template/" style="font-size: 10px;">template</a> <a href="/tags/unsafe/" style="font-size: 10px;">unsafe</a> <a href="/tags/vim/" style="font-size: 10px;">vim</a> <a href="/tags/walk/" style="font-size: 10px;">walk</a> <a href="/tags/动态解析/" style="font-size: 11.67px;">动态解析</a>
     </div>
   </div>
 
@@ -321,7 +329,7 @@
 		
 		<a href="http://sstask.github.io" target="_blank" title="叶子与桔子">叶子与桔子</a>
 		
-            && Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> && Theme by <a href="http://gengbiao.me" target="_blank" title="coney">coney</a>
+            && Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> && Theme by <a href="http://gengbiao.me" target="_blank" title="coney">coney</a> && 沪ICP备15036834号-1
             </div>
 </footer>
     <script src="/js/jquery-2.1.0.min.js"></script>
