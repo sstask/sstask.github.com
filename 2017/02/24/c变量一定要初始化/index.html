@@ -7,15 +7,13 @@
   <meta name="360-site-verification" content="67fbcc5a67f4c65c057315b28fa0b2c8" />
 <meta name="google-site-verification" content="2GzxQ0VtXwTSUdmGm6DzcmhTzM_I9QmzCb_pzpMzD88" />
   
-    <title>判断两个时间是不是同一天 | 叶子的博客</title>
+    <title>c变量一定要初始化 | 叶子的博客</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
     
     <meta name="author" content="叶子与桔子">
     
-    <meta name="description" content="在项目中很多时候需要判断两个时间是否是同一天，例如用户每天都能领某种福利一次且只能领取一次，这时候当用户领取福利的时就需要判断用户上次领取的时间与当前时间是不是同一天，不是同一天的话可以领取，否则不能领取。
-一般来讲我会用time(NULL)来获取用户当前领取时间，它返回的是一个整数，代表从CUT（Coordinated Universal Time 格林威治时间）时间1970年1月1日00:00:00到当前时刻的秒数，正因为它是一个整数所以这样便于存储和比较。假如两个时间分别是oldtime和newtime，他们都是用time(NULL)得到的整数时间，我们想判断他们是否是同一天只需要分别求得他们的天数，然后判断是不是相等即可，即这样：
-
-IsANewDay gettimeofday">
+    <meta name="description" content="重要的事情说三遍1.C++变量使用之前一定要初始化2.C++变量使用之前一定要初始化3.C++变量使用之前一定要初始化
+被这个问题坑了两次了，一次是自己的坑，一次是别人的坑两次都是一个记录时间的变量没有初始化，随机到了一个很大的时间，致使后面代码永远执行不到~~~">
     
     
     
@@ -81,15 +79,15 @@ IsANewDay gettimeofday">
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2015/07/12/isanewday/" title="判断两个时间是不是同一天" itemprop="url">判断两个时间是不是同一天</a>
+      <a href="/2017/02/24/c变量一定要初始化/" title="c变量一定要初始化" itemprop="url">c变量一定要初始化</a>
   </h1>
   <p class="article-author">By
     
       <a href="http://sstask.github.io" title="叶子与桔子">叶子与桔子</a>
     </p>
   <p class="article-time">
-    <time datetime="2015-07-12T02:35:38.000Z" itemprop="datePublished">Jul 12</time>
-    更新日期:<time datetime="2015-10-29T02:10:34.084Z" itemprop="dateModified">Oct 29</time>
+    <time datetime="2017-02-24T08:36:53.000Z" itemprop="datePublished">Feb 24</time>
+    更新日期:<time datetime="2017-02-24T08:43:13.591Z" itemprop="dateModified">Feb 24</time>
     
   </p>
 </header>
@@ -101,85 +99,28 @@ IsANewDay gettimeofday">
 		
 		</div>
 		
-		<p>在项目中很多时候需要判断两个时间是否是同一天，例如用户每天都能领某种福利一次且只能领取一次，这时候当用户领取福利的时就需要判断用户上次领取的时间与当前时间是不是同一天，不是同一天的话可以领取，否则不能领取。</p>
-<p>一般来讲我会用time(NULL)来获取用户当前领取时间，它返回的是一个整数，代表从CUT（Coordinated Universal Time 格林威治时间）时间1970年1月1日00:00:00到当前时刻的秒数，正因为它是一个整数所以这样便于存储和比较。假如两个时间分别是oldtime和newtime，他们都是用time(NULL)得到的整数时间，我们想判断他们是否是同一天只需要分别求得他们的天数，然后判断是不是相等即可，即这样：</p>
-<blockquote>
-<p>IsANewDay gettimeofday<br><a id="more"></a></p>
-</blockquote>
-<pre><code class="c++"><span class="preprocessor">#<span class="keyword">define</span> SECONDSOFONEDAY (<span class="number">24</span>*<span class="number">60</span>*<span class="number">60</span>)  </span>
-<span class="function"><span class="keyword">bool</span> <span class="title">IsANewDay</span><span class="params">(time_t tOldTime,  time_t tNewTime)</span>  
-</span>{  
-    <span class="keyword">int</span> iDayOld = <span class="keyword">static_cast</span>&lt;<span class="keyword">int</span>&gt;(tOldTime/SECONDSOFONEDAY);  
-    <span class="keyword">int</span> iDayNew = <span class="keyword">static_cast</span>&lt;<span class="keyword">int</span>&gt;(tNewTime/SECONDSOFONEDAY);  
-    <span class="keyword">if</span>(iDayNew &gt; iDayOld)  
-    {  
-        <span class="keyword">return</span> <span class="literal">true</span>;  
-    }  
-    <span class="keyword">else</span>  
-    {  
-        <span class="keyword">return</span> <span class="literal">false</span>;  
-    }  
-}
-</code></pre>
-<p>理论上来讲这样判断就可以了，但是仔细分析会发现这样的判断是以格林威治时间为标准的，也就是说计算的是从格林威治时间1970年1月1日00:00:00以来的第几天，但是我们实际需要计算的是对于我们当前时区来讲的第几天，所以直接用上述算法是有问题的。例如我们当前时区的时间是零点，正好是新的一天，但格林威治时间却还没到零点，这就差了一天，所以要修改算法，以当前时区来计算：</p>
-<pre><code class="c++"><span class="preprocessor">#<span class="keyword">define</span> SECONDSOFONEDAY (<span class="number">24</span>*<span class="number">60</span>*<span class="number">60</span>)  </span>
-<span class="function"><span class="keyword">bool</span> <span class="title">IsANewDay</span><span class="params">(time_t tOldTime,  time_t tNewTime)</span>  
-</span>{  
-    <span class="keyword">struct</span> timezone tvTimeZone;  
-    gettimeofday(<span class="literal">NULL</span>, &amp;tvTimeZone);  
-    <span class="keyword">int</span> iTimeZoneSeconds = (-tvTimeZone.tz_minuteswest*<span class="number">60</span>);  
-    <span class="keyword">int</span> iDayOld = <span class="keyword">static_cast</span>&lt;<span class="keyword">int</span>&gt;((tOldTime+iTimeZoneSeconds)/SECONDSOFONEDAY);  
-    <span class="keyword">int</span> iDayNew = <span class="keyword">static_cast</span>&lt;<span class="keyword">int</span>&gt;((tNewTime+iTimeZoneSeconds)/SECONDSOFONEDAY);  
-    <span class="keyword">if</span>(iDayNew &gt; iDayOld)  
-    {  
-        <span class="keyword">return</span> <span class="literal">true</span>;  
-    }  
-    <span class="keyword">else</span>  
-    {  
-        <span class="keyword">return</span> <span class="literal">false</span>;  
-    }  
-}
-</code></pre>
-<p>tvTimeZone.tz_minuteswest返回的是当前时区时间与格林威治时间时间差了多少分钟，所以用之前得到的秒数减去与格林威治时间相差的秒数就得到了当前时区对应的秒数，这样再除以一天的秒数就得到了正确的天数。其实有不少情况我们不想以零点来判断是否是新的一天，好比我们把凌晨5点当做分割线，凌晨5点之前是昨天，之后是新的一天，这时候再判断两个时间是不是新的一天又不一样了。其实改动也很小，只需要在原算法中加个偏移量就好了：</p>
-<pre><code class="c++"><span class="preprocessor">#<span class="keyword">define</span> SECONDSOFONEDAY (<span class="number">24</span>*<span class="number">60</span>*<span class="number">60</span>)  </span>
-<span class="function"><span class="keyword">bool</span> <span class="title">IsANewDay</span><span class="params">(time_t tOldTime,  time_t tNewTime, <span class="keyword">int</span> iOffSetTime)</span>  
-</span>{  
-    <span class="keyword">struct</span> timezone tvTimeZone;  
-    gettimeofday(<span class="literal">NULL</span>, &amp;tvTimeZone);  
-    <span class="keyword">int</span> iTimeZoneSeconds = (-tvTimeZone.tz_minuteswest*<span class="number">60</span>);  
-    <span class="keyword">int</span> iDayOld = <span class="keyword">static_cast</span>&lt;<span class="keyword">int</span>&gt;((tOldTime+iTimeZoneSeconds-iOffSetTime)/SECONDSOFONEDAY);  
-    <span class="keyword">int</span> iDayNew = <span class="keyword">static_cast</span>&lt;<span class="keyword">int</span>&gt;((tNewTime+iTimeZoneSeconds-iOffSetTime)/SECONDSOFONEDAY);  
-    <span class="keyword">if</span>(iDayNew &gt; iDayOld)  
-    {  
-        <span class="keyword">return</span> <span class="literal">true</span>;  
-    }  
-    <span class="keyword">else</span>  
-    {  
-        <span class="keyword">return</span> <span class="literal">false</span>;  
-    }  
-}
-</code></pre>
-<p>例如，IsANewDay(oldtime, newtime, 5<em>60</em>60)即返回相对于凌晨五点来讲oldtime和newtime是不是新的一天，我们得到的时间本来是相对于格林威治时间1970年1月1日00:00:00的秒数(相对于零点)，如果想以凌晨5点为标准的话，我们只需要计算相对于格林威治时间1970年1月1日05:00:00的秒数即可，所以把时间减去offsettime(5<em>60</em>60)就好了。</p>
+		<p>重要的事情说三遍<br>1.<strong>C++变量使用之前一定要初始化</strong><br>2.<strong>C++变量使用之前一定要初始化</strong><br>3.<strong>C++变量使用之前一定要初始化</strong></p>
+<p>被这个问题坑了两次了，一次是自己的坑，一次是别人的坑<br>两次都是一个记录时间的变量没有初始化，随机到了一个很大的时间，致使后面代码永远执行不到~~~</p>
   
 	</div>
 		<footer class="article-footer clearfix">
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/game/">game</a><a href="/tags/gettimeofday/">gettimeofday</a><a href="/tags/newday/">newday</a>
+  <span></span> <a href="/tags/c/">c++</a>
   </div>
 
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/game/">game</a>
+  <a class="article-category-link" href="/categories/c/">c++</a>
 </div>
 
 
 
 <div class="article-share" id="share">
 
-  <div data-url="http://sstask.github.io/2015/07/12/isanewday/" data-title="判断两个时间是不是同一天 | 叶子的博客" data-tsina="null" class="share clearfix">
+  <div data-url="http://sstask.github.io/2017/02/24/c变量一定要初始化/" data-title="c变量一定要初始化 | 叶子的博客" data-tsina="null" class="share clearfix">
   </div>
 
 </div>
@@ -188,19 +129,11 @@ IsANewDay gettimeofday">
 	
 <nav class="article-nav clearfix">
  
- <div class="prev" >
- <a href="/2015/07/16/innodbbuffer/" title="mysql Innodb缓存命中率">
-  <strong>PREVIOUS:</strong><br/>
-  <span>
-  mysql Innodb缓存命中率</span>
-</a>
-</div>
-
 
 <div class="next">
-<a href="/2015/07/06/gencdkey/"  title="cdkey和激活码的生成">
+<a href="/2017/02/18/gogtk/"  title="gogtk安装">
  <strong>NEXT:</strong><br/> 
- <span>cdkey和激活码的生成
+ <span>gogtk安装
 </span>
 </a>
 </div>
@@ -210,7 +143,7 @@ IsANewDay gettimeofday">
 	
 <section class="comment">
 	
-	<div class="ds-thread" data-title="判断两个时间是不是同一天" data-thread-key="isanewday" data-author-key="叶子与桔子" data-url="http://sstask.github.io/post/isanewday"></div>
+	<div class="ds-thread" data-title="c变量一定要初始化" data-thread-key="c变量一定要初始化" data-author-key="叶子与桔子" data-url="http://sstask.github.io/post/c变量一定要初始化"></div>
 	
 </section>
 
