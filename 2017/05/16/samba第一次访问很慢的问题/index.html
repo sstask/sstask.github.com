@@ -7,12 +7,12 @@
   <meta name="360-site-verification" content="67fbcc5a67f4c65c057315b28fa0b2c8" />
 <meta name="google-site-verification" content="2GzxQ0VtXwTSUdmGm6DzcmhTzM_I9QmzCb_pzpMzD88" />
   
-    <title>一个简单的protobuf兼容库 | 叶子的博客</title>
+    <title>samba第一次访问很慢的问题 | 叶子的博客</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
     
     <meta name="author" content="叶子与桔子">
     
-    <meta name="description" content="上篇博文已经提到了，protocol buffer虽然简单好用，但是你必须把他的库文件整个加载到你的项目中，虽然大部分时候你只是想用他的编码和解码部分，编译他有时候也不是件容易事，如果能简单的引用他生成的消息文件就在项目中使用就好了(不需要引入protocol buffer库)。因此自己写了一个简单">
+    <meta name="description" content="在新机器上用samba创建了一个共享目录，发现第一次访问的时候非常慢，后面就好了。查资料发现是因为/etc/sysconfig/network和/etc/hosts里的HOSTNAME不一致。12345678cat /etc/sysconfig/network NETWORKING=yesHOSTN">
     
     
     
@@ -78,15 +78,15 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2015/12/23/simplegpb/" title="一个简单的protobuf兼容库" itemprop="url">一个简单的protobuf兼容库</a>
+      <a href="/2017/05/16/samba第一次访问很慢的问题/" title="samba第一次访问很慢的问题" itemprop="url">samba第一次访问很慢的问题</a>
   </h1>
   <p class="article-author">By
     
       <a href="http://sstask.github.io" title="叶子与桔子">叶子与桔子</a>
     </p>
   <p class="article-time">
-    <time datetime="2015-12-23T12:31:44.000Z" itemprop="datePublished">Dec 23</time>
-    更新日期:<time datetime="2015-12-24T02:08:18.043Z" itemprop="dateModified">Dec 24</time>
+    <time datetime="2017-05-16T05:36:57.000Z" itemprop="datePublished">May 16</time>
+    更新日期:<time datetime="2017-05-16T05:40:48.620Z" itemprop="dateModified">May 16</time>
     
   </p>
 </header>
@@ -98,30 +98,28 @@
 		
 		</div>
 		
-		<p>上篇博文已经提到了，protocol buffer虽然简单好用，但是你必须把他的库文件整个加载到你的项目中，虽然大部分时候你只是想用他的编码和解码部分，编译他有时候也不是件容易事，如果能简单的引用他生成的消息文件就在项目中使用就好了(不需要引入protocol buffer库)。<br>因此自己写了一个简单的protocol buffer的编码和解码文件，在使用时直接引用这一个头文件就可以了，省去了protocol buffer“庞大”库的引入。<br>其实上篇博文已经讲了protocol buffer的编码方式，从其中也不难推导出他的解码方式，所以这里就不再介绍他的解码方式了。有了protocol buffer的编码解码方式就很容易对相应数据进行编解码了。<br>具体编解码见文件<a href="https://github.com/sstask/simpleprotobuf/blob/master/gpbencode.h" target="_blank" rel="external">gpbencode.h</a><br>1.<strong>gpbencoder</strong>实现protocol buffer编码，大体这样<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> Type&gt;</span><br><span class="line"><span class="function">INL <span class="keyword">static</span> uint8* <span class="title">WriteDataToArray</span><span class="params">(field_number, Type value, output)</span></span></span><br></pre></td></tr></table></figure></p>
-<p>2.<strong>gpbdecoder</strong>实现protocol buffer解码，大体这样<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> CType&gt;</span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">static</span> <span class="keyword">bool</span> <span class="title">ReadPrimitive</span><span class="params">(io::CodedInputStream* input, CType* value)</span></span></span><br></pre></td></tr></table></figure></p>
-<p>3.<strong>WireFormatLite</strong>是protocol buffer中存在的类，它主要抽象出了protocol buffer中各个类型的编码解码，该实现也基本与protocol buffer源码一直，以便后面如果protocol buffer更新了可以跟着更新，具体的也可以查阅protocol buffer源码。<br>4.<strong>CodedInputStream CodedOutputStream</strong>这两个类也是protocol buffer中存在的，他们主要实现了基础数据的底层编码解码，这里的基本也是从protocol buffer中搬过来的。</p>
-<p>为了兼容protocol buffer的实现方式，我也实现了一个把.proto生成.h的类，该类生成的文件完全依赖于上面的<strong>gpbencoder gpbdecoder</strong>，所以在使用的使用只需要引用<strong>gpbencode.h</strong>即可，抛弃了对protocol buffer的依赖。<br>具体实现见<a href="https://github.com/sstask/simpleprotobuf/blob/master/gpb_generator.cpp" target="_blank" rel="external">gpb_generator.cpp</a><br>它本身是依赖于protocol buffer库的，但生成的文件不依赖protocol buffer。</p>
+		<p>在新机器上用samba创建了一个共享目录，发现第一次访问的时候非常慢，后面就好了。<br>查资料发现是因为/etc/sysconfig/network和/etc/hosts里的HOSTNAME不一致。<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">cat /etc/sysconfig/network </span><br><span class="line">NETWORKING=yes</span><br><span class="line">HOSTNAME=dev</span><br><span class="line">NTPSERVERARGS=iburst</span><br><span class="line"></span><br><span class="line">cat /etc/hosts </span><br><span class="line"><span class="number">127.0</span>.<span class="number">0.1</span>   localhost localhost<span class="class">.localdomain</span> localhost4 localhost4<span class="class">.localdomain4</span></span><br><span class="line">::<span class="number">1</span>         localhost localhost<span class="class">.localdomain</span> localhost6 localhost6.localdomain6</span><br></pre></td></tr></table></figure></p>
+<p>解决方案，修改hosts<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cat /etc/hosts </span><br><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>   dev</span><br><span class="line">::<span class="number">1</span>         localhost localhost.localdomain localhost6 localhost6.localdomain6</span><br></pre></td></tr></table></figure></p>
   
 	</div>
 		<footer class="article-footer clearfix">
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/protocol-buffer/">protocol buffer</a>
+  <span></span> <a href="/tags/samba/">samba</a>
   </div>
 
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/protocol-buffer/">protocol buffer</a>
+  <a class="article-category-link" href="/categories/linux/">linux</a>
 </div>
 
 
 
 <div class="article-share" id="share">
 
-  <div data-url="http://sstask.github.io/2015/12/23/simplegpb/" data-title="一个简单的protobuf兼容库 | 叶子的博客" data-tsina="null" class="share clearfix">
+  <div data-url="http://sstask.github.io/2017/05/16/samba第一次访问很慢的问题/" data-title="samba第一次访问很慢的问题 | 叶子的博客" data-tsina="null" class="share clearfix">
   </div>
 
 </div>
@@ -130,19 +128,11 @@
 	
 <nav class="article-nav clearfix">
  
- <div class="prev" >
- <a href="/2015/12/26/linuxoperations/" title="linux运维相关">
-  <strong>PREVIOUS:</strong><br/>
-  <span>
-  linux运维相关</span>
-</a>
-</div>
-
 
 <div class="next">
-<a href="/2015/12/21/gpbencoderule/"  title="protocol buffer编码规则">
+<a href="/2017/02/28/mysqlerror/"  title="MySQL Daemon failed to start">
  <strong>NEXT:</strong><br/> 
- <span>protocol buffer编码规则
+ <span>MySQL Daemon failed to start
 </span>
 </a>
 </div>
@@ -152,7 +142,7 @@
 	
 <section class="comment">
 	
-	<div class="ds-thread" data-title="一个简单的protobuf兼容库" data-thread-key="simplegpb" data-author-key="叶子与桔子" data-url="http://sstask.github.io/post/simplegpb"></div>
+	<div class="ds-thread" data-title="samba第一次访问很慢的问题" data-thread-key="samba第一次访问很慢的问题" data-author-key="叶子与桔子" data-url="http://sstask.github.io/post/samba第一次访问很慢的问题"></div>
 	
 </section>
 
